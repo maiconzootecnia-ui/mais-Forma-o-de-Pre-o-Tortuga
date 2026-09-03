@@ -8,44 +8,40 @@ const MAISA_LOGO = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAsIC
 
 const PRODUTOS = [
   // CONFINAMENTO
-  { cod: "BRT487A025", nome: "FOSBOVI CONFINAMENTO", cat: "Confinamento", peso: 25, mt1: 7.3977, mt2: 7.4192, mt3: 7.7081 },
+  { cod: "BRT487A025", nome: "FOSBOVI CONFINAMENTO", cat: "Confinamento", peso: 25, mt1: 7.2633, mt2: 7.2848, mt3: 7.5737 },
   { cod: "BRT352A025", nome: "FOSBOVI CONFINAMENTO PLUS", cat: "Confinamento", peso: 25, mt1: 8.9834, mt2: 9.0049, mt3: 9.2938 },
-  { cod: "BRT353A025", nome: "FOSBOVI CONFINAMENTO PLUS N", cat: "Confinamento", peso: 25, mt1: 8.1637, mt2: 8.1852, mt3: 8.4741 },
-  { cod: "BRT346A025", nome: "FOSBOVI CONFINAMENTO PRIME", cat: "Confinamento", peso: 25, mt1: 11.2948, mt2: 11.3163, mt3: 11.6052 },
+  { cod: "BRT353A025", nome: "FOSBOVI CONFINAMENTO PLUS N", cat: "Confinamento", peso: 25, mt1: 8.0159, mt2: 8.0374, mt3: 8.3263 },
+  { cod: "BRT346A025", nome: "FOSBOVI CONFINAMENTO PRIME", cat: "Confinamento", peso: 25, mt1: 10.7572, mt2: 10.7787, mt3: 11.0677 },
   { cod: "BRT350A025", nome: "FOSBOVI CONFINAMENTO PRIME 5.0", cat: "Confinamento", peso: 25, mt1: 14.7618, mt2: 14.7833, mt3: 15.0722 },
-  { cod: "BRT351A025", nome: "FOSBOVI CONFINAMENTO PRIME 5.0 N", cat: "Confinamento", peso: 25, mt1: 12.007, mt2: 12.0285, mt3: 12.3174 },
-  { cod: "BRT348A025", nome: "FOSBOVI CONFINAMENTO PRIME DDG", cat: "Confinamento", peso: 25, mt1: 9.4403, mt2: 9.4618, mt3: 9.7507 },
-  { cod: "BRT347A025", nome: "FOSBOVI CONFINAMENTO PRIME N", cat: "Confinamento", peso: 25, mt1: 10.26, mt2: 10.2815, mt3: 10.5704 },
-  { cod: "BRT354A025", nome: "FOSBOVI SEMICONFINAMENTO 10 PRIME N", cat: "Confinamento", peso: 25, mt1: 9.7225, mt2: 9.744, mt3: 10.0329 },
+  { cod: "BRT351A025", nome: "FOSBOVI CONFINAMENTO PRIME 5.0 N", cat: "Confinamento", peso: 25, mt1: 11.886, mt2: 11.9075, mt3: 12.1965 },
+  { cod: "BRT348A025", nome: "FOSBOVI CONFINAMENTO PRIME DDG", cat: "Confinamento", peso: 25, mt1: 9.2656, mt2: 9.2871, mt3: 9.576 },
+  { cod: "BRT347A025", nome: "FOSBOVI CONFINAMENTO PRIME N", cat: "Confinamento", peso: 25, mt1: 9.7763, mt2: 9.7978, mt3: 10.0867 },
+  { cod: "BRT354A025", nome: "FOSBOVI SEMICONFINAMENTO 10 PRIME N", cat: "Confinamento", peso: 25, mt1: 7.8815, mt2: 7.903, mt3: 8.1919 },
   // GADO DE CORTE BOI VERDE
-  { cod: "BRT698A025", nome: "FOSBOVI ADVANCE", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 8.3921, mt2: 8.4136, mt3: 8.7025 },
-  { cod: "BRR008A030", nome: "FOSBOVI ENGORDA", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 8.0696, mt2: 8.0911, mt3: 8.3800 },
-  { cod: "BRQ325A025", nome: "FOSBOVI MULTI ADVANCE", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 7.7337, mt2: 7.7552, mt3: 8.0441 },
-  { cod: "BRQ194A025", nome: "FOSBOVI NÚCLEO", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 13.5793, mt2: 13.6008, mt3: 13.8897 },
-  { cod: "BRM477A025", nome: "FOSBOVI NÚCLEO ADVANCE", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 15.7697, mt2: 15.7912, mt3: 16.0801 },
-  { cod: "BRQ284A025", nome: "FOSBOVI NÚCLEO IMPACT", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 10.7169, mt2: 10.7384, mt3: 11.0273 },
-  { cod: "BRQ195A025", nome: "FOSBOVI NÚCLEO PLUS", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 14.8828, mt2: 14.9043, mt3: 15.1932 },
-  { cod: "BRQ285A025", nome: "FOSBOVI NÚCLEO PRIMA", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 9.7091, mt2: 9.7306, mt3: 10.0195 },
-  { cod: "BRQ403A025", nome: "FOSBOVI NÚCLEO REPRODUÇÃO MAX", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 14.4124, mt2: 14.4339, mt3: 14.7228 },
-  { cod: "BRR010C030", nome: "FOSBOVI PAMPERO", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 9.9644, mt2: 9.9859, mt3: 10.2748 },
-  { cod: "BRR992M025", nome: "FOSBOVI PLUS", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 7.9755, mt2: 7.9970, mt3: 8.2860 },
-  { cod: "BRR011A030", nome: "FOSBOVI REPRODUÇÃO", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 9.9644, mt2: 9.9859, mt3: 10.2748 },
-  { cod: "BRR015A030", nome: "FOSCROMO", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 9.7628, mt2: 9.7843, mt3: 10.0732 },
+  { cod: "BRT698A025", nome: "FOSBOVI ADVANCE", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 8.1502, mt2: 8.1717, mt3: 8.4607 },
+  { cod: "BRR008A030", nome: "FOSBOVI ENGORDA", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 7.7605, mt2: 7.782, mt3: 8.071 },
+  { cod: "BRQ325A025", nome: "FOSBOVI MULTI ADVANCE", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 7.5186, mt2: 7.5401, mt3: 7.8291 },
+  { cod: "BRQ194A025", nome: "FOSBOVI NÚCLEO", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 13.1895, mt2: 13.211, mt3: 13.5 },
+  { cod: "BRM477A025", nome: "FOSBOVI NÚCLEO ADVANCE", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 15.4606, mt2: 15.4821, mt3: 15.771 },
+  { cod: "BRQ284A025", nome: "FOSBOVI NÚCLEO IMPACT", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 10.3138, mt2: 10.3353, mt3: 10.6242 },
+  { cod: "BRQ195A025", nome: "FOSBOVI NÚCLEO PLUS", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 14.4527, mt2: 14.4742, mt3: 14.7632 },
+  { cod: "BRQ285A025", nome: "FOSBOVI NÚCLEO PRIMA", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 9.4269, mt2: 9.4484, mt3: 9.7373 },
+  { cod: "BRQ403A025", nome: "FOSBOVI NÚCLEO REPRODUÇÃO MAX", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 13.9958, mt2: 14.0173, mt3: 14.3063 },
+  { cod: "BRR010C030", nome: "FOSBOVI PAMPERO", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 9.6822, mt2: 9.7037, mt3: 9.9926 },
+  { cod: "BRR992M025", nome: "FOSBOVI PLUS", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 7.7471, mt2: 7.7686, mt3: 8.0575 },
+  { cod: "BRR011A030", nome: "FOSBOVI REPRODUÇÃO", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 9.6822, mt2: 9.7037, mt3: 9.9926 },
+  { cod: "BRR015A030", nome: "FOSCROMO", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 9.4806, mt2: 9.5021, mt3: 9.791 },
   // GADO DE CORTE TQ
-  { cod: "BRR100A030", nome: "FOSBOVI 15", cat: "Gado de Corte TQ", peso: 30, mt1: 6.9811, mt2: 7.0026, mt3: 7.2915 },
-  { cod: "BRR056A030", nome: "FOSBOVI 18", cat: "Gado de Corte TQ", peso: 30, mt1: 8.1502, mt2: 8.1717, mt3: 8.4607 },
-  { cod: "BRR101A030", nome: "FOSBOVI 20", cat: "Gado de Corte TQ", peso: 30, mt1: 8.7012, mt2: 8.7227, mt3: 9.0116 },
-  { cod: "BRR104A025", nome: "FOSBOVI 30", cat: "Gado de Corte TQ", peso: 25, mt1: 12.4504, mt2: 12.4719, mt3: 12.7609 },
-  { cod: "BRR102A025", nome: "FOSBOVI 40", cat: "Gado de Corte TQ", peso: 25, mt1: 15.9578, mt2: 15.9793, mt3: 16.2682 },
-  { cod: "BRM077A025", nome: "FOSBOVI BALANCE", cat: "Gado de Corte TQ", peso: 25, mt1: 6.5242, mt2: 6.5457, mt3: 6.8346 },
-  { cod: "BRM080A025", nome: "FOSBOVI NÚCLEO BALANCE", cat: "Gado de Corte TQ", peso: 25, mt1: 11.3082, mt2: 11.3297, mt3: 11.6186 },
-  { cod: "BRR103A030", nome: "FOSBOVI PRONTO", cat: "Gado de Corte TQ", peso: 30, mt1: 5.5029, mt2: 5.5244, mt3: 5.8133 },
-  { cod: "BRR059A025", nome: "ULTRA PHÓS ENGORDA", cat: "Gado de Corte TQ", peso: 25, mt1: 8.3652, mt2: 8.3867, mt3: 8.6757 },
+  { cod: "BRR100A030", nome: "FOSBOVI 15", cat: "Gado de Corte TQ", peso: 30, mt1: 6.793, mt2: 6.8145, mt3: 7.1034 },
+  { cod: "BRR056A030", nome: "FOSBOVI 18", cat: "Gado de Corte TQ", peso: 30, mt1: 7.9218, mt2: 7.9433, mt3: 8.2322 },
+  { cod: "BRR101A030", nome: "FOSBOVI 20", cat: "Gado de Corte TQ", peso: 30, mt1: 8.4593, mt2: 8.4808, mt3: 8.7697 },
+  { cod: "BRR104A025", nome: "FOSBOVI 30", cat: "Gado de Corte TQ", peso: 25, mt1: 11.9667, mt2: 11.9882, mt3: 12.2771 },
+  { cod: "BRR102A025", nome: "FOSBOVI 40", cat: "Gado de Corte TQ", peso: 25, mt1: 15.3396, mt2: 15.3612, mt3: 15.6501 },
+  { cod: "BRM077A025", nome: "FOSBOVI BALANCE", cat: "Gado de Corte TQ", peso: 25, mt1: 6.3495, mt2: 6.371, mt3: 6.6599 },
+  { cod: "BRM080A025", nome: "FOSBOVI NÚCLEO BALANCE", cat: "Gado de Corte TQ", peso: 25, mt1: 10.9857, mt2: 11.0072, mt3: 11.2961 },
+  { cod: "BRR103A030", nome: "FOSBOVI PRONTO", cat: "Gado de Corte TQ", peso: 30, mt1: 5.3551, mt2: 5.3766, mt3: 5.6655 },
+  { cod: "BRR059A025", nome: "ULTRA PHÓS ENGORDA", cat: "Gado de Corte TQ", peso: 25, mt1: 8.1234, mt2: 8.1449, mt3: 8.4338 },
   // NÚCLEOS BOI VERDE
-  { cod: "BRR338B025", nome: "FOSBOVI NÚCLEO BOI VERDE", cat: "Núcleos Boi Verde", peso: 25, mt1: 13.7539, mt2: 13.7754, mt3: 14.0644 },
-  { cod: "BRR339B025", nome: "FOSBOVI NÚCLEO BOI VERDE M", cat: "Núcleos Boi Verde", peso: 25, mt1: 15.0440, mt2: 15.0655, mt3: 15.3544 },
-  { cod: "BRR989P025", nome: "FOSBOVI NÚCLEO BOI VERDE PRIMA", cat: "Núcleos Boi Verde", peso: 25, mt1: 9.6150, mt2: 9.6365, mt3: 9.9254 },
-  { cod: "BRR022A025", nome: "NÚCLEO BOI VERDE REPRODUÇÃO", cat: "Núcleos Boi Verde", peso: 25, mt1: 14.4124, mt2: 14.4339, mt3: 14.7228 },
   // PROGRAMA DE LEITE
   { cod: "BRB321A025", nome: "BOVIGOLD", cat: "Programa de Leite", peso: 25, mt1: 8.7550, mt2: 8.7765, mt3: 9.0654 },
   { cod: "BRT391A020", nome: "BOVIGOLD BUFFER", cat: "Programa de Leite", peso: 20, mt1: 7.4783, mt2: 7.4998, mt3: 7.7888 },
@@ -55,11 +51,12 @@ const PRODUTOS = [
   { cod: "BRT188A025", nome: "BOVIGOLD EXTRA PLUS", cat: "Programa de Leite", peso: 25, mt1: 14.0765, mt2: 14.0980, mt3: 14.3869 },
   { cod: "BRB248A025", nome: "BOVIGOLD FREE", cat: "Programa de Leite", peso: 25, mt1: 6.6720, mt2: 6.6935, mt3: 6.9825 },
   { cod: "BRM337A025", nome: "BOVIGOLD GUARD", cat: "Programa de Leite", peso: 25, mt1: 10.6497, mt2: 10.6712, mt3: 10.9602 },
-  { cod: "5065979BAG", nome: "BOVIGOLD LAC, bags", cat: "Programa de Leite", peso: 25, mt1: 28.8047, mt2: 28.8262, mt3: 29.1151 },
+  { cod: "5065979BAG", nome: "BOVIGOLD LAC, bags", cat: "Programa de Leite", peso: 25, mt1: 27.3937, mt2: 27.4152, mt3: 27.7041 },
   { cod: "BRB766A025", nome: "BOVIGOLD LIV", cat: "Programa de Leite", peso: 25, mt1: 10.6900, mt2: 10.7116, mt3: 11.0005 },
   { cod: "BRR149A025", nome: "BOVIGOLD PASTO", cat: "Programa de Leite", peso: 25, mt1: 8.7818, mt2: 8.8033, mt3: 9.0923 },
+  { cod: "BRQ020A020", nome: "BOVIGOLD PASTO (SC 20)", cat: "Programa de Leite", peso: 20, mt1: 7.1021, mt2: 7.1236, mt3: 7.4125 },
   { cod: "BRB322A025", nome: "BOVIGOLD PLUS", cat: "Programa de Leite", peso: 25, mt1: 9.8166, mt2: 9.8381, mt3: 10.1270 },
-  { cod: "BRR143A025", nome: "BOVIGOLD PRE PARTO OVN", cat: "Programa de Leite", peso: 25, mt1: 25.8214, mt2: 25.8429, mt3: 26.1318 },
+  { cod: "BRR143A025", nome: "BOVIGOLD PRE PARTO OVN", cat: "Programa de Leite", peso: 25, mt1: 24.5582, mt2: 24.5797, mt3: 24.8686 },
   { cod: "BRR703G025", nome: "BOVIGOLD PRE PARTO PLUS", cat: "Programa de Leite", peso: 25, mt1: 29.6916, mt2: 29.7131, mt3: 30.0020 },
   { cod: "BRR144A025", nome: "BOVIGOLD PRIMA", cat: "Programa de Leite", peso: 25, mt1: 25.4048, mt2: 25.4263, mt3: 25.7152 },
   { cod: "BRT127A025", nome: "BOVIGOLD PRO", cat: "Programa de Leite", peso: 25, mt1: 9.3194, mt2: 9.3409, mt3: 9.6298 },
@@ -74,36 +71,25 @@ const PRODUTOS = [
   { cod: "BRQ288A025", nome: "FOSBOVI NÚCLEO PROTEICO", cat: "Programa de Seca", peso: 25, mt1: 7.8143, mt2: 7.8358, mt3: 8.1247 },
   { cod: "BRQ402A025", nome: "FOSBOVI NÚCLEO PROTEICO ADVANCE", cat: "Programa de Seca", peso: 25, mt1: 8.1234, mt2: 8.1449, mt3: 8.4338 },
   { cod: "BRQ319A030", nome: "FOSBOVI PROTEICO 30 ADVANCE", cat: "Programa de Seca", peso: 30, mt1: 6.3764, mt2: 6.3979, mt3: 6.6868 },
-  { cod: "BRR033A030", nome: "FOSBOVI PROTEICO 35", cat: "Programa de Seca", peso: 30, mt1: 5.9329, mt2: 5.9544, mt3: 6.2434 },
   { cod: "BRQ282A030", nome: "FOSBOVI PROTEICO 35 (BRQ282A030)", cat: "Programa de Seca", peso: 30, mt1: 5.7045, mt2: 5.7260, mt3: 6.0149 },
-  { cod: "BRR085A030", nome: "FOSBOVI PROTEICO 35 COM MONENSINA", cat: "Programa de Seca", peso: 30, mt1: 6.1345, mt2: 6.1560, mt3: 6.4449 },
   { cod: "BRQ281A030", nome: "FOSBOVI PROTEICO 35 PLUS", cat: "Programa de Seca", peso: 30, mt1: 5.9329, mt2: 5.9544, mt3: 6.2434 },
   { cod: "BRQ283A030", nome: "FOSBOVI PROTEICO 40 PLUS", cat: "Programa de Seca", peso: 30, mt1: 6.3495, mt2: 6.3710, mt3: 6.6599 },
-  { cod: "BRR106A030", nome: "FOSBOVI PROTEICO 45", cat: "Programa de Seca", peso: 30, mt1: 7.1289, mt2: 7.1504, mt3: 7.4394 },
-  { cod: "BRR012A030", nome: "FOSBOVI SECA", cat: "Programa de Seca", peso: 30, mt1: 8.9565, mt2: 8.9780, mt3: 9.2669 },
   { cod: "BRQ279A025", nome: "FOSBOVI SECA 15", cat: "Programa de Seca", peso: 25, mt1: 7.2096, mt2: 7.2311, mt3: 7.5200 },
   { cod: "BRQ404A025", nome: "FOSBOVI SECA 15 MAX", cat: "Programa de Seca", peso: 25, mt1: 7.4918, mt2: 7.5133, mt3: 7.8022 },
   { cod: "BRQ182A025", nome: "FOSBOVI SECA 20", cat: "Programa de Seca", peso: 25, mt1: 7.5455, mt2: 7.5670, mt3: 7.8559 },
   { cod: "BRQ183A025", nome: "FOSBOVI SECA 20 MAX", cat: "Programa de Seca", peso: 25, mt1: 8.4593, mt2: 8.4808, mt3: 8.7697 },
-  { cod: "BRR016A030", nome: "FOSCROMO SECA", cat: "Programa de Seca", peso: 30, mt1: 8.1771, mt2: 8.1986, mt3: 8.4875 },
-  { cod: "BRR040A025", nome: "NUTRIGOLD 20%", cat: "Programa de Seca", peso: 25, mt1: 7.7740, mt2: 7.7955, mt3: 8.0844 },
-  { cod: "BRR098A025", nome: "NUTRIGOLD NÚCLEO", cat: "Programa de Seca", peso: 25, mt1: 9.4134, mt2: 9.4349, mt3: 9.7238 },
   // PROGRAMA DE SUPLEMENTAÇÃO ESTRATÉGICA
-  { cod: "BRR086A025", nome: "FOSBOVI NÚCLEO PROTEICO (BRR086A025)", cat: "Suplementação Estratégica", peso: 25, mt1: 8.2443, mt2: 8.2658, mt3: 8.5547 },
   { cod: "BRM798A025", nome: "FOSBOVI NÚCLEO PROTEICO IMPACT", cat: "Suplementação Estratégica", peso: 25, mt1: 7.6799, mt2: 7.7014, mt3: 7.9903 },
   { cod: "BRR084A030", nome: "FOSBOVI PROTEICO 30 COM MONENSINA", cat: "Suplementação Estratégica", peso: 30, mt1: 6.8333, mt2: 6.8548, mt3: 7.1437 },
   { cod: "BRQ221A030", nome: "FOSBOVI PROTEICO ENERGETICO 25", cat: "Suplementação Estratégica", peso: 30, mt1: 4.8982, mt2: 4.9197, mt3: 5.2086 },
-  { cod: "BRR096A030", nome: "FOSBOVI PROTEICO ENERGÉTICO 25 (BRR096A030)", cat: "Suplementação Estratégica", peso: 30, mt1: 5.1804, mt2: 5.2019, mt3: 5.4908 },
-  { cod: "BRR058A030", nome: "FOSBOVI PROTEICO ENERGÉTICO 25 M", cat: "Suplementação Estratégica", peso: 30, mt1: 5.3685, mt2: 5.3900, mt3: 5.6790 },
   { cod: "BRQ222A030", nome: "FOSBOVI PROTEICO ENERGETICO 25 PLUS", cat: "Suplementação Estratégica", peso: 30, mt1: 5.1267, mt2: 5.1482, mt3: 5.4371 },
   { cod: "BRR031A030", nome: "FOSBOVI PROTEICO ENERGÉTICO 45 ÁGUAS", cat: "Suplementação Estratégica", peso: 30, mt1: 6.9542, mt2: 6.9757, mt3: 7.2647 },
-  { cod: "BRR014A025", nome: "FOSBOVINHO PROTEICO ADE", cat: "Suplementação Estratégica", peso: 25, mt1: 8.7684, mt2: 8.7899, mt3: 9.0788 },
   { cod: "BRQ289A025", nome: "FOSBOVINHO PROTEICO ADVANCE", cat: "Suplementação Estratégica", peso: 25, mt1: 8.3652, mt2: 8.3867, mt3: 8.6757 },
   // STRAIGHTS
   { cod: "5064177BAG", nome: "DL-METHIONINE 85% (MEPRON)", cat: "Straights", peso: 25, mt1: 104.1927, mt2: 104.2142, mt3: 104.5031 },
   { cod: "5017222W3N", nome: "Mycofix® Plus 5.0", cat: "Straights", peso: 25, mt1: 60.6934, mt2: 60.7149, mt3: 61.0038 },
   { cod: "5016939W3N", nome: "Mycofix® PRO-Tect", cat: "Straights", peso: 25, mt1: 19.7877, mt2: 19.8092, mt3: 20.0981 },
-  { cod: "5017239W3N", nome: "Mycofix® Secure", cat: "Straights", peso: 25, mt1: 10.811, mt2: 10.8325, mt3: 11.1214 },
+  { cod: "5017239W3N", nome: "Mycofix® Secure", cat: "Straights", peso: 25, mt1: 9.6419, mt2: 9.6634, mt3: 9.9523 },
   { cod: "5017225W3N", nome: "Mycofix® Select 5.0", cat: "Straights", peso: 25, mt1: 36.7332, mt2: 36.7547, mt3: 37.0436 },
   // CAPRINOS E OVINOS (Linha ECO)
   { cod: "BRR038A025", nome: "CAPRINOFÓS COM MINERAIS ORGÂNICOS", cat: "Caprinos e Ovinos", peso: 25, mt1: 11.9398, mt2: 11.9613, mt3: 12.2502 },
@@ -117,20 +103,20 @@ const PRODUTOS = [
 
 const CATEGORIAS = [...new Set(PRODUTOS.map((p) => p.cat))];
 
-// Campanhas comerciais de Agosto/2026 por código de produto.
+// Campanhas comerciais de Setembro/2026 por código de produto.
 // Cada produto pode ter múltiplas campanhas cumuláveis (ex: campanha da linha + MT adicional).
 // Os chips aparecem no card do produto e o usuário decide quais aplicar.
-const CAMPANHAS_AGOSTO_2026 = {
-  // ---- CONFINAMENTO (Circular Seca/Confinamento/Suplementação, todos 8%) ----
-  "BRT487A025": [{ origem: "Confinamento", pct: 8 }],
-  "BRT352A025": [{ origem: "Confinamento", pct: 8 }],
-  "BRT353A025": [{ origem: "Confinamento", pct: 8 }],
-  "BRT346A025": [{ origem: "Confinamento", pct: 8 }],
-  "BRT347A025": [{ origem: "Confinamento", pct: 8 }],
-  "BRT348A025": [{ origem: "Confinamento", pct: 8 }],
-  "BRT354A025": [{ origem: "Confinamento", pct: 8 }],
-  "BRT350A025": [{ origem: "Confinamento", pct: 8 }],
-  "BRT351A025": [{ origem: "Confinamento", pct: 8 }],
+const CAMPANHAS_SETEMBRO_2026 = {
+  // ---- CONFINAMENTO (Circular Seca/Confinamento/Suplementação, todos 3%) ----
+  "BRT487A025": [{ origem: "Confinamento", pct: 3 }],
+  "BRT352A025": [{ origem: "Confinamento", pct: 3 }],
+  "BRT353A025": [{ origem: "Confinamento", pct: 3 }],
+  "BRT346A025": [{ origem: "Confinamento", pct: 3 }],
+  "BRT347A025": [{ origem: "Confinamento", pct: 3 }],
+  "BRT348A025": [{ origem: "Confinamento", pct: 3 }],
+  "BRT354A025": [{ origem: "Confinamento", pct: 3 }],
+  "BRT350A025": [{ origem: "Confinamento", pct: 3 }],
+  "BRT351A025": [{ origem: "Confinamento", pct: 3 }],
 
   // ---- BOI VERDE (Circular TQ/Boi Verde, 4%) ----
   "BRT698A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
@@ -159,10 +145,6 @@ const CAMPANHAS_AGOSTO_2026 = {
   "BRR059A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
 
   // ---- NÚCLEOS BOI VERDE (Transição de portfólio) ----
-  "BRR338B025": [{ origem: "Transição", pct: 6 }],
-  "BRR339B025": [{ origem: "Transição", pct: 6 }],
-  "BRR989P025": [{ origem: "Transição", pct: 4 }],
-  "BRR022A025": [{ origem: "Transição", pct: 5 }],
 
   // ---- PROGRAMA DE SECA ----
   "BRQ288A025": [{ origem: "Seca/Confinamento", pct: 10 }],
@@ -171,32 +153,15 @@ const CAMPANHAS_AGOSTO_2026 = {
     { origem: "Seca/Confinamento", pct: 9 },
     { origem: "MT adicional", pct: 1 },
   ],
-  "BRR033A030": [
-    { origem: "Seca/Confinamento", pct: 9 },
-    { origem: "Transição", pct: 14 },
-  ],
   "BRQ282A030": [{ origem: "Seca/Confinamento", pct: 9 }],
-  "BRR085A030": [
-    { origem: "Seca/Confinamento", pct: 9 },
-    { origem: "Transição", pct: 14 },
-  ],
   "BRQ281A030": [{ origem: "Seca/Confinamento", pct: 9 }],
   "BRQ283A030": [{ origem: "Seca/Confinamento", pct: 9 }],
-  "BRR106A030": [{ origem: "Transição", pct: 22 }],
-  "BRR012A030": [
-    { origem: "Seca/Confinamento", pct: 10 },
-    { origem: "Transição", pct: 17 },
-  ],
   "BRQ279A025": [{ origem: "Seca/Confinamento", pct: 10 }],
   "BRQ404A025": [{ origem: "Seca/Confinamento", pct: 10 }],
   "BRQ182A025": [{ origem: "Seca/Confinamento", pct: 10 }],
   "BRQ183A025": [{ origem: "Seca/Confinamento", pct: 10 }],
-  "BRR016A030": [{ origem: "Transição", pct: 20 }],
-  "BRR040A025": [{ origem: "Transição", pct: 13 }],
-  "BRR098A025": [{ origem: "Transição", pct: 13 }],
 
   // ---- PROGRAMA DE SUPLEMENTAÇÃO ESTRATÉGICA ----
-  "BRR086A025": [{ origem: "Transição", pct: 17 }],
   "BRM798A025": [{ origem: "Seca/Confinamento", pct: 10 }],
   "BRR084A030": [
     { origem: "Seca/Confinamento", pct: 9 },
@@ -206,21 +171,11 @@ const CAMPANHAS_AGOSTO_2026 = {
     { origem: "Seca/Confinamento", pct: 7 },
     { origem: "MT adicional", pct: 2 },
   ],
-  "BRR096A030": [
-    { origem: "Transição", pct: 14 },
-    { origem: "MT adicional", pct: 2 },
-  ],
-  "BRR058A030": [
-    { origem: "Transição", pct: 13 },
-    { origem: "MT adicional", pct: 2 },
-  ],
   "BRQ222A030": [
     { origem: "Seca/Confinamento", pct: 7 },
     { origem: "MT adicional", pct: 2 },
   ],
   "BRR031A030": [{ origem: "Seca/Confinamento", pct: 7 }],
-  "BRR014A025": [{ origem: "Transição", pct: 6 }],
-  "BRQ289A025": [{ origem: "Seca/Confinamento", pct: 0 }],
 };
 
 // Paleta de cores para diferenciar os produtos do pedido (rotativa)
@@ -1066,13 +1021,13 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
       )}
 
       {/* Chips de campanhas Agosto/2026 disponíveis para este produto */}
-      {item.precoManual == null && CAMPANHAS_AGOSTO_2026[prod.cod] && (
+      {item.precoManual == null && CAMPANHAS_SETEMBRO_2026[prod.cod] && (
         <div className="space-y-1.5">
           <div className="text-[10px] uppercase tracking-wider text-stone-500 font-semibold">
-            Campanhas Agosto/26 · toque para somar
+            Campanhas Setembro/26 · toque para somar
           </div>
           <div className="flex flex-wrap gap-1.5">
-            {CAMPANHAS_AGOSTO_2026[prod.cod].map((c, i) => (
+            {CAMPANHAS_SETEMBRO_2026[prod.cod].map((c, i) => (
               <button
                 key={i}
                 onClick={() => set({ campanhaPct: (parseFloat(item.campanhaPct) || 0) + c.pct })}
