@@ -870,9 +870,9 @@ async function gerarImagemParametrosCotacao({ items, calcs, totalSacos, totalKg,
 function Field({ label, children, hint }) {
   return (
     <label className="block">
-      <span className="block text-[11px] uppercase tracking-[0.12em] text-stone-400 mb-1.5">{label}</span>
+      <span className="block text-[11px] uppercase tracking-[0.12em] text-[#5f5f58] mb-1.5">{label}</span>
       {children}
-      {hint && <span className="block text-[11px] text-stone-500 mt-1">{hint}</span>}
+      {hint && <span className="block text-[11px] text-[#6f6f68] mt-1">{hint}</span>}
     </label>
   );
 }
@@ -886,19 +886,19 @@ function PctInput({ value, onChange, auto }) {
         step="0.01"
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
-        className={`w-full border rounded-md px-3 py-2.5 pr-9 font-mono text-[15px] focus:outline-none focus:border-[#c9a227] focus:ring-1 focus:ring-[#c9a227]/40 transition-colors ${
+        className={`w-full border rounded-md px-3 py-2.5 pr-9 font-mono text-[15px] focus:outline-none focus:border-[#b8860b] focus:ring-1 focus:ring-[#b8860b]/40 transition-colors ${
           hasAutoMode && auto
-            ? "bg-[#1c2a22]/60 border-[#c9a227]/40 text-[#c9a227]"
+            ? "bg-white/60 border-[#b8860b]/40 text-[#b8860b]"
             : hasAutoMode && !auto
-            ? "bg-[#1c2a22] border-orange-500 text-orange-300"
-            : "bg-[#1c2a22] border-[#33453a] text-[#f2ede1]"
+            ? "bg-white border-orange-500 text-[#a8431f]"
+            : "bg-white border-[#d8d8d2] text-[#1a1a1a]"
         }`}
       />
-      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-500 text-[13px] font-mono">%</span>
+      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6f6f68] text-[13px] font-mono">%</span>
       {hasAutoMode && (
         <span
           className={`absolute -top-1.5 right-9 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm ${
-            auto ? "bg-[#c9a227] text-[#14201a]" : "bg-orange-500 text-white"
+            auto ? "bg-[#b8860b] text-white" : "bg-orange-600 text-white"
           }`}
         >
           {auto ? "auto" : "manual"}
@@ -916,7 +916,7 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
 
   return (
     <section
-      className="bg-[#1c2a22] border border-[#33453a] rounded-xl p-4 space-y-4"
+      className="bg-white border border-[#d8d8d2] rounded-xl p-4 space-y-4"
       style={{ borderLeft: `4px solid ${cor}` }}
     >
       <div className="flex items-center justify-between">
@@ -925,7 +925,7 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
           Produto {index + 1}
         </h3>
         {canRemove && (
-          <button onClick={onRemove} className="text-[11px] text-stone-400 hover:text-red-400 underline underline-offset-2">
+          <button onClick={onRemove} className="text-[11px] text-[#5f5f58] hover:text-red-400 underline underline-offset-2">
             remover
           </button>
         )}
@@ -939,7 +939,7 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
               const idx = parseInt(e.target.value);
               set({ produtoIdx: idx, pesoSaco: PRODUTOS[idx].peso });
             }}
-            className="w-full bg-[#1c2a22] border border-[#33453a] rounded-md px-3 py-2.5 text-[#f2ede1] text-[15px] focus:outline-none focus:border-[#c9a227]"
+            className="w-full bg-white border border-[#d8d8d2] rounded-md px-3 py-2.5 text-[#1a1a1a] text-[15px] focus:outline-none focus:border-[#b8860b]"
           >
             {CATEGORIAS.map((cat) => (
               <optgroup key={cat} label={cat}>
@@ -955,20 +955,20 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
             step="0.0001"
             value={item.precoManual}
             onChange={(e) => set({ precoManual: parseFloat(e.target.value) || 0 })}
-            className="w-full bg-[#1c2a22] border border-[#33453a] rounded-md px-3 py-2.5 mono text-[15px] focus:outline-none focus:border-[#c9a227]"
+            className="w-full bg-white border border-[#d8d8d2] rounded-md px-3 py-2.5 mono text-[15px] focus:outline-none focus:border-[#b8860b]"
           />
         </Field>
       )}
 
-      <div className="flex items-center justify-between bg-[#14201a] rounded-md px-3 py-2 border border-[#2a3830]">
-        <span className="text-[12px] text-stone-400">
+      <div className="flex items-center justify-between bg-[#fbfbf9] rounded-md px-3 py-2 border border-[#e2e2dc]">
+        <span className="text-[12px] text-[#5f5f58]">
           Preço tabela {item.precoManual == null ? `(${prod.cod})` : ""}
         </span>
         <div className="flex items-center gap-2">
-          <span className="mono text-[14px] text-[#c9a227] font-semibold">{fmtMoney(c.precoTabela)}/kg</span>
+          <span className="mono text-[14px] text-[#b8860b] font-semibold">{fmtMoney(c.precoTabela)}/kg</span>
           <button
             onClick={() => set({ precoManual: item.precoManual == null ? c.precoTabela : null })}
-            className="text-[10px] text-stone-500 underline underline-offset-2"
+            className="text-[10px] text-[#6f6f68] underline underline-offset-2"
           >
             {item.precoManual == null ? "manual" : "lista"}
           </button>
@@ -982,7 +982,7 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
             step="0.5"
             value={item.pesoSaco}
             onChange={(e) => set({ pesoSaco: parseFloat(e.target.value) || 0 })}
-            className="w-full bg-[#1c2a22] border border-[#33453a] rounded-md px-3 py-2.5 mono text-[15px] focus:outline-none focus:border-[#c9a227]"
+            className="w-full bg-white border border-[#d8d8d2] rounded-md px-3 py-2.5 mono text-[15px] focus:outline-none focus:border-[#b8860b]"
           />
         </Field>
         <Field label="Qtde. de sacos">
@@ -991,14 +991,14 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
             step="1"
             value={item.qtdeSacos}
             onChange={(e) => set({ qtdeSacos: parseFloat(e.target.value) || 0 })}
-            className="w-full bg-[#1c2a22] border border-[#33453a] rounded-md px-3 py-2.5 mono text-[15px] focus:outline-none focus:border-[#c9a227]"
+            className="w-full bg-white border border-[#d8d8d2] rounded-md px-3 py-2.5 mono text-[15px] focus:outline-none focus:border-[#b8860b]"
           />
         </Field>
       </div>
 
-      <div className="flex items-center justify-between bg-[#14201a] rounded-md px-3 py-2 border border-[#2a3830]">
-        <span className="text-[12px] text-stone-400">Volume</span>
-        <span className="mono text-[13px] text-stone-300">{fmt(c.volume, 0)} kg</span>
+      <div className="flex items-center justify-between bg-[#fbfbf9] rounded-md px-3 py-2 border border-[#e2e2dc]">
+        <span className="text-[12px] text-[#5f5f58]">Volume</span>
+        <span className="mono text-[13px] text-[#3a3a35]">{fmt(c.volume, 0)} kg</span>
       </div>
 
       {/* Descontos por item */}
@@ -1011,7 +1011,7 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
         </Field>
       </div>
       {(item.qtdePct != null || item.logisticaPct != null) && (
-        <button onClick={() => set({ qtdePct: null, logisticaPct: null })} className="text-[11px] text-[#c9a227] underline underline-offset-2">
+        <button onClick={() => set({ qtdePct: null, logisticaPct: null })} className="text-[11px] text-[#b8860b] underline underline-offset-2">
           voltar ao automático
         </button>
       )}
@@ -1019,7 +1019,7 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
       {/* Chips de campanhas Agosto/2026 disponíveis para este produto */}
       {item.precoManual == null && CAMPANHAS_OUTUBRO_2026[prod.cod] && (
         <div className="space-y-1.5">
-          <div className="text-[10px] uppercase tracking-wider text-stone-500 font-semibold">
+          <div className="text-[10px] uppercase tracking-wider text-[#6f6f68] font-semibold">
             Campanhas Outubro/26 · toque para somar
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -1027,15 +1027,15 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
               <button
                 key={i}
                 onClick={() => set({ campanhaPct: (parseFloat(item.campanhaPct) || 0) + c.pct })}
-                className="text-[11px] font-mono bg-[#c45c3a]/15 hover:bg-[#c45c3a]/30 border border-[#c45c3a]/50 text-[#f4a97c] rounded-md px-2 py-1 transition-colors"
+                className="text-[11px] font-mono bg-[#c45c3a]/10 hover:bg-[#c45c3a]/20 border border-[#c45c3a]/60 text-[#a8431f] rounded-md px-2 py-1 transition-colors"
               >
-                +{c.pct}% <span className="text-stone-400">{c.origem}</span>
+                +{c.pct}% <span className="text-[#5f5f58]">{c.origem}</span>
               </button>
             ))}
             {(parseFloat(item.campanhaPct) || 0) > 0 && (
               <button
                 onClick={() => set({ campanhaPct: 0 })}
-                className="text-[11px] text-stone-500 hover:text-red-400 underline underline-offset-2 px-1"
+                className="text-[11px] text-[#6f6f68] hover:text-red-400 underline underline-offset-2 px-1"
               >
                 limpar
               </button>
@@ -1054,11 +1054,11 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
         </Field>
       </div>
 
-      <div className="flex items-center justify-between border-t border-[#33453a] pt-3">
-        <span className="text-[12px] uppercase tracking-wide text-stone-400">Subtotal</span>
+      <div className="flex items-center justify-between border-t border-[#d8d8d2] pt-3">
+        <span className="text-[12px] uppercase tracking-wide text-[#5f5f58]">Subtotal</span>
         <div className="text-right">
-          <div className="mono text-[15px] text-[#f2ede1] font-bold">{fmtMoney(c.total)}</div>
-          <div className="mono text-[11px] text-stone-500">{fmtMoney(c.precoKg)}/kg · {fmtMoney(c.precoSaco)}/saco</div>
+          <div className="mono text-[15px] text-[#1a1a1a] font-bold">{fmtMoney(c.total)}</div>
+          <div className="mono text-[11px] text-[#6f6f68]">{fmtMoney(c.precoKg)}/kg · {fmtMoney(c.precoSaco)}/saco</div>
         </div>
       </div>
     </section>
@@ -1094,7 +1094,7 @@ export default function PriceCalculator() {
   const addItem = () => setItems((prev) => [...prev, novoItem(0)]);
 
   return (
-    <div className="min-h-screen bg-[#14201a] text-[#f2ede1] pb-44" style={{ fontFamily: "'IBM Plex Sans', ui-sans-serif, system-ui" }}>
+    <div className="min-h-screen bg-[#f2f2ef] text-[#1a1a1a] pb-44" style={{ fontFamily: "'IBM Plex Sans', ui-sans-serif, system-ui" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { opacity: 0.4; }
@@ -1102,26 +1102,26 @@ export default function PriceCalculator() {
       `}</style>
 
       {/* Header - orçamento para cliente */}
-      <div className="relative bg-[#1c2a22] border-b border-[#33453a] px-5 pt-6 pb-5">
+      <div className="relative bg-white border-b border-[#d8d8d2] px-5 pt-6 pb-5">
         <div className="flex items-center gap-3 mb-4">
           <div className="h-10 flex items-center rounded overflow-hidden">
             <img src={MAISA_LOGO} alt="Mais@ Pecuária Estratégica" className="h-10 w-auto object-contain" />
           </div>
-          <span className="text-stone-600 text-base font-light">×</span>
+          <span className="text-[#9a9a93] text-base font-light">×</span>
           <div className="h-10 flex items-center bg-white rounded px-2">
             <img src={TORTUGA_LOGO} alt="Tortuga" className="h-7 w-auto object-contain" />
           </div>
         </div>
         <div>
-          <div className="text-[11px] uppercase tracking-[0.2em] text-[#c9a227] font-semibold mb-1">Orçamento de Ração</div>
+          <div className="text-[11px] uppercase tracking-[0.2em] text-[#b8860b] font-semibold mb-1">Orçamento de Ração</div>
           <h1 className="text-2xl font-bold tracking-tight leading-none">Formação de Preço</h1>
         </div>
       </div>
 
       <div className="px-5 pt-5 space-y-5">
         {/* Condições comerciais (valem para todos os itens) */}
-        <section className="bg-[#1c2a22] border border-[#33453a] rounded-xl p-4 space-y-4">
-          <h2 className="text-[13px] font-semibold uppercase tracking-wide text-stone-300">Condições do pedido</h2>
+        <section className="bg-white border border-[#d8d8d2] rounded-xl p-4 space-y-4">
+          <h2 className="text-[13px] font-semibold uppercase tracking-wide text-[#3a3a35]">Condições do pedido</h2>
           <Field label="Tabela de preço (todos os produtos)">
             <div className="grid grid-cols-3 gap-2">
               {["mt1", "mt2", "mt3"].map((t) => (
@@ -1129,7 +1129,7 @@ export default function PriceCalculator() {
                   key={t}
                   onClick={() => setMtTier(t)}
                   className={`rounded-md py-2 text-[13px] font-semibold uppercase mono border transition-colors ${
-                    mtTier === t ? "bg-[#c9a227] text-[#14201a] border-[#c9a227]" : "bg-[#14201a] text-stone-400 border-[#33453a]"
+                    mtTier === t ? "bg-[#b8860b] text-white border-[#b8860b]" : "bg-[#fbfbf9] text-[#5f5f58] border-[#c8c8c2]"
                   }`}
                 >
                   {t.toUpperCase()}
@@ -1141,7 +1141,7 @@ export default function PriceCalculator() {
             <select
               value={prazoIdx}
               onChange={(e) => { setPrazoIdx(parseInt(e.target.value)); setEncargoManual(null); }}
-              className="w-full bg-[#1c2a22] border border-[#33453a] rounded-md px-3 py-2.5 text-[#f2ede1] text-[15px] focus:outline-none focus:border-[#c9a227]"
+              className="w-full bg-white border border-[#d8d8d2] rounded-md px-3 py-2.5 text-[#1a1a1a] text-[15px] focus:outline-none focus:border-[#b8860b]"
             >
               {PRAZOS.map((p, i) => (
                 <option key={p.nome} value={i}>{p.nome} — encargo {fmt(p.encargo * 100, 2)}%</option>
@@ -1150,9 +1150,9 @@ export default function PriceCalculator() {
           </Field>
           <div className="grid grid-cols-2 gap-3">
             <Field label="ICMS" hint="fixo, incluso na tabela">
-              <div className="w-full bg-[#14201a] border border-[#2a3830] rounded-md px-3 py-2.5 mono text-[15px] text-stone-400 flex items-center justify-between">
+              <div className="w-full bg-[#fbfbf9] border border-[#e2e2dc] rounded-md px-3 py-2.5 mono text-[15px] text-[#5f5f58] flex items-center justify-between">
                 <span>{fmt(ICMS * 100, 0)} %</span>
-                <span className="bg-stone-600/30 text-stone-400 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm">fixo</span>
+                <span className="bg-[#e2e2dc] text-[#5f5f58] text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm">fixo</span>
               </div>
             </Field>
             <Field label="Encargo aplicado">
@@ -1180,7 +1180,7 @@ export default function PriceCalculator() {
         {/* Botão adicionar produto */}
         <button
           onClick={addItem}
-          className="w-full border-2 border-dashed border-[#33453a] hover:border-[#c9a227] rounded-xl py-3.5 text-[14px] font-semibold text-[#c9a227] transition-colors flex items-center justify-center gap-2"
+          className="w-full border-2 border-dashed border-[#d8d8d2] hover:border-[#b8860b] rounded-xl py-3.5 text-[14px] font-semibold text-[#b8860b] transition-colors flex items-center justify-center gap-2"
         >
           <span className="text-xl leading-none">+</span> Adicionar produto
         </button>
@@ -1189,21 +1189,21 @@ export default function PriceCalculator() {
         {!obsAberto && observacoes.trim() === "" ? (
           <button
             onClick={() => setObsAberto(true)}
-            className="w-full border border-dashed border-[#33453a] hover:border-orange-500 rounded-xl py-3 text-[13px] font-semibold text-stone-400 hover:text-orange-400 transition-colors flex items-center justify-center gap-2"
+            className="w-full border border-dashed border-[#d8d8d2] hover:border-[#c45c3a] rounded-xl py-3 text-[13px] font-semibold text-[#5f5f58] hover:text-[#a8431f] transition-colors flex items-center justify-center gap-2"
           >
             <span className="text-lg leading-none">+</span> Adicionar observações internas
-            <span className="text-[9px] font-normal uppercase tracking-wider bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded-sm">uso interno</span>
+            <span className="text-[9px] font-normal uppercase tracking-wider bg-[#c45c3a]/12 text-[#a8431f] px-1.5 py-0.5 rounded-sm">uso interno</span>
           </button>
         ) : (
-          <section className="bg-[#1c2a22] border border-[#33453a] rounded-xl p-4 space-y-3" style={{ borderLeft: "4px solid #c45c3a" }}>
+          <section className="bg-white border border-[#d8d8d2] rounded-xl p-4 space-y-3" style={{ borderLeft: "4px solid #c45c3a" }}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <h3 className="text-[12px] font-bold uppercase tracking-wide text-orange-400">Observações internas</h3>
-                <span className="text-[9px] font-bold uppercase tracking-wider bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded-sm">uso interno</span>
+                <h3 className="text-[12px] font-bold uppercase tracking-wide text-[#a8431f]">Observações internas</h3>
+                <span className="text-[9px] font-bold uppercase tracking-wider bg-[#c45c3a]/12 text-[#a8431f] px-1.5 py-0.5 rounded-sm">uso interno</span>
               </div>
               <button
                 onClick={() => { setObsAberto(false); }}
-                className="text-[11px] text-stone-400 hover:text-red-400 underline underline-offset-2"
+                className="text-[11px] text-[#5f5f58] hover:text-red-400 underline underline-offset-2"
               >
                 esconder
               </button>
@@ -1213,16 +1213,16 @@ export default function PriceCalculator() {
               onChange={(e) => setObservacoes(e.target.value)}
               placeholder="Ex: Chapa, carga em palete, entrega direta na fazenda, cliente pediu nota fracionada, etc."
               rows={4}
-              className="w-full bg-[#14201a] border border-[#33453a] rounded-md px-3 py-2.5 text-[#f2ede1] text-[13px] focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/40 transition-colors resize-none placeholder:text-stone-500"
+              className="w-full bg-[#fbfbf9] border border-[#d8d8d2] rounded-md px-3 py-2.5 text-[#1a1a1a] text-[13px] focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/40 transition-colors resize-none placeholder:text-[#9a9a93]"
             />
             <div className="flex items-center justify-between">
-              <span className="text-[10px] text-stone-500">
+              <span className="text-[10px] text-[#6f6f68]">
                 Aparece apenas na imagem de Parâmetros Cotação
               </span>
               {observacoes.trim() !== "" && (
                 <button
                   onClick={() => { setObservacoes(""); }}
-                  className="text-[11px] text-stone-500 hover:text-red-400 underline underline-offset-2"
+                  className="text-[11px] text-[#6f6f68] hover:text-red-400 underline underline-offset-2"
                 >
                   limpar
                 </button>
@@ -1232,7 +1232,7 @@ export default function PriceCalculator() {
         )}
 
         {/* Resumo do pedido para o cliente */}
-        <section id="resumo-pedido" className="bg-[#f2f2ef] text-[#1a1a1a] rounded-xl p-5" style={{ border: "1px solid #dcdcd8" }}>
+        <section id="resumo-pedido" className="bg-white text-[#1a1a1a] rounded-xl p-5" style={{ border: "1px solid #dcdcd8" }}>
           {/* Cabeçalho executivo */}
           <div className="flex items-start justify-between gap-3 pb-4 mb-4" style={{ borderBottom: "1px solid #c45c3a" }}>
             <div>
@@ -1340,7 +1340,7 @@ export default function PriceCalculator() {
                 prazo: PRAZOS[prazoIdx].nome,
               }).catch((e) => alert("Erro ao gerar imagem: " + e.message))
             }
-            className="bg-[#c9a227] hover:bg-[#d4b13e] text-[#14201a] rounded-xl py-3.5 text-[12px] font-bold uppercase tracking-wide transition-colors flex flex-col items-center justify-center text-center px-2"
+            className="bg-[#b8860b] hover:bg-[#a8780a] text-white rounded-xl py-3.5 text-[12px] font-bold uppercase tracking-wide transition-colors flex flex-col items-center justify-center text-center px-2"
           >
             <span>Orçamento Cliente</span>
             <span className="text-[9px] font-normal opacity-70 normal-case mt-0.5">imagem para envio</span>
@@ -1359,7 +1359,7 @@ export default function PriceCalculator() {
                 observacoes,
               }).catch((e) => alert("Erro ao gerar imagem: " + e.message))
             }
-            className="bg-[#1c2a22] border-2 border-[#c9a227] hover:bg-[#c9a227]/10 text-[#c9a227] rounded-xl py-3.5 text-[12px] font-bold uppercase tracking-wide transition-colors flex flex-col items-center justify-center text-center px-2"
+            className="bg-white border-2 border-[#b8860b] hover:bg-[#b8860b]/10 text-[#b8860b] rounded-xl py-3.5 text-[12px] font-bold uppercase tracking-wide transition-colors flex flex-col items-center justify-center text-center px-2"
           >
             <span>Parâmetros Cotação</span>
             <span className="text-[9px] font-normal opacity-70 normal-case mt-0.5">com todos os descontos</span>
@@ -1368,13 +1368,13 @@ export default function PriceCalculator() {
       </div>
 
       {/* Sticky total */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#0f1811] border-t border-[#33453a] px-5 py-4">
+      <div className="fixed bottom-0 left-0 right-0 bg-[#ecece7] border-t border-[#d8d8d2] px-5 py-4">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-[10px] uppercase tracking-wide text-stone-400">Total do pedido</div>
-            <div className="text-[11px] text-stone-500 mono">{fmt(totalSacos, 0)} sacos · {fmt(totalKg, 0)} kg</div>
+            <div className="text-[10px] uppercase tracking-wide text-[#5f5f58]">Total do pedido</div>
+            <div className="text-[11px] text-[#6f6f68] mono">{fmt(totalSacos, 0)} sacos · {fmt(totalKg, 0)} kg</div>
           </div>
-          <div className="mono text-2xl font-bold text-[#c9a227]">{fmtMoney(totalReais)}</div>
+          <div className="mono text-2xl font-bold text-[#b8860b]">{fmtMoney(totalReais)}</div>
         </div>
       </div>
     </div>
