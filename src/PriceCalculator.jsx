@@ -106,19 +106,19 @@ const CATEGORIAS = [...new Set(PRODUTOS.map((p) => p.cat))];
 // Campanhas comerciais de Setembro/2026 por código de produto.
 // Cada produto pode ter múltiplas campanhas cumuláveis (ex: campanha da linha + MT adicional).
 // Os chips aparecem no card do produto e o usuário decide quais aplicar.
-const CAMPANHAS_SETEMBRO_2026 = {
-  // ---- CONFINAMENTO (Circular Seca/Confinamento/Suplementação, todos 3%) ----
+const CAMPANHAS_OUTUBRO_2026 = {
+
+  // ---- CONFINAMENTO (circular Seca/Confinamento/Suplementação — até 15/10/26) ----
   "BRT487A025": [{ origem: "Confinamento", pct: 3 }],
   "BRT352A025": [{ origem: "Confinamento", pct: 3 }],
   "BRT353A025": [{ origem: "Confinamento", pct: 3 }],
   "BRT346A025": [{ origem: "Confinamento", pct: 3 }],
   "BRT347A025": [{ origem: "Confinamento", pct: 3 }],
   "BRT348A025": [{ origem: "Confinamento", pct: 3 }],
-  "BRT354A025": [{ origem: "Confinamento", pct: 3 }],
   "BRT350A025": [{ origem: "Confinamento", pct: 3 }],
   "BRT351A025": [{ origem: "Confinamento", pct: 3 }],
 
-  // ---- BOI VERDE (Circular TQ/Boi Verde, 4%) ----
+  // ---- TQ / BOI VERDE (4% — circular Linhas TQ | Boi Verde) ----
   "BRT698A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
   "BRR008A030": [{ origem: "TQ/Boi Verde", pct: 4 }],
   "BRQ325A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
@@ -132,8 +132,6 @@ const CAMPANHAS_SETEMBRO_2026 = {
   "BRR992M025": [{ origem: "TQ/Boi Verde", pct: 4 }],
   "BRR011A030": [{ origem: "TQ/Boi Verde", pct: 4 }],
   "BRR015A030": [{ origem: "TQ/Boi Verde", pct: 4 }],
-
-  // ---- TQ (Circular TQ/Boi Verde, 4%) ----
   "BRR100A030": [{ origem: "TQ/Boi Verde", pct: 4 }],
   "BRR056A030": [{ origem: "TQ/Boi Verde", pct: 4 }],
   "BRR101A030": [{ origem: "TQ/Boi Verde", pct: 4 }],
@@ -143,8 +141,6 @@ const CAMPANHAS_SETEMBRO_2026 = {
   "BRM080A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
   "BRR103A030": [{ origem: "TQ/Boi Verde", pct: 4 }],
   "BRR059A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-
-  // ---- NÚCLEOS BOI VERDE (Transição de portfólio) ----
 
   // ---- PROGRAMA DE SECA ----
   "BRQ288A025": [{ origem: "Seca/Confinamento", pct: 10 }],
@@ -161,7 +157,7 @@ const CAMPANHAS_SETEMBRO_2026 = {
   "BRQ182A025": [{ origem: "Seca/Confinamento", pct: 10 }],
   "BRQ183A025": [{ origem: "Seca/Confinamento", pct: 10 }],
 
-  // ---- PROGRAMA DE SUPLEMENTAÇÃO ESTRATÉGICA ----
+  // ---- SUPLEMENTAÇÃO ESTRATÉGICA ----
   "BRM798A025": [{ origem: "Seca/Confinamento", pct: 10 }],
   "BRR084A030": [
     { origem: "Seca/Confinamento", pct: 9 },
@@ -1021,13 +1017,13 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
       )}
 
       {/* Chips de campanhas Agosto/2026 disponíveis para este produto */}
-      {item.precoManual == null && CAMPANHAS_SETEMBRO_2026[prod.cod] && (
+      {item.precoManual == null && CAMPANHAS_OUTUBRO_2026[prod.cod] && (
         <div className="space-y-1.5">
           <div className="text-[10px] uppercase tracking-wider text-stone-500 font-semibold">
-            Campanhas Setembro/26 · toque para somar
+            Campanhas Outubro/26 · toque para somar
           </div>
           <div className="flex flex-wrap gap-1.5">
-            {CAMPANHAS_SETEMBRO_2026[prod.cod].map((c, i) => (
+            {CAMPANHAS_OUTUBRO_2026[prod.cod].map((c, i) => (
               <button
                 key={i}
                 onClick={() => set({ campanhaPct: (parseFloat(item.campanhaPct) || 0) + c.pct })}
