@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useId, useRef } from "react";
 import "./PriceCalculator.css";
+import GRUPOS_PRODUTOS from "./linhas-produtos.json";
 
 const TORTUGA_LOGO = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCABiAPADASIAAhEBAxEB/8QAHAABAAIDAQEBAAAAAAAAAAAAAAUGAQQHAgMI/8QAOBAAAQMDAgQEAwUHBQAAAAAAAAECAwQFEQYSBxMhMUFRYZEiUnEUFTKBoSMzNnSxstEWQ3LB8P/EABkBAQADAQEAAAAAAAAAAAAAAAACAwQFAf/EACQRAQACAgEDBAMBAAAAAAAAAAABAgMREwQhMRRBUVISYWIi/9oADAMBAAIRAxEAPwDswAAAAAAAAAAAAAAAAAAAAADAAyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVjV+sIdO0/JhRstfImWRr2YnzO/x4kq1m06hG1orG5St3v1usdPzq+obHn8LE6vf9EKDdOKNbK5WWukZTs8JJvjcv5dk/UpddXVVxqn1VZM6aZ69XOX9E8k9DXOlj6WlY/wBd5Yb9RafHZPSa31JK/ct1lb6Ma1E/ob1v4jX6ken2iSOsj8WyMRF90KmC+cOOY1pVGS8e7uWndT0Go6ZX0yrHMxP2kD/xN9fVPUmjgFoulRZrnDXUzsPiXqng5vii/U7xR1UVdRw1cK5jmYj2r6KhzOow8c9vEt2HL+cd/L7gAzrwAAAAAAAAAAAAAAAAAAAAAAKPrq56ztUzquxRUzrbBTcyd8qNVWuRVz0Vc9sAXgHG7HrnX18hnrKZKF9HRKi1T1ja3Y3uvdevRFNiLiBrHVt0qIdJ0MMdPAm79q1FcrfBXK5cIq+SAdH1He47BaJa17d7/wAMTPnevZDiNZU1VfVy1dUr5JpXbnOVP/dC66e4l1l0obpQ3Omigu1FSzSxORvwvcxq5RWr2VMfmV+3a917daCsrqKGimhoWo+oVIG5Yi5XOM5XsvY0Yc0Yvbupy4pye6D2P+R3sNj/AJXexcrXrTWOqLM2Sx0NGtXSSK2rVWtRrmqiKxURy9F6OyRlj1zr7UdZJR2uKgmmiYr3NWFrcJnHdV81L/W/yp9L+0Bsf8rvYbH/ACu9i6ae1vqGr4hR6fuSUqRJI+OVrIUyitYq9/qhJX7V9zt3E2hsMK07aCZYuZuiRXYdnPXw7D1v8npf25zsf8jvY7Fw8qHzaQp2vzmF740z5IuU/qU258Rr5fb6606MoY3tYqokzo0c56J3d16Nb9S4aLXWCsqU1UynYjdvI5SN3O81XauMdirN1HJXWlmPDxzva1A5vxH4hV+mbpTW608hZuWsk6ys3Yyvwp39FX2PVLqHUWpbJarja96KuWVTadqfvUVUVFz2T8KpnphVz4GVodGB4i38pnMxv2pu29s+J7AAAAAAAAAAAAAAAAAAAAQms/4LvH8nJ/apNmrcaCG6W6ooKjdyaiNY37VwuFTC4UDjnDqknr9B6tpaZFdNLEiMRO6rsd0/M+/Bu+Wy1/etNX1UNK+TZIx0zkaio3KKmV8Uz2Ok6Z0ha9JxVEds522oc1z+bJu6p2x09SF1Rw90nUMqbxV0c0Lo2rLN9kft3+a7e2fYG3L6NVvGt73cKFFWmSGtnVyJ02Kx6J7qqe5GWn74i0zdqm31j4aNixR1kTFwsjXbkRV9E7L9TpVuv+h7TZ6m10NtrYYquNY5no1Fkeipjq5Xepp2yt0JabbcLfT0t1dBcWIydJNrlwmcY69F6lvBk+qvmp8p7hPBbY9DOlolVZ5Xv+1q7uj0TCJ9MYx9SocFv4vr/wCTd/e0mtN37R2lW1LLbHdtlSicxkqtcmU8U69F6ny05ddE6XuEtdboLrzZY1jdzdrkwqovbPoODJ9Tmp8oSjqoLXxwnnrpW08SV0uXyLhE3NXblfJcoe9Vyxaj4tQw2mds+5jYUkiXLUcjXZwqeWe5M6humg9TTpU19ur0qETas0KIxyp4IvXC/me9PXnQmmJHS2621yTuTas0rUe/Hkiq7p+Q4cn1Oanyr/Cq80Wm9R11FeHNo3zsSJHy/CjHtd1aq+Gf+i0ae4lV901pUWqpZRtt8PPdzo0XdsZlUXOcdkN37o0lxHnmqnWyqiliwj6luI1evkuFVFX6obVJwo01RRTNg+2NfNE6J0vP+JGu7onTHVOnYrms1nUpxMTG4cvpKqr1Lq+5XtbHVXeKRJG8qFP3aOarWZXC9k/VCf4NXh9Deq2wVO5nPRZGMd0VsjOjk+uP7TpmmdK23SdFJSW1JNssnMe6V25yrjHfHYjk4dWVmp/9QxSVUVZz+fhkiIzd49Mdl65+p49WsGDIAAAAAAAAAAAAAAAAAAAAAANW40qV1tqaRf8AfidH7pg2gHkxt+dZI3wyvikTa9jla5F8FTop5L7xB0nLFVPvVDEr4ZOtQxqZVjvmx5L4lDO3jyReu4cq9JpbUsAGSxAN6z2irvlxjoqRmXu6ucvZjfFVNywaUueoJUWCJYqdF+KokTDU+nmv0OuWHT1Dp6i+z0jMud1kld+KRfX/AAZs3URSNR5aMWGbzufD7Wa0U1ktkVBTJ8EadXL3e7xVTfAOVMzM7l0IjUagAB49AAAAAAAAAAAAAAAAAAAAAAAAAABhURUwqZQq914fWK5SOmbE+kld1VYFwir/AMV6FpBKt7VndZRtWLeYUBOFFFvyt0qFb5ctufcmLbw/sFvckjqd1VInZah25PbsWcE5zZJjUyjGKkeIeWMbGxGMajWomEREwiHoAqWAAAAAAAAAAAAAAAAAAAAAAAABgADIAAAAAYAAyAAAAAAAAAAAAAAAAAAAAA//2Q==";
 const MAISA_LOGO = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAsICAoIBwsKCQoNDAsNERwSEQ8PESIZGhQcKSQrKigkJyctMkA3LTA9MCcnOEw5PUNFSElIKzZPVU5GVEBHSEX/2wBDAQwNDREPESESEiFFLicuRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUX/wAARCABcAPADASIAAhEBAxEB/8QAHAAAAgIDAQEAAAAAAAAAAAAABgcABQMECAEC/8QARxAAAQMDAQUDCQQHBgUFAAAAAQIDBAAFEQYHEiExQRMUUSI2YXFzgZGhsjVSscEVIzJCcnTRFhdTVWKiJTNDY5KTlNLh8f/EABkBAAMBAQEAAAAAAAAAAAAAAAABAgMEBf/EACMRAAICAgICAgMBAAAAAAAAAAABAhEDEiExIjITQTNCUWH/2gAMAwEAAhEDEQA/ABfRoB1jaQRkduOddA9k39xPwFc/aL88bT7cfga6DrfP7IxxdGNcdlxCkKbQUqGCN0cRXON4t6rVeJkFf/QdUgekZ4fLFdGsSESUFTZyEqUg+gg4NKHavbO66gZnJGETGsKP+tPD8MUYHUqHlVqwDoz2YWoXDVAkOJ3mobZcORw3jwT+Z91BlObZXa+56bXMWnDk1wqH8CeA/M1tldRMcauQbdk39xPwFVWqIyHtL3RAQnJjLxw9Gas+8I7yGM/rCjfx6M4rUvv2Bcf5Zz6TXGuzqfRzeOVfVfKeQrKww7JeSzHaW66o4ShCSSfdXonEfFeUVw9m+pJaQow0MJP+M4En4DJrM/sv1G0klDUd7HRDwz88VG8f6VpL+AdUrduNon2l4NXCI7HUeW+ngfUeRrSq07J6Hxs/abOiradxOSlRJxz8o0HbX0JTcLXupA/VL5D0iqezWbWcq1MPWl2QmEsEtBMkIGM9Bnxqr1LAvsGQwnUCnVOqSS0XHQ5wzxxgmueMKndm0pXGqKSpXqUqWoJQkqUo4AAySaJ4GzzUU9sOCEGEHiDIWEH4c63ckuzFJvoF6lF0jZlqSOgqTGZex0aeGfnihiZCk2+QqPMjuMPJ5ocTg0lJPpjcWuzClKlrShCSpSjgJAySaPbLspuE1lL1zkphJUMhoJ31+/oK+dldnROvj095IUiEgbgP31cj7hmjDXOt/wCzaEw4IQ5cHU73l8UtJ8SOpPQVlOcttYmkYqtpFaNkFvxxucon+BNe/wBz9v8A8zlf+CaAH9X6hmu5XdZRUo8Etq3R7gK2u01mWu13rz2fPPl0tZruQ7h/A0/uft/+Zyv/AATVJe9lU6Cwp62SRNCRktKTurx6OhoWTqW/NO4F1mhYOMF1WQfVTB0Lr6TPnJtN6UFPr4MvkbpUfuqHj6aH8kebsFo+KoVSkqQopWkpUk4IPAg180d7VLM3AvjM9hO6iaklYH3xzPvGKBK2jLZWZSVOiVKlSqEXmjPPG0/zA/A10HXPmi/PG0/zA/A10HXJn9kdGHoE9JXLtbzqK3KV5TE1TiR/pVz+Y+dYdp1s7/pRx9KcuQ1h0fw8lfI591Clpuf6N2uTUqVhuVIWwr38vmBTWmxUToT8V0ZQ82ptXqIxUy8ZJlLyTRzXHjuSpLUdoZcdWEJHpJxXSVuhN263RobQ8hhtKB7hSb0BY1u63Db6eFuK1uZ+8Duj58fdTlnzW7fAkS3ThDDaln3CrzO2kicSpWDlpuf6Q2g3ltJy3EjNsj15JPzPyq7v3m/cf5Zz6TS72USHJl9vMl05ceQlaj6SommJfvN+4/yzn0ms5KpUXF3Gzm8HyRT60TpiPp+ztLLaTOfQFvOkcePHdHgBSFTwwaN4u0bVMlxDEVLTzmMBKI+8T8K6MsZSVIwxySfIxNR64tem3hHkFx+URvdi0OKR6SeAqvs+0603Sa3FdaeiOOq3UKcwUk+BI5UByNHasvs16fItxDz6t5RcWlHyJ4V9I2a6lQtCu7NcCDwfTkcaz0xpcvkved8IcV0tcW8wHYc1oONODHHmk+I8DXPF1gLtV1lQXDlUdwoz4gcj8MV0mngkD0Ugteeet09oPpFGB80PKuLG3oHzJtfsz9RoK2wfaVr9iv6hRroHzJtfsz9RoJ2w/aVr9iv6hUw/IOfoXGzLS8eNbG7zJbC5UjJaKhns0cuHpNEepdW27S7bZmb63ncltlsZJA6+gVq7PrmzcdJQ0NqHaxk9i4nqkjl8RX1q7RcbVSGlqfVHlMgpQ4kZBB6EVLdz8hriPiaVm2mWe6ykRnUvQ3XDuoLwG6T4ZHL31t6+ske7aZlOrQO8REF1pY5jHEj1EUv5+yy+xAVRVR5aR0bXuq+B/rVXddQ6pjpct90ly2gpO6ppxITvJ+HEVooRbTgyHN1UkGmx4D9G3M44l5A/20CahefvusZvZpLjr0ktNJ9R3QPlR7sf+zLn7dP01S6Dgol7RJzrgBEVTzif4ivdH4mqupSYmrjFB5pXRsHTcRCihD09Q/WSFDJz4J8BUla+07EmGM7cUlaThRQhSkpPrAxWttHu7tp0s53dRQ9KWGQocwDknHuGPfSN5Cohj+TykypT04R0S3aLPPnsXpuOw8/ufq304IUD18CfTSp13OQ1tDL8UBKoymt5Q6rGCfxA91M7SET9FaPt7bwKShntF56Z8o/jSOkSF3fUC31cVSpOfirhTxLlhkfCGNtgwq32pX/dX9IpVU1dsGBb7Un/ALq/pFKmtcPoZ5PY9rypUrUzLzRfnjafbj866DrnzRfnlafbj8DXQdcmf2OjD0c+aqdWxrO5utnC25ZUk+BByKe1ouCLraYk5sjdfaC/UccR8aQ2rvO67fzKqZGye6d6sT8BZyuI5lI/0K4/jmqyxuCYsb8mgltVhbtt5u09OMz3EqAHMAJ4/PJod2qXbuenm4KFYcmrwf4E8T88CjukbtJu36S1W80hWWoaQyn181fPh7qzxLaXJeR6xLrY/wDaV09ij8TTIv3m/cv5Zz6TS42P/aF09kj8TTF1Crc07cj4RnPpNPL+QUPQ59tFtevFzjQI/wDzH1hIJ5JHU+4V0BYrBB0/BTGgtAHHlukeU4fEmk1s7lNRNZQFPYCV7zYJ6KKSBT4qs7d0LElVgXqDaVbrJMchsMOTJDRwvcIShJ8M9aoDtekuOJS3aWk5UB5TxP5UN6h0ZeoN4kBMJ+S044pTbrSSsKBOeOORq10ts3uEuY1JvDSokRtQUW1ftuY6Y6D101HGo2xbTbocSTkA0g9eeet09oPpFPwcuHKkHrzz1untB9IqcHsVl6G1oHzJtfsz9RoJ2wfaVr9iv6hRtoHzKtfsz9RoJ2w/aVs9iv6hSh+QJegD2m9zrHLEm3SVMuclAcUqHgR1o9t2151ISm5W1K/FyOvB+B/rRlpJu3zdLW15qMwR2CUq/VgneHA594oN1js5uEm7Pz7Mht1p87ymN4JUhXXGeBFXtCTqSJ1lFWmGNj1xZb+8liM+puSrky8ndUfV0Pxrd1FYIuobU7EkoG/glpzHlNq6EGltpbZ3ekXqLLuLQiR47gcPlgqURxAAFNmXKahRHpT6glplBWonoBWU0oy8WaRba8gA2RIU1AuraxhSJCUkeBxiqXRk5Nq2kzo0g7veXHWcnoreyPw+dbGyy8oN8uURw7pm5fbB8QTkfA/KsO0fS0yLd13uA0tUZ4hbim/2mljrw6HAOa1/dp/Zn+qa+hgau06nU1kXDDgaeSoONLI4BQ8fQQTQFYtlc8XJty8OMoitKCihpe8XMdOXAVjtO1mZEjJZuUREwoGA6le4o+vhgmpd9rM2XGUzbYiIZUMF1S99Q9XDANKMckfFDcoPljWfbRMhPx0LG64hTRKTnd4Y+VLrS2zKVbr23MurzKmYyt5pDRJ7RQ5E+A60JaY1zP02txAxKjOqK1tOq47x5kHoavbrtZnSo5atsNERShguqXvqHq4YoWOcbSBzhLlmPaxdkS7zGgMrChDQS5g8lq6e4AfGgGvpxxbrinHFKWtZKlKUcknxNfNdEY6qjGT2dkqVKlUSWWnrg1atQQZ0gKLMd0LWEDJx6Kav97Fh/wAKZ/6Q/rSYqVnLHGXLLjNx4RYX6c1c77OmsBQafeK0hQwcHxq00TqRvTF6VJkJcXGdaLbiWxk+IOPWPnQ3UqnFNUTbTscTu1myhlfZMSy5undCmxgnHDrSgedW+8486reccUVqPiScmvipShCMehym5dhdoHVELTEqa5PQ8pL6EpT2Sc8QTzorvG02yzrPNiMtS+1fZU2nebAGSMceNKapSeKMnY1NpUepKkKSpJKVJOQQcEGmhp3aqymMiPfmnA4gY7y0neCv4h4+qldUpygpdijJx6Hk5tL00hveE1xZ+6llWfwoL1RtNkXRhyHaWlRY6wQt1R/WKHgMfsigGpURwxRTySY4I21ayNRmm1MTN5CAk4QOg9dLTU1zZvOoZk+MlaWn1hSQsYPIDjVVUqo44xdoTm5KmNDS20W0WbTsOBKblF5hJSooQCDxJ4cfTQ5r7VELU82G7BQ8lLDakq7VIGSSDw4+ihKpQscU9gc21QS6U1pM0w4ptCBIhuHeWwo4wfFJ6GmNE2paffQC8uRGV1StonHvGaSlSiWKMuQjka6HZK2o6eYQSyuRIV0ShojPvOKX2q9eTdSo7q233WDnPZA5Uvw3j+VClSiOKMeRyySZmhy34EtqVFcLb7KgpCx0NNqybVLZKjpReELiSAMKUlBU2r08OI9VJ+pTnBT7JjJx6HW5qnQriypxUFajxJMMkn/bXz/aXQXhA/8AZn/40lqlR8K/pfyscytUaCAJ3IZx0EE8f9tKvUEuFOvkqTbI/d4i1ZbbxjpxOOmTxxVbUqo41HkmU3IlSpUxWhBKlSpQBkZb7d9toHBcWE58MnFGsnZt3aWIa9QW9MxYyhhzKVKzyoOgfaMX2yPqFM/WlmtMrVbcy531mEG20b7G6S4QCSCPXWU5NNJM0gk0LS62uVZri7Bmo3H2jxAOQQeRB8K0xxplxlW/Wmsbhc1NIXCt8UdmiQd1LhGcFfgOfyrBeY8Gbpqc5PcsTc+OAuKq3OJBUOqCOtCyfTE4faF2a9o9nOxNFWe1NsWuJMmTme3eelo38A48keHOsNlRBulk1ZO/R0dkpaStpASCGTg/sk8uNPf7oNP9AerKz22PcHJBmTm4TDDRcK18So9EpTnJJq9hw4qtltwlqjtGSiYlKXikb4GUcAfDjV5pyNKbYtrMmy2aNBfCUqMwp7aRnmpOeOfAUpT4Go8i1PPhyres0Bi53JEaTNahNKBJfd/ZTgZxz60c2KyWxjW+ooT8VD0OOwpSG1pCt0cDwz14njWnpmfD1JrO3MLtEKPEZadCWUNghQ3cjezzIoc+AUQHfQll91tLgWlCykLHJQB51jo0sUWUJ93XAtEB8NSFDvM3AajpBPAA8M8qz69tsVFotNzZYiNSZJUh7uRy0sjqMU1PlIWvFg3pqwOakuvcWn0sK7NTm+tJI4f/ALVjO0lAiQ3nkaltz62kkhlB8pZHQcedbey3zu48u7OflWheG9KCI+bW9clTQfIDyU7nPjy99Jt7UNJa2Dea3YtpmTYMuaw1vRoYBeWVAbueXrpgWeJHkabg/wBnodpnP7h79HlgdstXUAnkP/qsWmLkqHonUIct0XehL8ppxvO+STwX445UPJ/AUBb1OmaPdKqt8uz6kus+1xnuxKXUMpQEpTzO6nwGawWWVLvNxm3CHYLYSlCE77wCY8cAeB6n8qe/+C1AnPCt252mZZ3WmpzXZLdbDqU7wPknkeHqo11hGjw7XZb4IluMwulLyYwCo72M9Bz5Vm2iTjJn2+1iHESZTDJ7wW/1jeVYwD0HopLI3VDcKAiDbo0i2zZcqc3H7uAGmsby3lnoBnOPTVdTdkW232i4tWxLVgTbUJSmQJbg7wvI4qyeIPhVDY7TBYlakdtrDN0lQiO5Mrw4lSSf2gP3sflSWTtg4ABVnfLbFtchluHcWp6HGgtS2xwQT+6eJoq1WUs6Qhvy7RCg3Wcsh0JZ3VhKeSgP3c8M+uty7abg3DXFktyGG48d2Gl11LKQjexknl1OMZp7/YaC2qUVXvU8V5M22x7Hb2YqSptlaW8ON4ON7e6miLTkWU2xbWpVmssWE+EpV3wjt5Gf3hnjk9BTc6VtCUbfYs6lXOrIDFr1PcIkVO6y255CfuggHHzqmq07VkNUyVK9rymBkju9jJadIz2a0rx44OauNWagTqW89/THMcdklvcKt7lnjn31R1KVc2O+KLfTmoHtO3BUhtpD7TqC28yvk4g9K2rrddPPwnWrXYlxn3SD2zj5V2eDnCRQ9UpOKbsFJ1QWx9W2+XZ4sDUNpM7uYww827uKCfA18WfVkS2TbmlVqSbXcE7qoiHP2AOAwTz60K17S0iPZhVcdWwn9NSLHb7T3OOtxK0K7XePAgkqzzJxW47rm3SVwJ0qydtdIaEoS4p4hvAPPd8edBNSj44huwtja0bj6iu917ktSbiyWg12g8jIHHOOPKqnTF7Gnb4zcVMF8NJUncCt3ORjnVRUo1VUGzYU2zVcNqFcrfdLcuTCnSDI3W3N1aFE5xnryFYb/qdi8WeFbotuEJmG4othLm8N08gfT4mhyvKNI3YbPou9KX9Omrx39ccyB2Sm9xKt3nj+lbsy96Zfivoj6aUy+tJCHe9KO4o8jihepTcE3YlJ1QW2rVFltoiyxYP+JxUBKXW3ylCzjG8oeNYrLq5ERV1busPvkW6K33kIXuEK48vjQxXlLRD2YRxtSxYVuvkKJAU2zcsBpPa57EAdeHGvdPali221TbVc4CpkGWoLIbXuKSoY6+4UN1KNELZhJfdTx7tY4lrjW4QmYjpW2EObw3SDwOevHnWa9aqhXu1xw/bFJuzDaWkS0u+SAk5zjx5/GhWpRpEezDKRq6zXcNSL7YTJuDSAkutPbiXcct4Vm0Y+9m8SIdo7yy+QksRZHZvNDORudSP6UD19tvOML32XFNrH7yFEH5UnBVSGpu+Q71baobmnTdZEabbrgHQ22zMkdqp1PU8SSBz+FVVy1o7Jv9uu0JjsHYTKWt1at4LxnPuINDTr7shW8+646rxWoqPzrHRGFLkHK3wFN31BYbgxJdj6f7G4Sgd50vZQhR5qSPGtx3XFvkqgTZVkD11hoShDpeIbwOu740FVKfxxFuyy1BdU3u+Srglosh9QVuFWccMc/dVbUqVSVcEt2SpUqUwP/9k=";
@@ -893,8 +894,19 @@ function Icon({ name }) {
 
 const normalizarBusca = (texto) => texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
+// Organização comercial das tabelas, independente dos preços e dos cálculos.
+const PRODUTOS_POR_CODIGO = new Map(PRODUTOS.map((p, idx) => [p.cod, { ...p, idx }]));
+const GRUPO_POR_CODIGO = new Map(GRUPOS_PRODUTOS.flatMap((grupo) => grupo.codigos.map((cod) => [cod, grupo])));
+const LINHAS_PRODUTOS = [...new Set(GRUPOS_PRODUTOS.map((grupo) => grupo.linha))].map((nome) => ({
+  nome,
+  quantidade: GRUPOS_PRODUTOS.filter((grupo) => grupo.linha === nome).reduce((total, grupo) => total + grupo.codigos.length, 0),
+}));
+
 function ProductSearch({ produtoIdx, itemNumber, onSelect }) {
   const prod = PRODUTOS[produtoIdx];
+  const grupoSelecionado = GRUPO_POR_CODIGO.get(prod.cod);
+  const [linha, setLinha] = useState("");
+  const [divisao, setDivisao] = useState("");
   const [query, setQuery] = useState(prod.nome);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
@@ -904,19 +916,46 @@ function ProductSearch({ produtoIdx, itemNumber, onSelect }) {
   useEffect(() => { setQuery(prod.nome); }, [prod.nome]);
   useEffect(() => {
     if (open && active >= 0) resultsRef.current?.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: "nearest" });
-  }, [active, open, query]);
+  }, [active, open, query, linha, divisao]);
   const termo = normalizarBusca(query === prod.nome ? "" : query.trim());
-  const matches = PRODUTOS.map((p, idx) => ({ ...p, idx })).filter((p) => normalizarBusca(`${p.nome} ${p.cod}`).includes(termo));
+  const divisoes = GRUPOS_PRODUTOS.filter((grupo) => grupo.linha === linha && grupo.divisao);
+  const grupos = GRUPOS_PRODUTOS
+    .filter((grupo) => (!linha || grupo.linha === linha) && (!divisao || grupo.id === divisao))
+    .map((grupo) => ({
+      ...grupo,
+      produtos: grupo.codigos.map((cod) => PRODUTOS_POR_CODIGO.get(cod)).filter((p) => p && normalizarBusca(`${p.nome} ${p.cod}`).includes(termo)),
+    }))
+    .filter((grupo) => grupo.produtos.length > 0);
+  const matches = grupos.flatMap((grupo) => grupo.produtos);
+  const foraDoFiltro = (linha && grupoSelecionado?.linha !== linha) || (divisao && grupoSelecionado?.id !== divisao);
   const select = (p) => {
+    inputRef.current?.focus();
     onSelect(p.idx);
     setQuery(p.nome);
     setOpen(false);
     setActive(-1);
-    inputRef.current?.focus();
   };
   return <div className="mp-product-search" onBlur={(e) => {
     if (!e.currentTarget.contains(e.relatedTarget)) { setOpen(false); setQuery(prod.nome); setActive(-1); }
   }}>
+    <div className={`mp-product-filters${divisoes.length > 1 ? " mp-product-filters-split" : ""}`}>
+      <Field label="Linha de produtos">
+        <select aria-label={`Linha de produtos do produto ${itemNumber}`} value={linha} onChange={(e) => {
+          setLinha(e.target.value); setDivisao(""); setQuery(""); setActive(-1); setOpen(true);
+        }}>
+          <option value="">Todas as linhas ({PRODUTOS.length})</option>
+          {LINHAS_PRODUTOS.map((l) => <option key={l.nome} value={l.nome}>{l.nome} ({l.quantidade})</option>)}
+        </select>
+      </Field>
+      {divisoes.length > 1 && <Field label="Divisão da linha">
+        <select aria-label={`Divisão da linha do produto ${itemNumber}`} value={divisao} onChange={(e) => {
+          setDivisao(e.target.value); setQuery(""); setActive(-1); setOpen(true);
+        }}>
+          <option value="">Todas as divisões</option>
+          {divisoes.map((d) => <option key={d.id} value={d.id}>{d.divisao} ({d.codigos.length})</option>)}
+        </select>
+      </Field>}
+    </div>
     <label className="mp-field">
       <span className="mp-label">Produto · busca por nome ou código</span>
       <div className="mp-search">
@@ -936,12 +975,18 @@ function ProductSearch({ produtoIdx, itemNumber, onSelect }) {
       </div>
     </label>
     {open && <div ref={resultsRef} className="mp-results" id={listId} role="listbox" aria-label="Produtos encontrados">
-      {matches.length ? matches.map((p, idx) => <button type="button" className="mp-result" role="option" id={`${listId}-${p.cod}`} key={p.cod} tabIndex={-1} aria-selected={active === idx}
-        onMouseDown={(e) => e.preventDefault()} onClick={() => select(p)}>
-        <span>{p.nome}<small>{p.cat} · {p.cod}</small></span>
-      </button>) : <div className="mp-empty">Nenhum produto encontrado.</div>}
+      {matches.length ? grupos.map((grupo) => <div key={grupo.id} role="group" aria-labelledby={`${listId}-grupo-${grupo.id}`}>
+        <div className="mp-result-group-title" id={`${listId}-grupo-${grupo.id}`}>
+          {grupo.linha}{grupo.divisao && <> · {grupo.divisao}</>}<span>{grupo.produtos.length}</span>
+        </div>
+        {grupo.produtos.map((p) => <button type="button" className="mp-result" role="option" id={`${listId}-${p.cod}`} key={p.cod} tabIndex={-1} aria-selected={matches[active]?.cod === p.cod}
+          onMouseDown={(e) => e.preventDefault()} onClick={() => select(p)}>
+          <span>{p.nome}<small>{p.cod}</small></span>
+        </button>)}
+      </div>) : <div className="mp-empty">Nenhum produto encontrado{linha ? " nesta linha" : ""}. {linha && "Escolha outra linha ou use Todas as linhas."}</div>}
     </div>}
-    <div className="mp-product-meta"><span>{prod.cat}</span><code>{prod.cod}</code></div>
+    {foraDoFiltro && <div className="mp-selected-product">No pedido: <strong>{prod.nome}</strong>. Escolha um produto da lista para substituir.</div>}
+    <div className="mp-product-meta"><span>{grupoSelecionado ? `${grupoSelecionado.linha}${grupoSelecionado.divisao ? ` · ${grupoSelecionado.divisao}` : ""}` : prod.cat}</span><code>{prod.cod}</code></div>
   </div>;
 }
 

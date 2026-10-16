@@ -13,6 +13,8 @@ Calculadora de preços e orçamentos para clientes. O app abre diretamente na ca
 
 Os produtos, preços por kg de MT1, MT2, MT3 e GO, pesos das embalagens e campanhas ficam em `src/PriceCalculator.jsx`. Identifique produtos pelo código ao atualizar as tabelas.
 
+As linhas e divisões das tabelas ficam em `src/linhas-produtos.json`, associadas aos códigos dos produtos. Ao incluir um produto no catálogo, inclua seu código em exatamente um desses grupos. Essa organização é usada nos filtros de seleção e não altera os cálculos nem as imagens enviadas aos clientes.
+
 A campanha atual oferece desconto ESP de 4,5% nos códigos informados, com validade até 31/10/2026. O usuário aplica o desconto no card do produto.
 
 ## Desenvolvimento
@@ -28,5 +30,7 @@ pnpm build
 - `src/main.jsx`: inicialização do React.
 - `src/components/App.jsx`: entrada direta na calculadora.
 - `src/PriceCalculator.jsx`: tabelas, campanhas, cálculo e imagens de orçamento.
+- `src/PriceCalculator.css`: visual responsivo da calculadora.
+- `src/linhas-produtos.json`: linhas e divisões comerciais dos produtos.
 - `public/manifest.webmanifest`: nome e ícones do app instalado.
 - `public/icons/`: ícones do app.
