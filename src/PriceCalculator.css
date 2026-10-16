@@ -1,0 +1,163 @@
+/* Approved Mais@ calculator layout. Screen styles do not affect PNG exports. */
+body { margin:0; background:#f4f4f0; }
+.maisa-app { --mp-bg:#f4f4f0; --mp-panel:#ffffff; --mp-ink:#1c2020; --mp-muted:#676d69; --mp-line:#e2e5de; --mp-soft:#f7f8f4; --mp-gold:#9c741d; --mp-gold-soft:#fbf5e6; --mp-dark:#1b211e; --mp-on-dark:#ffffff; --mp-space:22px; color-scheme:light; color:var(--mp-ink); font:14px/1.5 Arial,sans-serif; background:var(--mp-bg); min-height:100vh; width:100%; max-width:1360px; margin:0 auto; }
+.maisa-app * { box-sizing:border-box; }
+.maisa-app [hidden] { display:none !important; }
+.maisa-app button, .maisa-app input, .maisa-app select, .maisa-app textarea { font:inherit; }
+.maisa-app button { color:inherit; }
+.maisa-app button, .maisa-app summary { touch-action:manipulation; }
+.maisa-app button:focus-visible, .maisa-app input:focus-visible, .maisa-app select:focus-visible, .maisa-app textarea:focus-visible, .maisa-app summary:focus-visible { outline:3px solid var(--mp-gold); outline-offset:3px; }
+.maisa-app h1, .maisa-app h2, .maisa-app h3, .maisa-app p { margin:0; }
+.maisa-app .mp-top { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:22px 28px; background:var(--mp-panel); border-bottom:1px solid var(--mp-line); }
+.maisa-app .mp-brand { display:flex; gap:16px; align-items:center; min-width:0; }
+.maisa-app .mp-maisa-logo { display:block; width:auto; height:48px; max-width:100%; object-fit:contain; flex-shrink:0; }
+.maisa-app .mp-divider { height:35px; width:1px; background:var(--mp-line); }
+.maisa-app .mp-title { font-size:16px; font-weight:600; letter-spacing:-.2px; }
+.maisa-app .mp-title small { display:block; color:var(--mp-muted); font-size:12px; font-weight:400; margin-top:2px; }
+.maisa-app .mp-tortuga { width:65px; height:30px; object-fit:contain; background:#fff; padding:3px; border-radius:4px; }
+.maisa-app .mp-layout { display:grid; grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr); align-items:start; gap:24px; padding:28px; }
+.maisa-app .mp-main { display:grid; gap:20px; min-width:0; }
+.maisa-app .mp-page-heading { display:flex; justify-content:space-between; gap:12px; align-items:center; }
+.maisa-app h1 { font-size:24px; line-height:1.25; letter-spacing:-.7px; font-weight:650; }
+.maisa-app .mp-date { font-size:12px; color:var(--mp-muted); white-space:nowrap; }
+.maisa-app .mp-panel { background:var(--mp-panel); border:1px solid var(--mp-line); border-radius:13px; padding:var(--mp-space); min-width:0; }
+.maisa-app .mp-section-title { font-size:15px; font-weight:650; margin-bottom:16px; }
+.maisa-app .mp-conditions { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:18px; }
+.maisa-app .mp-field { display:grid; align-content:start; gap:7px; min-width:0; }
+.maisa-app .mp-label { color:var(--mp-muted); font-size:12px; font-weight:500; }
+.maisa-app .mp-field input, .maisa-app .mp-field select, .maisa-app .mp-field textarea, .maisa-app .mp-control { border:1px solid var(--mp-line); background:var(--mp-panel); color:var(--mp-ink); padding:10px 11px; width:100%; min-width:0; border-radius:7px; min-height:44px; }
+.maisa-app .mp-field textarea { resize:vertical; }
+.maisa-app .mp-regions { display:grid; grid-template-columns:repeat(4,1fr); gap:4px; background:var(--mp-soft); border:1px solid var(--mp-line); border-radius:8px; padding:4px; min-height:44px; }
+.maisa-app .mp-regions button { border:0; background:transparent; font-weight:600; border-radius:5px; min-height:44px; padding:3px; font-size:12px; }
+.maisa-app .mp-regions button[aria-pressed="true"] { background:var(--mp-dark); color:var(--mp-on-dark); }
+.maisa-app .mp-condition-meta { display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-top:16px; padding-top:12px; border-top:1px solid var(--mp-line); font-size:12px; color:var(--mp-muted); }
+.maisa-app .mp-condition-meta strong { font-weight:500; color:var(--mp-ink); }
+.maisa-app .mp-condition-meta details { margin-left:auto; }
+.maisa-app .mp-condition-meta details[open] { width:100%; }
+.maisa-app .mp-condition-meta summary { color:var(--mp-gold); }
+.maisa-app .mp-charge { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding-top:12px; align-items:end; }
+.maisa-app .mp-row-title { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.maisa-app .mp-row-title h2 { font-size:17px; font-weight:600; letter-spacing:-.3px; }
+.maisa-app .mp-count { color:var(--mp-muted); font-weight:400; }
+.maisa-app .mp-button { display:inline-flex; justify-content:center; align-items:center; gap:8px; background:var(--mp-panel); border:1px solid var(--mp-line); border-radius:8px; padding:10px 13px; font-weight:500; min-height:44px; }
+.maisa-app .mp-button:hover { background:var(--mp-soft); }
+.maisa-app .mp-button-primary { background:var(--mp-dark); color:var(--mp-on-dark); border-color:var(--mp-dark); }
+.maisa-app .mp-button-primary:hover { opacity:.9; background:var(--mp-dark); }
+.maisa-app .mp-text-button { border:0; background:transparent; color:var(--mp-muted); padding:4px; text-decoration:underline; text-underline-offset:3px; font-size:12px; }
+.maisa-app .mp-cards { display:grid; gap:14px; }
+.maisa-app .mp-item-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:13px; }
+.maisa-app .mp-item-number { font-size:12px; color:var(--mp-muted); display:flex; gap:8px; align-items:center; }
+.maisa-app .mp-item-number b { background:var(--mp-soft); border:1px solid var(--mp-line); border-radius:6px; padding:2px 7px; font-weight:500; color:var(--mp-ink); }
+.maisa-app .mp-search { position:relative; }
+.maisa-app .mp-product-search { position:relative; }
+.maisa-app .mp-search input { padding-left:38px; font-weight:500; text-overflow:ellipsis; }
+.maisa-app .mp-search > i, .maisa-app .mp-search > svg { position:absolute; left:12px; top:12px; color:var(--mp-muted); width:17px; height:17px; }
+.maisa-app .mp-results { max-height:320px; overflow:auto; overscroll-behavior:contain; position:absolute; z-index:5; top:calc(100% + 6px); left:0; right:0; background:var(--mp-panel); border:1px solid var(--mp-line); border-radius:8px; box-shadow:0 12px 28px #0002; padding:5px; }
+.maisa-app .mp-result { display:flex; align-items:start; justify-content:space-between; gap:8px; width:100%; border:0; padding:10px; background:transparent; text-align:left; border-radius:5px; }
+.maisa-app .mp-result:hover, .maisa-app .mp-result[aria-selected="true"] { background:var(--mp-soft); }
+.maisa-app .mp-result small { display:block; font-size:11px; color:var(--mp-muted); }
+.maisa-app .mp-empty { padding:12px; font-size:12px; color:var(--mp-muted); }
+.maisa-app .mp-product-meta { display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:11px; color:var(--mp-muted); margin-top:7px; }
+.maisa-app .mp-product-meta span:first-child { overflow-wrap:anywhere; }
+.maisa-app .mp-product-meta code { font:11px/1.4 ui-monospace,Menlo,monospace; white-space:nowrap; }
+.maisa-app .mp-inputs { display:grid; grid-template-columns:1fr 1fr 1.2fr; gap:12px; margin-top:16px; }
+.maisa-app .mp-price-table { min-height:44px; display:flex; align-items:center; font-size:14px; font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.maisa-app .mp-price-table small { color:var(--mp-muted); font-size:11px; font-weight:400; margin-left:4px; }
+.maisa-app .mp-campaign { display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:var(--mp-gold-soft); border-radius:7px; padding:10px 12px; margin-top:15px; }
+.maisa-app .mp-campaign span { color:var(--mp-gold); font-size:12px; }
+.maisa-app .mp-campaign small { color:var(--mp-muted); display:block; font-size:11px; margin-top:2px; }
+.maisa-app .mp-campaign button { color:var(--mp-gold); background:var(--mp-panel); border:1px solid var(--mp-line); border-radius:6px; padding:7px 10px; font-weight:600; font-size:12px; }
+.maisa-app .mp-campaign button[aria-pressed="true"] { background:var(--mp-dark); color:var(--mp-on-dark); border-color:var(--mp-dark); }
+.maisa-app .mp-discounts { margin-top:14px; border-top:1px solid var(--mp-line); padding-top:12px; }
+.maisa-app .mp-discounts summary { font-size:12px; color:var(--mp-muted); }
+.maisa-app .mp-discount-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:14px 0 8px; }
+.maisa-app .mp-item-values { display:grid; grid-template-columns:1fr 1fr 1.35fr; gap:10px; padding-top:16px; margin-top:14px; border-top:1px solid var(--mp-line); font-variant-numeric:tabular-nums; }
+.maisa-app .mp-item-values span { font-size:11px; color:var(--mp-muted); display:block; margin-bottom:3px; }
+.maisa-app .mp-item-values strong { font-size:17px; font-weight:600; letter-spacing:-.5px; }
+.maisa-app .mp-item-values > div:last-child { text-align:right; }
+.maisa-app .mp-item-values > div:last-child strong { color:var(--mp-gold); }
+.maisa-app .mp-notes summary { color:var(--mp-muted); font-size:12px; }
+.maisa-app .mp-notes textarea { margin-top:12px; }
+.maisa-app .mp-summary { position:sticky; top:20px; padding:0; overflow:hidden; }
+.maisa-app .mp-summary-head { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:22px 22px 15px; }
+.maisa-app .mp-summary h2 { font-size:17px; font-weight:600; letter-spacing:-.3px; }
+.maisa-app .mp-status { font-size:11px; color:var(--mp-muted); display:flex; align-items:center; gap:5px; }
+.maisa-app .mp-status i, .maisa-app .mp-status svg { width:13px; height:13px; }
+.maisa-app .mp-order-list { padding:0 22px; }
+.maisa-app .mp-order-line { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; padding:14px 0; border-bottom:1px solid var(--mp-line); }
+.maisa-app .mp-order-line strong { font-weight:500; font-size:13px; }
+.maisa-app .mp-order-line small { display:block; color:var(--mp-muted); font-size:12px; margin-top:3px; }
+.maisa-app .mp-order-line > strong:last-child { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.maisa-app .mp-summary-stats { display:flex; justify-content:space-between; gap:8px; padding:17px 22px; font-size:12px; color:var(--mp-muted); }
+.maisa-app .mp-summary-stats strong { font-weight:500; color:var(--mp-ink); }
+.maisa-app .mp-total { background:var(--mp-dark); color:var(--mp-on-dark); margin:0 16px; padding:20px; border-radius:9px; }
+.maisa-app .mp-total small { display:block; opacity:.8; font-size:12px; }
+.maisa-app .mp-total strong { display:block; font-size:clamp(24px,2.7vw,31px); font-weight:600; letter-spacing:-1px; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; margin:4px 0 2px; }
+.maisa-app .mp-total span { font-size:12px; opacity:.8; }
+.maisa-app .mp-summary-actions { padding:18px 16px 16px; display:grid; gap:9px; }
+.maisa-app .mp-gold-button { background:var(--mp-gold); border-color:var(--mp-gold); color:#fff; font-weight:600; }
+.maisa-app .mp-gold-button:hover { background:var(--mp-gold); opacity:.9; }
+.maisa-app .mp-summary-foot { color:var(--mp-muted); border-top:1px solid var(--mp-line); font-size:11px; margin:0 22px; padding:14px 0 19px; }
+.maisa-app .mp-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:8px 28px 22px; color:var(--mp-muted); font-size:11px; }
+.maisa-app .mp-footer span:last-child { color:var(--mp-gold); }
+
+.maisa-app button { cursor:pointer; min-height:44px; }
+.maisa-app summary { min-height:44px; padding-top:10px; padding-bottom:10px; cursor:pointer; }
+.maisa-app button:disabled { cursor:default; opacity:.55; }
+.maisa-app button:disabled:hover { opacity:.55; }
+.maisa-app .mp-text-button { min-height:44px; }
+.maisa-app .mp-field { min-width:0; }
+.maisa-app .mp-control { border:1px solid var(--mp-line); background:var(--mp-panel); color:var(--mp-ink); padding:10px 11px; width:100%; min-width:0; border-radius:7px; min-height:44px; }
+.maisa-app .mp-search .mp-control { padding-left:38px; }
+.maisa-app .mp-control:disabled, .maisa-app .mp-field input:disabled, .maisa-app .mp-field select:disabled { background:var(--mp-soft); color:var(--mp-muted); cursor:default; }
+.maisa-app .mp-pct { position:relative; min-width:0; }
+.maisa-app .mp-pct input { padding-right:34px; }
+.maisa-app .mp-pct > span:not(.mp-auto-badge):not(.mp-badge) { position:absolute; top:50%; right:12px; transform:translateY(-50%); color:var(--mp-muted); font-size:12px; pointer-events:none; }
+.maisa-app .mp-auto-badge, .maisa-app .mp-badge { display:inline-block; font-size:10px; line-height:1.4; font-weight:600; background:var(--mp-gold-soft); color:var(--mp-gold); border:1px solid var(--mp-line); border-radius:4px; padding:1px 5px; }
+.maisa-app .mp-pct .mp-auto-badge, .maisa-app .mp-pct .mp-badge { position:absolute; top:-8px; right:34px; pointer-events:none; }
+.maisa-app .mp-pct[data-auto="false"] input { border-color:var(--mp-gold); }
+.maisa-app .mp-manual-row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:8px; color:var(--mp-muted); font-size:12px; }
+.maisa-app .mp-manual-row > :first-child { min-width:0; overflow-wrap:anywhere; }
+.maisa-app .mp-manual-row button { flex-shrink:0; }
+.maisa-app .mp-error { margin-top:12px; padding:11px 12px; border:1px solid #d9a79e; border-radius:7px; color:#8d2b20; background:#fff0ec; font-size:13px; }
+.maisa-app .mp-product-meta { min-width:0; }
+.maisa-app .mp-product-meta > span { min-width:0; }
+.maisa-app .mp-product-meta code { flex-shrink:0; }
+.maisa-app .mp-status { white-space:nowrap; }
+.maisa-app .mp-label { display:block; }
+
+@media (max-width:780px) {
+  .maisa-app .mp-layout { grid-template-columns:minmax(0,1fr); gap:20px; }
+  .maisa-app .mp-summary { position:static; }
+  .maisa-app .mp-date { display:none; }
+  .maisa-app .mp-top { padding:20px 22px; }
+  .maisa-app .mp-tortuga { display:none; }
+}
+
+@media (max-width:480px) {
+  .maisa-app .mp-top { padding:20px 16px; }
+  .maisa-app .mp-brand { gap:11px; flex-wrap:wrap; }
+  .maisa-app .mp-divider { display:none; }
+  .maisa-app .mp-title { font-size:13px; }
+  .maisa-app .mp-title small { display:none; }
+  .maisa-app .mp-layout { padding:20px 14px; }
+  .maisa-app .mp-panel { padding:17px; }
+  .maisa-app .mp-conditions { grid-template-columns:1fr; gap:13px; }
+  .maisa-app .mp-inputs { grid-template-columns:1fr 1fr; }
+  .maisa-app .mp-inputs > div:last-child { grid-column:1/-1; display:flex; gap:12px; align-items:center; }
+  .maisa-app .mp-row-title { align-items:start; }
+  .maisa-app .mp-row-title h2 { font-size:16px; }
+  .maisa-app .mp-row-title .mp-button { font-size:12px; padding:8px; }
+  .maisa-app .mp-product-meta { align-items:start; flex-wrap:wrap; gap:4px 8px; }
+  .maisa-app .mp-product-meta > span { overflow-wrap:anywhere; }
+  .maisa-app .mp-product-meta code { white-space:normal; overflow-wrap:anywhere; }
+  .maisa-app .mp-item-values { grid-template-columns:1fr 1fr; }
+  .maisa-app .mp-item-values > div:last-child { grid-column:1/-1; text-align:left; padding-top:8px; }
+  .maisa-app .mp-summary { padding:0; }
+  .maisa-app .mp-footer { display:block; padding:0 18px 18px; }
+  .maisa-app .mp-footer span { display:block; }
+  .maisa-app .mp-field input, .maisa-app .mp-field select, .maisa-app .mp-field textarea, .maisa-app .mp-control { font-size:16px; }
+  .maisa-app .mp-charge { grid-template-columns:1fr; }
+  .maisa-app .mp-manual-row { align-items:flex-start; flex-wrap:wrap; }
+}
+

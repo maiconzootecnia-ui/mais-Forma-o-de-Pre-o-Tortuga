@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useId, useRef } from "react";
+import "./PriceCalculator.css";
 
 const TORTUGA_LOGO = "data:image/jpeg;base64,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";
 const MAISA_LOGO = "data:image/jpeg;base64,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";
@@ -868,201 +869,112 @@ async function gerarImagemParametrosCotacao({ items, calcs, totalSacos, totalKg,
 
 
 function Field({ label, children, hint }) {
-  return (
-    <label className="block">
-      <span className="block text-[11px] uppercase tracking-[0.12em] text-[#5f5f58] mb-1.5">{label}</span>
-      {children}
-      {hint && <span className="block text-[11px] text-[#6f6f68] mt-1">{hint}</span>}
-    </label>
-  );
+  return <label className="mp-field"><span className="mp-label">{label}</span>{children}{hint && <small className="mp-label">{hint}</small>}</label>;
 }
 
 function PctInput({ value, onChange, auto }) {
-  const hasAutoMode = auto !== undefined;
-  return (
-    <div className="relative">
-      <input
-        type="number"
-        step="0.01"
-        value={value}
-        onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
-        className={`w-full border rounded-md px-3 py-2.5 pr-9 font-mono text-[15px] focus:outline-none focus:border-[#b8860b] focus:ring-1 focus:ring-[#b8860b]/40 transition-colors ${
-          hasAutoMode && auto
-            ? "bg-white/60 border-[#b8860b]/40 text-[#b8860b]"
-            : hasAutoMode && !auto
-            ? "bg-white border-orange-500 text-[#a8431f]"
-            : "bg-white border-[#d8d8d2] text-[#1a1a1a]"
-        }`}
-      />
-      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6f6f68] text-[13px] font-mono">%</span>
-      {hasAutoMode && (
-        <span
-          className={`absolute -top-1.5 right-9 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm ${
-            auto ? "bg-[#b8860b] text-white" : "bg-orange-600 text-white"
-          }`}
-        >
-          {auto ? "auto" : "manual"}
-        </span>
-      )}
-    </div>
-  );
+  return <div className="mp-pct" data-auto={auto}>
+    <input type="number" step="0.01" value={value} onChange={(e) => onChange(parseFloat(e.target.value) || 0)} />
+    <span aria-hidden="true">%</span>
+    {auto !== undefined && <small className="mp-auto-badge">{auto ? "automático" : "manual"}</small>}
+  </div>;
+}
+
+function Icon({ name }) {
+  const paths = {
+    plus: <path d="M12 5v14M5 12h14" />,
+    search: <><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4 4" /></>,
+    image: <><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m21 15-5-5L5 21" /></>,
+    settings: <><path d="M4 7h16M4 17h16" /><circle cx="9" cy="7" r="2" /><circle cx="15" cy="17" r="2" /></>,
+    check: <path d="m5 12 4 4L19 6" />,
+  };
+  return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
+}
+
+const normalizarBusca = (texto) => texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+function ProductSearch({ produtoIdx, itemNumber, onSelect }) {
+  const prod = PRODUTOS[produtoIdx];
+  const [query, setQuery] = useState(prod.nome);
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(-1);
+  const listId = useId();
+  const inputRef = useRef(null);
+  const resultsRef = useRef(null);
+  useEffect(() => { setQuery(prod.nome); }, [prod.nome]);
+  useEffect(() => {
+    if (open && active >= 0) resultsRef.current?.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: "nearest" });
+  }, [active, open, query]);
+  const termo = normalizarBusca(query === prod.nome ? "" : query.trim());
+  const matches = PRODUTOS.map((p, idx) => ({ ...p, idx })).filter((p) => normalizarBusca(`${p.nome} ${p.cod}`).includes(termo));
+  const select = (p) => {
+    onSelect(p.idx);
+    setQuery(p.nome);
+    setOpen(false);
+    setActive(-1);
+    inputRef.current?.focus();
+  };
+  return <div className="mp-product-search" onBlur={(e) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) { setOpen(false); setQuery(prod.nome); setActive(-1); }
+  }}>
+    <label className="mp-field">
+      <span className="mp-label">Produto · busca por nome ou código</span>
+      <div className="mp-search">
+        <Icon name="search" />
+        <input ref={inputRef} role="combobox" aria-label={`Buscar produto ${itemNumber}`} aria-expanded={open} aria-controls={listId} aria-autocomplete="list" aria-activedescendant={open && active >= 0 && matches[active] ? `${listId}-${matches[active].cod}` : undefined}
+          autoComplete="off" value={query} placeholder="Digite o nome ou código do produto"
+          onFocus={(e) => { setOpen(true); e.currentTarget.select(); }}
+          onChange={(e) => { setQuery(e.target.value); setOpen(true); setActive(-1); }}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+              e.preventDefault(); setOpen(true);
+              setActive((a) => matches.length ? (e.key === "ArrowDown" ? (a + 1) % matches.length : (a <= 0 ? matches.length - 1 : a - 1)) : -1);
+            } else if (e.key === "Enter" && open) {
+              e.preventDefault(); if (matches[active >= 0 ? active : 0]) select(matches[active >= 0 ? active : 0]);
+            } else if (e.key === "Escape") { setOpen(false); setQuery(prod.nome); setActive(-1); }
+          }} />
+      </div>
+    </label>
+    {open && <div ref={resultsRef} className="mp-results" id={listId} role="listbox" aria-label="Produtos encontrados">
+      {matches.length ? matches.map((p, idx) => <button type="button" className="mp-result" role="option" id={`${listId}-${p.cod}`} key={p.cod} tabIndex={-1} aria-selected={active === idx}
+        onMouseDown={(e) => e.preventDefault()} onClick={() => select(p)}>
+        <span>{p.nome}<small>{p.cat} · {p.cod}</small></span>
+      </button>) : <div className="mp-empty">Nenhum produto encontrado.</div>}
+    </div>}
+    <div className="mp-product-meta"><span>{prod.cat}</span><code>{prod.cod}</code></div>
+  </div>;
 }
 
 function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido, onChange, onRemove, canRemove }) {
   const c = calcItem(item, mtTier, encargo, faixaPedido);
   const prod = PRODUTOS[item.produtoIdx];
   const set = (patch) => onChange({ ...item, ...patch });
-  const cor = corItem(index);
-
-  return (
-    <section
-      className="bg-white border border-[#d8d8d2] rounded-xl p-4 space-y-4"
-      style={{ borderLeft: `4px solid ${cor}` }}
-    >
-      <div className="flex items-center justify-between">
-        <h3 className="text-[12px] font-bold uppercase tracking-wide flex items-center gap-2" style={{ color: cor }}>
-          <span className="inline-block w-2 h-2 rounded-full" style={{ background: cor }} />
-          Produto {index + 1}
-        </h3>
-        {canRemove && (
-          <button onClick={onRemove} className="text-[11px] text-[#5f5f58] hover:text-red-400 underline underline-offset-2">
-            remover
-          </button>
-        )}
+  const campanha = item.precoManual == null && CAMPANHAS_OUTUBRO_2026[prod.cod];
+  return <section className="mp-panel" aria-label={`Produto ${index + 1}`}>
+    <div className="mp-item-head"><div className="mp-item-number"><b>{index + 1}</b> Produto</div>{canRemove && <button type="button" className="mp-text-button" aria-label={`Remover produto ${index + 1}`} onClick={onRemove}>Remover</button>}</div>
+    {item.precoManual == null ? <ProductSearch produtoIdx={item.produtoIdx} itemNumber={index + 1} onSelect={(idx) => set({ produtoIdx: idx, pesoSaco: PRODUTOS[idx].peso })} /> : <Field label="Preço de tabela manual (R$/kg)">
+      <input type="number" step="0.0001" value={item.precoManual} onChange={(e) => set({ precoManual: parseFloat(e.target.value) || 0 })} />
+    </Field>}
+    <div className="mp-inputs">
+      <Field label="Quantidade de sacos"><input type="number" step="1" aria-label={`Quantidade de sacos do produto ${index + 1}`} value={item.qtdeSacos} onChange={(e) => set({ qtdeSacos: parseFloat(e.target.value) || 0 })} /></Field>
+      <Field label="Peso por saco (kg)"><input type="number" step="0.5" aria-label={`Peso por saco do produto ${index + 1}`} value={item.pesoSaco} onChange={(e) => set({ pesoSaco: parseFloat(e.target.value) || 0 })} /></Field>
+      <div><div className="mp-label">Preço de tabela</div><div className="mp-price-table">R$ {fmt(c.precoTabela, 4)}<small>/kg</small></div></div>
+    </div>
+    <div className="mp-manual-row"><span>{fmt(c.volume, 0)} kg neste produto</span><button className="mp-text-button" type="button" onClick={() => set({ precoManual: item.precoManual == null ? c.precoTabela : null })}>{item.precoManual == null ? "Usar preço manual" : "Voltar à tabela"}</button></div>
+    {campanha && <div className="mp-campaign"><div><span>Campanha de outubro</span><small>4,5% · válida até 31/10/2026</small></div>
+      <button type="button" aria-pressed={item.campanhaPct === campanha[0].pct} onClick={() => set({ campanhaPct: item.campanhaPct === campanha[0].pct ? 0 : campanha[0].pct })}>{item.campanhaPct === campanha[0].pct ? "Remover 4,5%" : "Aplicar 4,5%"}</button>
+    </div>}
+    <details className="mp-discounts"><summary>Descontos e ajustes <span>· {item.qtdePct == null && item.logisticaPct == null ? "automático" : "manual"}</span></summary>
+      <div className="mp-discount-grid">
+        <Field label="Desconto por volume" hint={`Faixa do pedido: ${fmt(volumeTotalPedido, 0)} kg`}><PctInput value={(c.qtdeEfetivo * 100).toFixed(2)} auto={item.qtdePct == null} onChange={(v) => set({ qtdePct: v / 100 })} /></Field>
+        <Field label="Desconto de logística"><PctInput value={(c.logEfetivo * 100).toFixed(2)} auto={item.logisticaPct == null} onChange={(v) => set({ logisticaPct: v / 100 })} /></Field>
+        <Field label="Campanha por item"><PctInput value={item.campanhaPct} onChange={(v) => set({ campanhaPct: v })} /></Field>
+        <Field label="AD2 por item"><PctInput value={item.ad2Pct} onChange={(v) => set({ ad2Pct: v })} /></Field>
       </div>
-
-      {item.precoManual == null ? (
-        <Field label="Produto">
-          <select
-            value={item.produtoIdx}
-            onChange={(e) => {
-              const idx = parseInt(e.target.value);
-              set({ produtoIdx: idx, pesoSaco: PRODUTOS[idx].peso });
-            }}
-            className="w-full bg-white border border-[#d8d8d2] rounded-md px-3 py-2.5 text-[#1a1a1a] text-[15px] focus:outline-none focus:border-[#b8860b]"
-          >
-            {CATEGORIAS.map((cat) => (
-              <optgroup key={cat} label={cat}>
-                {PRODUTOS.map((p, i) => (p.cat === cat ? <option key={p.cod} value={i}>{p.nome}</option> : null))}
-              </optgroup>
-            ))}
-          </select>
-        </Field>
-      ) : (
-        <Field label="Preço tabela (R$/kg) — manual">
-          <input
-            type="number"
-            step="0.0001"
-            value={item.precoManual}
-            onChange={(e) => set({ precoManual: parseFloat(e.target.value) || 0 })}
-            className="w-full bg-white border border-[#d8d8d2] rounded-md px-3 py-2.5 mono text-[15px] focus:outline-none focus:border-[#b8860b]"
-          />
-        </Field>
-      )}
-
-      <div className="flex items-center justify-between bg-[#fbfbf9] rounded-md px-3 py-2 border border-[#e2e2dc]">
-        <span className="text-[12px] text-[#5f5f58]">
-          Preço tabela {item.precoManual == null ? `(${prod.cod})` : ""}
-        </span>
-        <div className="flex items-center gap-2">
-          <span className="mono text-[14px] text-[#b8860b] font-semibold">{fmtMoney(c.precoTabela)}/kg</span>
-          <button
-            onClick={() => set({ precoManual: item.precoManual == null ? c.precoTabela : null })}
-            className="text-[10px] text-[#6f6f68] underline underline-offset-2"
-          >
-            {item.precoManual == null ? "manual" : "lista"}
-          </button>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        <Field label="Peso do saco (kg)">
-          <input
-            type="number"
-            step="0.5"
-            value={item.pesoSaco}
-            onChange={(e) => set({ pesoSaco: parseFloat(e.target.value) || 0 })}
-            className="w-full bg-white border border-[#d8d8d2] rounded-md px-3 py-2.5 mono text-[15px] focus:outline-none focus:border-[#b8860b]"
-          />
-        </Field>
-        <Field label="Qtde. de sacos">
-          <input
-            type="number"
-            step="1"
-            value={item.qtdeSacos}
-            onChange={(e) => set({ qtdeSacos: parseFloat(e.target.value) || 0 })}
-            className="w-full bg-white border border-[#d8d8d2] rounded-md px-3 py-2.5 mono text-[15px] focus:outline-none focus:border-[#b8860b]"
-          />
-        </Field>
-      </div>
-
-      <div className="flex items-center justify-between bg-[#fbfbf9] rounded-md px-3 py-2 border border-[#e2e2dc]">
-        <span className="text-[12px] text-[#5f5f58]">Volume</span>
-        <span className="mono text-[13px] text-[#3a3a35]">{fmt(c.volume, 0)} kg</span>
-      </div>
-
-      {/* Descontos por item */}
-      <div className="grid grid-cols-2 gap-3">
-        <Field label="Qtde." hint={`faixa: ${fmt(volumeTotalPedido, 0)} kg (pedido)`}>
-          <PctInput value={(c.qtdeEfetivo * 100).toFixed(2)} auto={item.qtdePct == null} onChange={(v) => set({ qtdePct: v / 100 })} />
-        </Field>
-        <Field label="Logística">
-          <PctInput value={(c.logEfetivo * 100).toFixed(2)} auto={item.logisticaPct == null} onChange={(v) => set({ logisticaPct: v / 100 })} />
-        </Field>
-      </div>
-      {(item.qtdePct != null || item.logisticaPct != null) && (
-        <button onClick={() => set({ qtdePct: null, logisticaPct: null })} className="text-[11px] text-[#b8860b] underline underline-offset-2">
-          voltar ao automático
-        </button>
-      )}
-
-      {/* Campanha de Outubro/2026 disponível para este produto */}
-      {item.precoManual == null && CAMPANHAS_OUTUBRO_2026[prod.cod] && (
-        <div className="space-y-1.5">
-          <div className="text-[10px] uppercase tracking-wider text-[#6f6f68] font-semibold">
-            Campanha Outubro/26 · até 31/10/2026 · toque para somar
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            {CAMPANHAS_OUTUBRO_2026[prod.cod].map((c, i) => (
-              <button
-                key={i}
-                onClick={() => set({ campanhaPct: (parseFloat(item.campanhaPct) || 0) + c.pct })}
-                className="text-[11px] font-mono bg-[#c45c3a]/10 hover:bg-[#c45c3a]/20 border border-[#c45c3a]/60 text-[#a8431f] rounded-md px-2 py-1 transition-colors"
-              >
-                +{c.pct}% <span className="text-[#5f5f58]">{c.origem}</span>
-              </button>
-            ))}
-            {(parseFloat(item.campanhaPct) || 0) > 0 && (
-              <button
-                onClick={() => set({ campanhaPct: 0 })}
-                className="text-[11px] text-[#6f6f68] hover:text-red-400 underline underline-offset-2 px-1"
-              >
-                limpar
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* AD2 e Campanha - variam por item */}
-      <div className="grid grid-cols-2 gap-3">
-        <Field label="Campanha" hint="por item">
-          <PctInput value={item.campanhaPct} onChange={(v) => set({ campanhaPct: v })} />
-        </Field>
-        <Field label="AD2" hint="por item">
-          <PctInput value={item.ad2Pct} onChange={(v) => set({ ad2Pct: v })} />
-        </Field>
-      </div>
-
-      <div className="flex items-center justify-between border-t border-[#d8d8d2] pt-3">
-        <span className="text-[12px] uppercase tracking-wide text-[#5f5f58]">Subtotal</span>
-        <div className="text-right">
-          <div className="mono text-[15px] text-[#1a1a1a] font-bold">{fmtMoney(c.total)}</div>
-          <div className="mono text-[11px] text-[#6f6f68]">{fmtMoney(c.precoKg)}/kg · {fmtMoney(c.precoSaco)}/saco</div>
-        </div>
-      </div>
-    </section>
-  );
+      {(item.qtdePct != null || item.logisticaPct != null) && <button className="mp-text-button" type="button" onClick={() => set({ qtdePct: null, logisticaPct: null })}>Voltar aos descontos automáticos</button>}
+    </details>
+    <div className="mp-item-values"><div><span>Preço final / kg</span><strong>{fmtMoney(c.precoKg)}</strong></div><div><span>Preço por saco</span><strong>{fmtMoney(c.precoSaco)}</strong></div><div><span>Subtotal</span><strong>{fmtMoney(c.total)}</strong></div></div>
+  </section>;
 }
 
 export default function PriceCalculator() {
@@ -1071,312 +983,53 @@ export default function PriceCalculator() {
   const [prazoIdx, setPrazoIdx] = useState(0);
   const [encargoManual, setEncargoManual] = useState(null);
   const [observacoes, setObservacoes] = useState("");
-  const [obsAberto, setObsAberto] = useState(false);
+  const [exporting, setExporting] = useState(null);
+  const [exportError, setExportError] = useState("");
 
   const encargo = encargoManual == null ? PRAZOS[prazoIdx].encargo : encargoManual;
-
-  // Volume total do pedido = soma do volume de cada item. É esse volume que enquadra a faixa
-  // de desconto de qtde e logística — a mesma faixa vale para TODOS os produtos do pedido.
   const volumeTotalPedido = items.reduce((s, it) => s + (it.qtdeSacos || 0) * (it.pesoSaco || 0), 0);
   const faixaPedido = faixaPorVolume(volumeTotalPedido);
-
-  const calcs = useMemo(
-    () => items.map((it) => calcItem(it, mtTier, encargo, faixaPedido)),
-    [items, mtTier, encargo, faixaPedido]
-  );
-
+  const calcs = useMemo(() => items.map((it) => calcItem(it, mtTier, encargo, faixaPedido)), [items, mtTier, encargo, faixaPedido]);
   const totalSacos = items.reduce((s, it) => s + (it.qtdeSacos || 0), 0);
   const totalKg = calcs.reduce((s, c) => s + c.volume, 0);
   const totalReais = calcs.reduce((s, c) => s + c.total, 0);
-
   const updateItem = (id, next) => setItems((prev) => prev.map((it) => (it.id === id ? next : it)));
   const removeItem = (id) => setItems((prev) => prev.filter((it) => it.id !== id));
   const addItem = () => setItems((prev) => [...prev, novoItem(0)]);
+  const exportar = async (tipo) => {
+    setExporting(tipo); setExportError("");
+    try {
+      const dados = { items, calcs, totalSacos, totalKg, totalReais, prazo: PRAZOS[prazoIdx].nome };
+      if (tipo === "cliente") await gerarImagemOrcamento(dados);
+      else await gerarImagemParametrosCotacao({ ...dados, mtTier, encargo, observacoes });
+    } catch (e) { setExportError(`Erro ao gerar imagem: ${e.message || "Tente novamente."}`); }
+    finally { setExporting(null); }
+  };
 
-  return (
-    <div className="min-h-screen bg-[#f2f2ef] text-[#1a1a1a] pb-44" style={{ fontFamily: "'IBM Plex Sans', ui-sans-serif, system-ui" }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
-        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { opacity: 0.4; }
-        .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
-      `}</style>
-
-      {/* Header - orçamento para cliente */}
-      <div className="relative bg-white border-b border-[#d8d8d2] px-5 pt-6 pb-5">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="h-10 flex items-center rounded overflow-hidden">
-            <img src={MAISA_LOGO} alt="Mais@ Pecuária Estratégica" className="h-10 w-auto object-contain" />
+  return <div className="maisa-app">
+    <header className="mp-top"><div className="mp-brand"><img className="mp-maisa-logo" src={MAISA_LOGO} alt="Mais@ Pecuária Estratégica" /><span className="mp-divider" aria-hidden="true" /><div className="mp-title">Formação de Preço<small>Nutrição animal · Tortuga</small></div></div><img className="mp-tortuga" src={TORTUGA_LOGO} alt="Tortuga" /></header>
+    <div className="mp-layout">
+      <main className="mp-main">
+        <div className="mp-page-heading"><h1>Novo orçamento</h1><span className="mp-date">{new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })}</span></div>
+        <section className="mp-panel" aria-label="Condições do pedido"><h2 className="mp-section-title">Condições do pedido</h2>
+          <div className="mp-conditions"><div><div className="mp-label" style={{ marginBottom: 7 }}>Tabela de preços</div><div className="mp-regions" role="group" aria-label="Região da tabela">{["mt1", "mt2", "mt3", "go"].map((t) => <button type="button" key={t} aria-pressed={mtTier === t} onClick={() => setMtTier(t)}>{t.toUpperCase()}</button>)}</div></div>
+            <Field label="Condição de pagamento"><select value={prazoIdx} onChange={(e) => { setPrazoIdx(parseInt(e.target.value)); setEncargoManual(null); }}>{PRAZOS.map((p, i) => <option key={p.nome} value={i}>{p.nome}</option>)}</select></Field>
           </div>
-          <span className="text-[#9a9a93] text-base font-light">×</span>
-          <div className="h-10 flex items-center bg-white rounded px-2">
-            <img src={TORTUGA_LOGO} alt="Tortuga" className="h-7 w-auto object-contain" />
-          </div>
-        </div>
-        <div>
-          <div className="text-[11px] uppercase tracking-[0.2em] text-[#b8860b] font-semibold mb-1">Orçamento de Ração</div>
-          <h1 className="text-2xl font-bold tracking-tight leading-none">Formação de Preço</h1>
-        </div>
-      </div>
-
-      <div className="px-5 pt-5 space-y-5">
-        {/* Condições comerciais (valem para todos os itens) */}
-        <section className="bg-white border border-[#d8d8d2] rounded-xl p-4 space-y-4">
-          <h2 className="text-[13px] font-semibold uppercase tracking-wide text-[#3a3a35]">Condições do pedido</h2>
-          <Field label="Tabela de preço (todos os produtos)">
-            <div className="grid grid-cols-4 gap-2">
-              {["mt1", "mt2", "mt3", "go"].map((t) => (
-                <button
-                  key={t}
-                  onClick={() => setMtTier(t)}
-                  className={`rounded-md py-2 text-[13px] font-semibold uppercase mono border transition-colors ${
-                    mtTier === t ? "bg-[#b8860b] text-white border-[#b8860b]" : "bg-[#fbfbf9] text-[#5f5f58] border-[#c8c8c2]"
-                  }`}
-                >
-                  {t.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          </Field>
-          <Field label="Condição de pagamento">
-            <select
-              value={prazoIdx}
-              onChange={(e) => { setPrazoIdx(parseInt(e.target.value)); setEncargoManual(null); }}
-              className="w-full bg-white border border-[#d8d8d2] rounded-md px-3 py-2.5 text-[#1a1a1a] text-[15px] focus:outline-none focus:border-[#b8860b]"
-            >
-              {PRAZOS.map((p, i) => (
-                <option key={p.nome} value={i}>{p.nome} — encargo {fmt(p.encargo * 100, 2)}%</option>
-              ))}
-            </select>
-          </Field>
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="ICMS" hint="fixo, incluso na tabela">
-              <div className="w-full bg-[#fbfbf9] border border-[#e2e2dc] rounded-md px-3 py-2.5 mono text-[15px] text-[#5f5f58] flex items-center justify-between">
-                <span>{fmt(ICMS * 100, 0)} %</span>
-                <span className="bg-[#e2e2dc] text-[#5f5f58] text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm">fixo</span>
-              </div>
-            </Field>
-            <Field label="Encargo aplicado">
-              <PctInput value={(encargo * 100).toFixed(2)} auto={encargoManual == null} onChange={(v) => setEncargoManual(v / 100)} />
-            </Field>
-          </div>
+          <div className="mp-condition-meta"><span>ICMS <strong>18% fixo</strong></span><span>Encargo <strong>{fmt(encargo * 100, 2)}%</strong></span><details><summary>Ajustar encargo</summary><div className="mp-charge"><Field label="Encargo aplicado"><PctInput value={(encargo * 100).toFixed(2)} auto={encargoManual == null} onChange={(v) => setEncargoManual(v / 100)} /></Field><button className="mp-button" type="button" onClick={() => setEncargoManual(null)}>Usar o prazo selecionado</button></div></details></div>
         </section>
-
-        {/* Itens do pedido */}
-        {items.map((it, idx) => (
-          <ItemCard
-            key={it.id}
-            item={it}
-            index={idx}
-            mtTier={mtTier}
-            encargo={encargo}
-            faixaPedido={faixaPedido}
-            volumeTotalPedido={volumeTotalPedido}
-            onChange={(next) => updateItem(it.id, next)}
-            onRemove={() => removeItem(it.id)}
-            canRemove={items.length > 1}
-          />
-        ))}
-
-        {/* Botão adicionar produto */}
-        <button
-          onClick={addItem}
-          className="w-full border-2 border-dashed border-[#d8d8d2] hover:border-[#b8860b] rounded-xl py-3.5 text-[14px] font-semibold text-[#b8860b] transition-colors flex items-center justify-center gap-2"
-        >
-          <span className="text-xl leading-none">+</span> Adicionar produto
-        </button>
-
-        {/* Observações internas (só aparece na cotação, não no cliente) */}
-        {!obsAberto && observacoes.trim() === "" ? (
-          <button
-            onClick={() => setObsAberto(true)}
-            className="w-full border border-dashed border-[#d8d8d2] hover:border-[#c45c3a] rounded-xl py-3 text-[13px] font-semibold text-[#5f5f58] hover:text-[#a8431f] transition-colors flex items-center justify-center gap-2"
-          >
-            <span className="text-lg leading-none">+</span> Adicionar observações internas
-            <span className="text-[9px] font-normal uppercase tracking-wider bg-[#c45c3a]/12 text-[#a8431f] px-1.5 py-0.5 rounded-sm">uso interno</span>
-          </button>
-        ) : (
-          <section className="bg-white border border-[#d8d8d2] rounded-xl p-4 space-y-3" style={{ borderLeft: "4px solid #c45c3a" }}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <h3 className="text-[12px] font-bold uppercase tracking-wide text-[#a8431f]">Observações internas</h3>
-                <span className="text-[9px] font-bold uppercase tracking-wider bg-[#c45c3a]/12 text-[#a8431f] px-1.5 py-0.5 rounded-sm">uso interno</span>
-              </div>
-              <button
-                onClick={() => { setObsAberto(false); }}
-                className="text-[11px] text-[#5f5f58] hover:text-red-400 underline underline-offset-2"
-              >
-                esconder
-              </button>
-            </div>
-            <textarea
-              value={observacoes}
-              onChange={(e) => setObservacoes(e.target.value)}
-              placeholder="Ex: Chapa, carga em palete, entrega direta na fazenda, cliente pediu nota fracionada, etc."
-              rows={4}
-              className="w-full bg-[#fbfbf9] border border-[#d8d8d2] rounded-md px-3 py-2.5 text-[#1a1a1a] text-[13px] focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/40 transition-colors resize-none placeholder:text-[#9a9a93]"
-            />
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] text-[#6f6f68]">
-                Aparece apenas na imagem de Parâmetros Cotação
-              </span>
-              {observacoes.trim() !== "" && (
-                <button
-                  onClick={() => { setObservacoes(""); }}
-                  className="text-[11px] text-[#6f6f68] hover:text-red-400 underline underline-offset-2"
-                >
-                  limpar
-                </button>
-              )}
-            </div>
-          </section>
-        )}
-
-        {/* Resumo do pedido para o cliente */}
-        <section id="resumo-pedido" className="bg-white text-[#1a1a1a] rounded-xl p-5" style={{ border: "1px solid #dcdcd8" }}>
-          {/* Cabeçalho executivo */}
-          <div className="flex items-start justify-between gap-3 pb-4 mb-4" style={{ borderBottom: "1px solid #c45c3a" }}>
-            <div>
-              <div className="text-[9px] uppercase font-bold tracking-[0.2em]" style={{ color: "#c45c3a" }}>Orçamento</div>
-              <div className="text-[15px] font-bold mt-1" style={{ color: "#1a1a1a" }}>
-                {new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })}
-              </div>
-              <div className="text-[9px] mt-1 font-medium" style={{ color: "#7c7c7c" }}>
-                MAIS@ PECUÁRIA ESTRATÉGICA · SINOP/MT
-              </div>
-            </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <img src={TORTUGA_LOGO} alt="Tortuga" className="h-7 w-auto object-contain" />
-              <img src={MAISA_LOGO} alt="Mais@" className="h-7 w-auto object-contain" />
-            </div>
-          </div>
-
-          {/* Tabela */}
-          <div className="-mx-5 overflow-x-auto">
-            <div className="px-5 min-w-[560px]">
-              <table className="w-full text-[11px] border-collapse">
-                <thead>
-                  <tr style={{ borderBottom: "1px solid #c45c3a" }}>
-                    <th className="text-left py-2.5 pr-2 font-bold uppercase tracking-wider text-[9px]" style={{ color: "#7c7c7c" }}>Produto</th>
-                    <th className="text-center py-2.5 px-1 font-bold uppercase tracking-wider text-[9px]" style={{ color: "#7c7c7c" }}>Sacos</th>
-                    <th className="text-center py-2.5 px-1 font-bold uppercase tracking-wider text-[9px]" style={{ color: "#7c7c7c" }}>Peso</th>
-                    <th className="text-center py-2.5 px-1 font-bold uppercase tracking-wider text-[9px]" style={{ color: "#7c7c7c" }}>Vol.</th>
-                    <th className="text-right py-2.5 px-1 font-bold uppercase tracking-wider text-[9px]" style={{ color: "#7c7c7c" }}>R$/kg</th>
-                    <th className="text-right py-2.5 px-1 font-bold uppercase tracking-wider text-[9px]" style={{ color: "#7c7c7c" }}>R$/saco</th>
-                    <th className="text-right py-2.5 pl-2 font-bold uppercase tracking-wider text-[9px]" style={{ color: "#7c7c7c" }}>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {items.map((it, idx) => {
-                    const c = calcs[idx];
-                    const nome = it.precoManual == null ? PRODUTOS[it.produtoIdx].nome : "Produto avulso";
-                    return (
-                      <tr key={it.id} style={{ background: idx % 2 === 1 ? "#e8e8e4" : "transparent", borderBottom: "1px solid #dcdcd8" }}>
-                        <td className="py-3 pr-2 font-sans text-[12px] font-medium" style={{ color: "#1a1a1a" }}>
-                          <span className="inline-flex items-center gap-2">
-                            <span className="inline-block w-2 h-2 rounded-full shrink-0" style={{ background: corItem(idx) }} />
-                            {nome}
-                          </span>
-                        </td>
-                        <td className="py-3 px-1 text-center mono" style={{ color: "#1a1a1a" }}>{fmt(it.qtdeSacos, 0)}</td>
-                        <td className="py-3 px-1 text-center mono" style={{ color: "#1a1a1a" }}>{fmt(it.pesoSaco, 0)}</td>
-                        <td className="py-3 px-1 text-center mono" style={{ color: "#1a1a1a" }}>{fmt(c.volume, 0)}</td>
-                        <td className="py-3 px-1 text-right mono" style={{ color: "#1a1a1a" }}>{fmt(c.precoKg, 2)}</td>
-                        <td className="py-3 px-1 text-right mono" style={{ color: "#1a1a1a" }}>{fmt(c.precoSaco, 2)}</td>
-                        <td className="py-3 pl-2 text-right mono font-bold" style={{ color: "#2b2b2b" }}>{fmtMoney(c.total)}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Bloco Total do Pedido (à direita) */}
-          <div className="mt-5 flex justify-end">
-            <div className="text-right pl-6" style={{ borderTop: "2px solid #c45c3a", paddingTop: "12px", minWidth: "60%" }}>
-              <div className="text-[9px] font-bold uppercase tracking-[0.15em]" style={{ color: "#7c7c7c" }}>
-                Total do pedido · {fmt(totalSacos, 0)} sacos · {fmt(totalKg, 0)} kg
-              </div>
-              <div className="mono font-bold text-[22px] mt-1" style={{ color: "#2b2b2b" }}>
-                {fmtMoney(totalReais)}
-              </div>
-            </div>
-          </div>
-
-          {/* Condição de pagamento — bloco discreto com barra dourada */}
-          <div className="mt-5 pl-4 py-3" style={{ background: "#e8e8e4", borderLeft: "3px solid #c45c3a" }}>
-            <div className="text-[9px] font-bold uppercase tracking-[0.15em]" style={{ color: "#7c7c7c" }}>
-              Condição de pagamento
-            </div>
-            <div className="text-[15px] font-bold mt-0.5" style={{ color: "#2b2b2b" }}>
-              {PRAZOS[prazoIdx].nome}
-            </div>
-          </div>
-
-          {/* Rodapé com credenciais e nota */}
-          <div className="mt-5 pt-4 text-center" style={{ borderTop: "1px solid #dcdcd8" }}>
-            <div className="text-[10px] font-bold" style={{ color: "#2b2b2b" }}>
-              Zootecnista CRMV-MT 01122-ZP · Especialista em Nutrição de Ruminantes
-            </div>
-            <div className="text-[9px] mt-1 font-medium" style={{ color: "#7c7c7c" }}>
-              Consultor e Representante DSM/Tortuga
-            </div>
-            <div className="text-[8px] italic mt-2" style={{ color: "#7c7c7c" }}>
-              Preços à vista com 18% de ICMS incluso. Orçamento válido conforme condições comerciais vigentes.
-            </div>
-          </div>
-        </section>
-
-        {/* Botões exportar - duas imagens diferentes */}
-        <div className="grid grid-cols-2 gap-3">
-          <button
-            onClick={() =>
-              gerarImagemOrcamento({
-                items,
-                calcs,
-                totalSacos,
-                totalKg,
-                totalReais,
-                prazo: PRAZOS[prazoIdx].nome,
-              }).catch((e) => alert("Erro ao gerar imagem: " + e.message))
-            }
-            className="bg-[#b8860b] hover:bg-[#a8780a] text-white rounded-xl py-3.5 text-[12px] font-bold uppercase tracking-wide transition-colors flex flex-col items-center justify-center text-center px-2"
-          >
-            <span>Orçamento Cliente</span>
-            <span className="text-[9px] font-normal opacity-70 normal-case mt-0.5">imagem para envio</span>
-          </button>
-          <button
-            onClick={() =>
-              gerarImagemParametrosCotacao({
-                items,
-                calcs,
-                totalSacos,
-                totalKg,
-                totalReais,
-                prazo: PRAZOS[prazoIdx].nome,
-                mtTier,
-                encargo,
-                observacoes,
-              }).catch((e) => alert("Erro ao gerar imagem: " + e.message))
-            }
-            className="bg-white border-2 border-[#b8860b] hover:bg-[#b8860b]/10 text-[#b8860b] rounded-xl py-3.5 text-[12px] font-bold uppercase tracking-wide transition-colors flex flex-col items-center justify-center text-center px-2"
-          >
-            <span>Parâmetros Cotação</span>
-            <span className="text-[9px] font-normal opacity-70 normal-case mt-0.5">com todos os descontos</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Sticky total */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#ecece7] border-t border-[#d8d8d2] px-5 py-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="text-[10px] uppercase tracking-wide text-[#5f5f58]">Total do pedido</div>
-            <div className="text-[11px] text-[#6f6f68] mono">{fmt(totalSacos, 0)} sacos · {fmt(totalKg, 0)} kg</div>
-          </div>
-          <div className="mono text-2xl font-bold text-[#b8860b]">{fmtMoney(totalReais)}</div>
-        </div>
-      </div>
+        <div className="mp-row-title"><h2>Produtos do pedido <span className="mp-count">{items.length}</span></h2><button className="mp-button" type="button" onClick={addItem}><Icon name="plus" />Adicionar produto</button></div>
+        <div className="mp-cards">{items.map((it, idx) => <ItemCard key={it.id} item={it} index={idx} mtTier={mtTier} encargo={encargo} faixaPedido={faixaPedido} volumeTotalPedido={volumeTotalPedido} onChange={(next) => updateItem(it.id, next)} onRemove={() => removeItem(it.id)} canRemove={items.length > 1} />)}</div>
+        <details className="mp-panel mp-notes"><summary>Observações internas{observacoes.trim() ? " · preenchidas" : ""}</summary><Field label="Aparecem apenas na imagem de parâmetros da cotação"><textarea value={observacoes} onChange={(e) => setObservacoes(e.target.value)} rows={3} aria-label="Observações internas" placeholder="Entrega, carga, embalagem ou outras condições…" /></Field>{observacoes.trim() && <button className="mp-text-button" type="button" onClick={() => setObservacoes("")}>Limpar observações</button>}</details>
+      </main>
+      <aside className="mp-panel mp-summary" aria-label="Resumo do pedido">
+        <div className="mp-summary-head"><h2>Resumo do pedido</h2><span className="mp-status"><Icon name="check" />Atualizado</span></div>
+        <div className="mp-order-list">{items.map((it, idx) => <div className="mp-order-line" key={it.id}><div><strong>{it.precoManual == null ? PRODUTOS[it.produtoIdx].nome : "Produto avulso"}</strong><small>{fmt(it.qtdeSacos, 0)} sacos × {fmt(it.pesoSaco, 1)} kg</small></div><strong>{fmtMoney(calcs[idx].total)}</strong></div>)}</div>
+        <div className="mp-summary-stats"><span><strong>{fmt(totalSacos, 0)}</strong> sacos</span><span><strong>{fmt(totalKg, 0)}</strong> kg</span><span>{mtTier.toUpperCase()}</span></div>
+        <div className="mp-total" aria-live="polite" aria-atomic="true"><small>Total do pedido</small><strong>{fmtMoney(totalReais)}</strong><span>{PRAZOS[prazoIdx].nome}</span></div>
+        <div className="mp-summary-actions"><button type="button" className="mp-button mp-gold-button" disabled={exporting != null} onClick={() => exportar("cliente")}><Icon name="image" />{exporting === "cliente" ? "Gerando imagem…" : "Gerar orçamento do cliente"}</button><button type="button" className="mp-button" disabled={exporting != null} onClick={() => exportar("interno")}><Icon name="settings" />{exporting === "interno" ? "Gerando imagem…" : "Parâmetros da cotação"}</button>{exportError && <p className="mp-error" role="alert">{exportError}</p>}</div>
+        <div className="mp-summary-foot">Tabela de 16/10/2026 · valores em reais</div>
+      </aside>
     </div>
-  );
+    <footer className="mp-footer"><span>Zootecnista CRMV-MT 01122-ZP · Sinop/MT</span><span>Mais@ · Pecuária Estratégica</span></footer>
+  </div>;
 }
