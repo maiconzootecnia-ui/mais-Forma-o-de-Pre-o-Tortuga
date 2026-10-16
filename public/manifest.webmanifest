@@ -1,0 +1,25 @@
+{
+  "id": "/",
+  "name": "Mais@ · Formação de Preço",
+  "short_name": "Mais@ · Formação de Preço",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#14201a",
+  "background_color": "#f2f2ef",
+  "icons": [
+    {
+      "src": "/icons/maisa-v1-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/maisa-v1-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
