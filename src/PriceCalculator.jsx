@@ -3,44 +3,44 @@ import React, { useState, useMemo } from "react";
 const TORTUGA_LOGO = "data:image/jpeg;base64,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";
 const MAISA_LOGO = "data:image/jpeg;base64,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";
 
-// ---- Tabela de preços TORTUGA (dsm-firmenich) - Nutrição - 03/07/2026 ----
+// ---- Tabela de preços TORTUGA (dsm-firmenich) - Nutrição e ECO - 16/10/2026 ----
 // Preços à vista com 18% de ICMS incluso, em R$/kg posto cliente. mt1/mt2/mt3 = colunas do PDF.
 
 const PRODUTOS = [
   // CONFINAMENTO
-  { cod: "BRT487A025", nome: "FOSBOVI CONFINAMENTO", cat: "Confinamento", peso: 25, mt1: 7.2633, mt2: 7.2848, mt3: 7.5737 },
-  { cod: "BRT352A025", nome: "FOSBOVI CONFINAMENTO PLUS", cat: "Confinamento", peso: 25, mt1: 8.9834, mt2: 9.0049, mt3: 9.2938 },
-  { cod: "BRT353A025", nome: "FOSBOVI CONFINAMENTO PLUS N", cat: "Confinamento", peso: 25, mt1: 8.0159, mt2: 8.0374, mt3: 8.3263 },
-  { cod: "BRT346A025", nome: "FOSBOVI CONFINAMENTO PRIME", cat: "Confinamento", peso: 25, mt1: 10.7572, mt2: 10.7787, mt3: 11.0677 },
-  { cod: "BRT350A025", nome: "FOSBOVI CONFINAMENTO PRIME 5.0", cat: "Confinamento", peso: 25, mt1: 14.7618, mt2: 14.7833, mt3: 15.0722 },
-  { cod: "BRT351A025", nome: "FOSBOVI CONFINAMENTO PRIME 5.0 N", cat: "Confinamento", peso: 25, mt1: 11.886, mt2: 11.9075, mt3: 12.1965 },
-  { cod: "BRT348A025", nome: "FOSBOVI CONFINAMENTO PRIME DDG", cat: "Confinamento", peso: 25, mt1: 9.2656, mt2: 9.2871, mt3: 9.576 },
-  { cod: "BRT347A025", nome: "FOSBOVI CONFINAMENTO PRIME N", cat: "Confinamento", peso: 25, mt1: 9.7763, mt2: 9.7978, mt3: 10.0867 },
-  { cod: "BRT354A025", nome: "FOSBOVI SEMICONFINAMENTO 10 PRIME N", cat: "Confinamento", peso: 25, mt1: 7.8815, mt2: 7.903, mt3: 8.1919 },
+  { cod: "BRT487A025", nome: "FOSBOVI CONFINAMENTO", cat: "Confinamento", peso: 25, mt1: 7.0617, mt2: 7.0832, mt3: 7.3722 },
+  { cod: "BRT352A025", nome: "FOSBOVI CONFINAMENTO PLUS", cat: "Confinamento", peso: 25, mt1: 8.7281, mt2: 8.7496, mt3: 9.0385 },
+  { cod: "BRT353A025", nome: "FOSBOVI CONFINAMENTO PLUS N", cat: "Confinamento", peso: 25, mt1: 7.7471, mt2: 7.7686, mt3: 8.0575 },
+  { cod: "BRT346A025", nome: "FOSBOVI CONFINAMENTO PRIME", cat: "Confinamento", peso: 25, mt1: 10.3944, mt2: 10.4159, mt3: 10.7048 },
+  { cod: "BRT350A025", nome: "FOSBOVI CONFINAMENTO PRIME 5.0", cat: "Confinamento", peso: 25, mt1: 14.3318, mt2: 14.3533, mt3: 14.6422 },
+  { cod: "BRT351A025", nome: "FOSBOVI CONFINAMENTO PRIME 5.0 N", cat: "Confinamento", peso: 25, mt1: 11.5501, mt2: 11.5716, mt3: 11.8605 },
+  { cod: "BRT348A025", nome: "FOSBOVI CONFINAMENTO PRIME DDG", cat: "Confinamento", peso: 25, mt1: 8.9162, mt2: 8.9377, mt3: 9.2266 },
+  { cod: "BRT347A025", nome: "FOSBOVI CONFINAMENTO PRIME N", cat: "Confinamento", peso: 25, mt1: 9.4000, mt2: 9.4215, mt3: 9.7104 },
+  { cod: "BRT354A025", nome: "FOSBOVI SEMICONFINAMENTO 10 PRIME N", cat: "Confinamento", peso: 25, mt1: 7.8815, mt2: 7.9030, mt3: 8.1919 },
   // GADO DE CORTE BOI VERDE
-  { cod: "BRT698A025", nome: "FOSBOVI ADVANCE", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 8.1502, mt2: 8.1717, mt3: 8.4607 },
-  { cod: "BRR008A030", nome: "FOSBOVI ENGORDA", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 7.7605, mt2: 7.782, mt3: 8.071 },
-  { cod: "BRQ325A025", nome: "FOSBOVI MULTI ADVANCE", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 7.5186, mt2: 7.5401, mt3: 7.8291 },
-  { cod: "BRQ194A025", nome: "FOSBOVI NÚCLEO", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 13.1895, mt2: 13.211, mt3: 13.5 },
-  { cod: "BRM477A025", nome: "FOSBOVI NÚCLEO ADVANCE", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 15.4606, mt2: 15.4821, mt3: 15.771 },
-  { cod: "BRQ284A025", nome: "FOSBOVI NÚCLEO IMPACT", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 10.3138, mt2: 10.3353, mt3: 10.6242 },
-  { cod: "BRQ195A025", nome: "FOSBOVI NÚCLEO PLUS", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 14.4527, mt2: 14.4742, mt3: 14.7632 },
-  { cod: "BRQ285A025", nome: "FOSBOVI NÚCLEO PRIMA", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 9.4269, mt2: 9.4484, mt3: 9.7373 },
-  { cod: "BRQ403A025", nome: "FOSBOVI NÚCLEO REPRODUÇÃO MAX", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 13.9958, mt2: 14.0173, mt3: 14.3063 },
-  { cod: "BRR010C030", nome: "FOSBOVI PAMPERO", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 9.6822, mt2: 9.7037, mt3: 9.9926 },
-  { cod: "BRR992M025", nome: "FOSBOVI PLUS", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 7.7471, mt2: 7.7686, mt3: 8.0575 },
-  { cod: "BRR011A030", nome: "FOSBOVI REPRODUÇÃO", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 9.6822, mt2: 9.7037, mt3: 9.9926 },
-  { cod: "BRR015A030", nome: "FOSCROMO", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 9.4806, mt2: 9.5021, mt3: 9.791 },
+  { cod: "BRT698A025", nome: "FOSBOVI ADVANCE", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 7.8412, mt2: 7.8627, mt3: 8.1516 },
+  { cod: "BRR008A030", nome: "FOSBOVI ENGORDA", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 7.4649, mt2: 7.4864, mt3: 7.7753 },
+  { cod: "BRQ325A025", nome: "FOSBOVI MULTI ADVANCE", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 7.2364, mt2: 7.2579, mt3: 7.5469 },
+  { cod: "BRQ194A025", nome: "FOSBOVI NÚCLEO", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 12.6789, mt2: 12.7004, mt3: 12.9893 },
+  { cod: "BRM477A025", nome: "FOSBOVI NÚCLEO ADVANCE", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 14.8559, mt2: 14.8774, mt3: 15.1663 },
+  { cod: "BRQ284A025", nome: "FOSBOVI NÚCLEO IMPACT", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 9.9241, mt2: 9.9456, mt3: 10.2345 },
+  { cod: "BRQ195A025", nome: "FOSBOVI NÚCLEO PLUS", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 13.8883, mt2: 13.9098, mt3: 14.1988 },
+  { cod: "BRQ285A025", nome: "FOSBOVI NÚCLEO PRIMA", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 9.0640, mt2: 9.0855, mt3: 9.3745 },
+  { cod: "BRQ403A025", nome: "FOSBOVI NÚCLEO REPRODUÇÃO MAX", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 13.4583, mt2: 13.4798, mt3: 13.7687 },
+  { cod: "BRR010C030", nome: "FOSBOVI PAMPERO", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 9.3194, mt2: 9.3409, mt3: 9.6298 },
+  { cod: "BRR992M025", nome: "FOSBOVI PLUS", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 7.4515, mt2: 7.4730, mt3: 7.7619 },
+  { cod: "BRR011A030", nome: "FOSBOVI REPRODUÇÃO", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 9.3194, mt2: 9.3409, mt3: 9.6298 },
+  { cod: "BRR015A030", nome: "FOSCROMO", cat: "Gado de Corte Boi Verde", peso: 30, mt1: 9.1178, mt2: 9.1393, mt3: 9.4282 },
   // GADO DE CORTE TQ
-  { cod: "BRR100A030", nome: "FOSBOVI 15", cat: "Gado de Corte TQ", peso: 30, mt1: 6.793, mt2: 6.8145, mt3: 7.1034 },
-  { cod: "BRR056A030", nome: "FOSBOVI 18", cat: "Gado de Corte TQ", peso: 30, mt1: 7.9218, mt2: 7.9433, mt3: 8.2322 },
-  { cod: "BRR101A030", nome: "FOSBOVI 20", cat: "Gado de Corte TQ", peso: 30, mt1: 8.4593, mt2: 8.4808, mt3: 8.7697 },
-  { cod: "BRR104A025", nome: "FOSBOVI 30", cat: "Gado de Corte TQ", peso: 25, mt1: 11.9667, mt2: 11.9882, mt3: 12.2771 },
-  { cod: "BRR102A025", nome: "FOSBOVI 40", cat: "Gado de Corte TQ", peso: 25, mt1: 15.3396, mt2: 15.3612, mt3: 15.6501 },
-  { cod: "BRM077A025", nome: "FOSBOVI BALANCE", cat: "Gado de Corte TQ", peso: 25, mt1: 6.3495, mt2: 6.371, mt3: 6.6599 },
-  { cod: "BRM080A025", nome: "FOSBOVI NÚCLEO BALANCE", cat: "Gado de Corte TQ", peso: 25, mt1: 10.9857, mt2: 11.0072, mt3: 11.2961 },
-  { cod: "BRR103A030", nome: "FOSBOVI PRONTO", cat: "Gado de Corte TQ", peso: 30, mt1: 5.3551, mt2: 5.3766, mt3: 5.6655 },
-  { cod: "BRR059A025", nome: "ULTRA PHÓS ENGORDA", cat: "Gado de Corte TQ", peso: 25, mt1: 8.1234, mt2: 8.1449, mt3: 8.4338 },
+  { cod: "BRR100A030", nome: "FOSBOVI 15", cat: "Gado de Corte TQ", peso: 30, mt1: 6.5377, mt2: 6.5592, mt3: 6.8481 },
+  { cod: "BRR056A030", nome: "FOSBOVI 18", cat: "Gado de Corte TQ", peso: 30, mt1: 7.6262, mt2: 7.6477, mt3: 7.9366 },
+  { cod: "BRR101A030", nome: "FOSBOVI 20", cat: "Gado de Corte TQ", peso: 30, mt1: 8.1368, mt2: 8.1583, mt3: 8.4472 },
+  { cod: "BRR104A025", nome: "FOSBOVI 30", cat: "Gado de Corte TQ", peso: 25, mt1: 11.5098, mt2: 11.5313, mt3: 11.8202 },
+  { cod: "BRR102A025", nome: "FOSBOVI 40", cat: "Gado de Corte TQ", peso: 25, mt1: 14.7484, mt2: 14.7699, mt3: 15.0588 },
+  { cod: "BRM077A025", nome: "FOSBOVI BALANCE", cat: "Gado de Corte TQ", peso: 25, mt1: 6.1211, mt2: 6.1426, mt3: 6.4315 },
+  { cod: "BRM080A025", nome: "FOSBOVI NÚCLEO BALANCE", cat: "Gado de Corte TQ", peso: 25, mt1: 10.5691, mt2: 10.5906, mt3: 10.8795 },
+  { cod: "BRR103A030", nome: "FOSBOVI PRONTO", cat: "Gado de Corte TQ", peso: 30, mt1: 5.1670, mt2: 5.1885, mt3: 5.4774 },
+  { cod: "BRR059A025", nome: "ULTRA PHÓS ENGORDA", cat: "Gado de Corte TQ", peso: 25, mt1: 7.8143, mt2: 7.8358, mt3: 8.1247 },
   // NÚCLEOS BOI VERDE
   // PROGRAMA DE LEITE
   { cod: "BRB321A025", nome: "BOVIGOLD", cat: "Programa de Leite", peso: 25, mt1: 8.7550, mt2: 8.7765, mt3: 9.0654 },
@@ -68,22 +68,22 @@ const PRODUTOS = [
   { cod: "BRT476A020", nome: "VICTUS DIGEST", cat: "Programa de Leite", peso: 20, mt1: 34.2740, mt2: 34.2955, mt3: 34.5844 },
   { cod: "BRM366A020", nome: "VICTUS THERMO", cat: "Programa de Leite", peso: 20, mt1: 29.9469, mt2: 29.9684, mt3: 30.2573 },
   // PROGRAMA DE SECA
-  { cod: "BRQ288A025", nome: "FOSBOVI NÚCLEO PROTEICO", cat: "Programa de Seca", peso: 25, mt1: 7.8143, mt2: 7.8358, mt3: 8.1247 },
-  { cod: "BRQ402A025", nome: "FOSBOVI NÚCLEO PROTEICO ADVANCE", cat: "Programa de Seca", peso: 25, mt1: 8.1234, mt2: 8.1449, mt3: 8.4338 },
-  { cod: "BRQ319A030", nome: "FOSBOVI PROTEICO 30 ADVANCE", cat: "Programa de Seca", peso: 30, mt1: 6.3764, mt2: 6.3979, mt3: 6.6868 },
-  { cod: "BRQ282A030", nome: "FOSBOVI PROTEICO 35 (BRQ282A030)", cat: "Programa de Seca", peso: 30, mt1: 5.7045, mt2: 5.7260, mt3: 6.0149 },
-  { cod: "BRQ281A030", nome: "FOSBOVI PROTEICO 35 PLUS", cat: "Programa de Seca", peso: 30, mt1: 5.9329, mt2: 5.9544, mt3: 6.2434 },
-  { cod: "BRQ283A030", nome: "FOSBOVI PROTEICO 40 PLUS", cat: "Programa de Seca", peso: 30, mt1: 6.3495, mt2: 6.3710, mt3: 6.6599 },
-  { cod: "BRQ279A025", nome: "FOSBOVI SECA 15", cat: "Programa de Seca", peso: 25, mt1: 7.2096, mt2: 7.2311, mt3: 7.5200 },
-  { cod: "BRQ404A025", nome: "FOSBOVI SECA 15 MAX", cat: "Programa de Seca", peso: 25, mt1: 7.4918, mt2: 7.5133, mt3: 7.8022 },
-  { cod: "BRQ182A025", nome: "FOSBOVI SECA 20", cat: "Programa de Seca", peso: 25, mt1: 7.5455, mt2: 7.5670, mt3: 7.8559 },
-  { cod: "BRQ183A025", nome: "FOSBOVI SECA 20 MAX", cat: "Programa de Seca", peso: 25, mt1: 8.4593, mt2: 8.4808, mt3: 8.7697 },
+  { cod: "BRQ288A025", nome: "FOSBOVI NÚCLEO PROTEICO", cat: "Programa de Seca", peso: 25, mt1: 7.0886, mt2: 7.1101, mt3: 7.3990 },
+  { cod: "BRQ402A025", nome: "FOSBOVI NÚCLEO PROTEICO ADVANCE", cat: "Programa de Seca", peso: 25, mt1: 7.5858, mt2: 7.6073, mt3: 7.8963 },
+  { cod: "BRQ319A030", nome: "FOSBOVI PROTEICO 30 ADVANCE", cat: "Programa de Seca", peso: 30, mt1: 5.8523, mt2: 5.8738, mt3: 6.1627 },
+  { cod: "BRQ282A030", nome: "FOSBOVI PROTEICO 35 (BRQ282A030)", cat: "Programa de Seca", peso: 30, mt1: 5.2342, mt2: 5.2557, mt3: 5.5446 },
+  { cod: "BRQ281A030", nome: "FOSBOVI PROTEICO 35 PLUS", cat: "Programa de Seca", peso: 30, mt1: 5.4492, mt2: 5.4707, mt3: 5.7596 },
+  { cod: "BRQ283A030", nome: "FOSBOVI PROTEICO 40 PLUS", cat: "Programa de Seca", peso: 30, mt1: 5.8254, mt2: 5.8469, mt3: 6.1359 },
+  { cod: "BRQ279A025", nome: "FOSBOVI SECA 15", cat: "Programa de Seca", peso: 25, mt1: 6.5377, mt2: 6.5592, mt3: 6.8481 },
+  { cod: "BRQ404A025", nome: "FOSBOVI SECA 15 MAX", cat: "Programa de Seca", peso: 25, mt1: 6.7930, mt2: 6.8145, mt3: 7.1034 },
+  { cod: "BRQ182A025", nome: "FOSBOVI SECA 20", cat: "Programa de Seca", peso: 25, mt1: 6.8333, mt2: 6.8548, mt3: 7.1437 },
+  { cod: "BRQ183A025", nome: "FOSBOVI SECA 20 MAX", cat: "Programa de Seca", peso: 25, mt1: 7.6665, mt2: 7.6880, mt3: 7.9769 },
   // PROGRAMA DE SUPLEMENTAÇÃO ESTRATÉGICA
-  { cod: "BRM798A025", nome: "FOSBOVI NÚCLEO PROTEICO IMPACT", cat: "Suplementação Estratégica", peso: 25, mt1: 7.6799, mt2: 7.7014, mt3: 7.9903 },
-  { cod: "BRR084A030", nome: "FOSBOVI PROTEICO 30 COM MONENSINA", cat: "Suplementação Estratégica", peso: 30, mt1: 6.8333, mt2: 6.8548, mt3: 7.1437 },
-  { cod: "BRQ221A030", nome: "FOSBOVI PROTEICO ENERGETICO 25", cat: "Suplementação Estratégica", peso: 30, mt1: 4.8982, mt2: 4.9197, mt3: 5.2086 },
-  { cod: "BRQ222A030", nome: "FOSBOVI PROTEICO ENERGETICO 25 PLUS", cat: "Suplementação Estratégica", peso: 30, mt1: 5.1267, mt2: 5.1482, mt3: 5.4371 },
-  { cod: "BRR031A030", nome: "FOSBOVI PROTEICO ENERGÉTICO 45 ÁGUAS", cat: "Suplementação Estratégica", peso: 30, mt1: 6.9542, mt2: 6.9757, mt3: 7.2647 },
+  { cod: "BRM798A025", nome: "FOSBOVI NÚCLEO PROTEICO IMPACT", cat: "Suplementação Estratégica", peso: 25, mt1: 7.0349, mt2: 7.0564, mt3: 7.3453 },
+  { cod: "BRR084A030", nome: "FOSBOVI PROTEICO 30 COM MONENSINA", cat: "Suplementação Estratégica", peso: 30, mt1: 6.2689, mt2: 6.2904, mt3: 6.5793 },
+  { cod: "BRQ221A030", nome: "FOSBOVI PROTEICO ENERGETICO 25", cat: "Suplementação Estratégica", peso: 30, mt1: 4.5891, mt2: 4.6106, mt3: 4.8995 },
+  { cod: "BRQ222A030", nome: "FOSBOVI PROTEICO ENERGETICO 25 PLUS", cat: "Suplementação Estratégica", peso: 30, mt1: 4.8041, mt2: 4.8256, mt3: 5.1146 },
+  { cod: "BRR031A030", nome: "FOSBOVI PROTEICO ENERGÉTICO 45 ÁGUAS", cat: "Suplementação Estratégica", peso: 30, mt1: 6.4973, mt2: 6.5188, mt3: 6.8078 },
   { cod: "BRQ289A025", nome: "FOSBOVINHO PROTEICO ADVANCE", cat: "Suplementação Estratégica", peso: 25, mt1: 8.3652, mt2: 8.3867, mt3: 8.6757 },
   // STRAIGHTS
   { cod: "5064177BAG", nome: "DL-METHIONINE 85% (MEPRON)", cat: "Straights", peso: 25, mt1: 104.1927, mt2: 104.2142, mt3: 104.5031 },
@@ -98,80 +98,80 @@ const PRODUTOS = [
   // EQUINOS (Linha ECO)
   { cod: "BR0596A025", nome: "COEQUI PLUS", cat: "Equinos", peso: 25, mt1: 9.7494, mt2: 9.7709, mt3: 10.0598 },
   { cod: "BR0574A025", nome: "KROMIUM", cat: "Equinos", peso: 25, mt1: 14.6543, mt2: 14.6758, mt3: 14.9647 },
-  { cod: "BR0578A025", nome: "KROMIUM PROTEICO", cat: "Equinos", peso: 25, mt1: 10.2735, mt2: 10.2950, mt3: 10.5839 },
+  { cod: "BR0578A025", nome: "KROMIUM PROTEICO", cat: "Equinos", peso: 25, mt1: 10.8110, mt2: 10.8325, mt3: 11.1214 },
+  // Demais produtos da tabela Nutrição de 16/10/2026
+  { cod: "BRR086A025", nome: "FOSBOVI NÚCLEO PROTEICO (BRR086A025)", cat: "Programa de Seca", peso: 25, mt1: 8.2443, mt2: 8.2658, mt3: 8.5547 },
+  { cod: "BRR338B025", nome: "FOSBOVI NÚCLEO BOI VERDE", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 12.8402, mt2: 12.8617, mt3: 13.1506 },
+  { cod: "BRR339B025", nome: "FOSBOVI NUCLEO BOI VERDE M", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 14.0496, mt2: 14.0711, mt3: 14.3600 },
+  { cod: "BRR989P025", nome: "FOSBOVI NUCLEO BOI VERDE PRIMA", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 9.0640, mt2: 9.0855, mt3: 9.3745 },
+  { cod: "BRR022A025", nome: "NÚCLEO BOI VERDE REPRODUÇÃO", cat: "Gado de Corte Boi Verde", peso: 25, mt1: 13.4583, mt2: 13.4798, mt3: 13.7687 },
+  { cod: "BRR033A030", nome: "FOSBOVI PROTEICO 35 (BRR033A030)", cat: "Programa de Seca", peso: 30, mt1: 5.9329, mt2: 5.9544, mt3: 6.2434 },
+  { cod: "BRR085A030", nome: "FOSBOVI PROTEICO 35 COM MONENSINA", cat: "Programa de Seca", peso: 30, mt1: 6.1345, mt2: 6.1560, mt3: 6.4449 },
+  { cod: "BRR106A030", nome: "FOSBOVI PROTEICO 45", cat: "Programa de Seca", peso: 30, mt1: 7.1289, mt2: 7.1504, mt3: 7.4394 },
+  { cod: "BRR014A025", nome: "FOSBOVINHO PROTEICO ADE", cat: "Suplementação Estratégica", peso: 25, mt1: 8.7684, mt2: 8.7899, mt3: 9.0788 },
+  { cod: "BRR096A030", nome: "FOSBOVI PROTEICO ENERGÉTICO 25 (BRR096A030)", cat: "Suplementação Estratégica", peso: 30, mt1: 5.1804, mt2: 5.2019, mt3: 5.4908 },
+  { cod: "BRR058A030", nome: "FOSBOVI PROTEICO ENERGÉTICO 25 M", cat: "Suplementação Estratégica", peso: 30, mt1: 5.3685, mt2: 5.3900, mt3: 5.6790 },
+  { cod: "BRR012A030", nome: "FOSBOVI SECA", cat: "Programa de Seca", peso: 30, mt1: 8.9565, mt2: 8.9780, mt3: 9.2669 },
+  { cod: "BRR016A030", nome: "FOSCROMO SECA", cat: "Programa de Seca", peso: 30, mt1: 8.1771, mt2: 8.1986, mt3: 8.4875 },
+  { cod: "BRR079A025", nome: "NUTRIGOLD 15", cat: "Programa de Seca", peso: 25, mt1: 7.6262, mt2: 7.6477, mt3: 7.9366 },
+  { cod: "BRR040A025", nome: "NUTRIGOLD 20%", cat: "Programa de Seca", peso: 25, mt1: 7.7740, mt2: 7.7955, mt3: 8.0844 },
+  { cod: "BRR098A025", nome: "NUTRIGOLD NUCLEO", cat: "Programa de Seca", peso: 25, mt1: 9.4134, mt2: 9.4349, mt3: 9.7238 },
 ];
 
 const CATEGORIAS = [...new Set(PRODUTOS.map((p) => p.cat))];
 
-// Campanhas comerciais de Setembro/2026 por código de produto.
-// Cada produto pode ter múltiplas campanhas cumuláveis (ex: campanha da linha + MT adicional).
-// Os chips aparecem no card do produto e o usuário decide quais aplicar.
+// Campanha comercial de Outubro/2026, válida até 31/10/2026.
+// Desconto ESP de 4,5% somente para os códigos da campanha recebida.
+// O usuário decide aplicar a campanha no card do produto.
 const CAMPANHAS_OUTUBRO_2026 = {
-
-  // ---- CONFINAMENTO (circular Seca/Confinamento/Suplementação — até 15/10/26) ----
-  "BRT487A025": [{ origem: "Confinamento", pct: 3 }],
-  "BRT352A025": [{ origem: "Confinamento", pct: 3 }],
-  "BRT353A025": [{ origem: "Confinamento", pct: 3 }],
-  "BRT346A025": [{ origem: "Confinamento", pct: 3 }],
-  "BRT347A025": [{ origem: "Confinamento", pct: 3 }],
-  "BRT348A025": [{ origem: "Confinamento", pct: 3 }],
-  "BRT350A025": [{ origem: "Confinamento", pct: 3 }],
-  "BRT351A025": [{ origem: "Confinamento", pct: 3 }],
-
-  // ---- TQ / BOI VERDE (4% — circular Linhas TQ | Boi Verde) ----
-  "BRT698A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRR008A030": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRQ325A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRQ194A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRM477A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRQ284A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRQ195A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRQ285A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRQ403A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRR010C030": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRR992M025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRR011A030": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRR015A030": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRR100A030": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRR056A030": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRR101A030": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRR104A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRR102A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRM077A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRM080A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRR103A030": [{ origem: "TQ/Boi Verde", pct: 4 }],
-  "BRR059A025": [{ origem: "TQ/Boi Verde", pct: 4 }],
-
-  // ---- PROGRAMA DE SECA ----
-  "BRQ288A025": [{ origem: "Seca/Confinamento", pct: 10 }],
-  "BRQ402A025": [{ origem: "Seca/Confinamento", pct: 10 }],
-  "BRQ319A030": [
-    { origem: "Seca/Confinamento", pct: 9 },
-    { origem: "MT adicional", pct: 1 },
-  ],
-  "BRQ282A030": [{ origem: "Seca/Confinamento", pct: 9 }],
-  "BRQ281A030": [{ origem: "Seca/Confinamento", pct: 9 }],
-  "BRQ283A030": [{ origem: "Seca/Confinamento", pct: 9 }],
-  "BRQ279A025": [{ origem: "Seca/Confinamento", pct: 10 }],
-  "BRQ404A025": [{ origem: "Seca/Confinamento", pct: 10 }],
-  "BRQ182A025": [{ origem: "Seca/Confinamento", pct: 10 }],
-  "BRQ183A025": [{ origem: "Seca/Confinamento", pct: 10 }],
-
-  // ---- SUPLEMENTAÇÃO ESTRATÉGICA ----
-  "BRM798A025": [{ origem: "Seca/Confinamento", pct: 10 }],
-  "BRR084A030": [
-    { origem: "Seca/Confinamento", pct: 9 },
-    { origem: "MT adicional", pct: 1 },
-  ],
-  "BRQ221A030": [
-    { origem: "Seca/Confinamento", pct: 7 },
-    { origem: "MT adicional", pct: 2 },
-  ],
-  "BRQ222A030": [
-    { origem: "Seca/Confinamento", pct: 7 },
-    { origem: "MT adicional", pct: 2 },
-  ],
-  "BRR031A030": [{ origem: "Seca/Confinamento", pct: 7 }],
+  // Corte Pasto Linha Tradicional (TQ) - Mineral Pronto Uso
+  "BRR103A030": [{ origem: "ESP", pct: 4.5 }],
+  "BRR100A030": [{ origem: "ESP", pct: 4.5 }],
+  "BRR056A030": [{ origem: "ESP", pct: 4.5 }],
+  "BRR101A030": [{ origem: "ESP", pct: 4.5 }],
+  "BRM077A025": [{ origem: "ESP", pct: 4.5 }],
+  "BRR059A025": [{ origem: "ESP", pct: 4.5 }],
+  // Corte Pasto Linha Tradicional (TQ) - Para diluir/misturar
+  "BRR104A025": [{ origem: "ESP", pct: 4.5 }],
+  "BRR102A025": [{ origem: "ESP", pct: 4.5 }],
+  "BRM080A025": [{ origem: "ESP", pct: 4.5 }],
+  // Corte Pasto Linha Boi Verde - Mineral Pronto Uso
+  "BRR015A030": [{ origem: "ESP", pct: 4.5 }],
+  "BRR008A030": [{ origem: "ESP", pct: 4.5 }],
+  "BRR011A030": [{ origem: "ESP", pct: 4.5 }],
+  "BRR010C030": [{ origem: "ESP", pct: 4.5 }],
+  // Sem preço nas tabelas recebidas: NOVO FOSBOVI AVEIA-AZEVÉM.
+  "BRT897A025": [{ origem: "ESP", pct: 4.5 }],
+  // Corte Pasto Linha Boi Verde - Adensado
+  "BRR992M025": [{ origem: "ESP", pct: 4.5 }],
+  "BRT698A025": [{ origem: "ESP", pct: 4.5 }],
+  "BRQ325A025": [{ origem: "ESP", pct: 4.5 }],
+  // Corte Pasto Linha Boi Verde - Ureado
+  "BRQ279A025": [{ origem: "ESP", pct: 4.5 }],
+  "BRQ404A025": [{ origem: "ESP", pct: 4.5 }],
+  "BRQ182A025": [{ origem: "ESP", pct: 4.5 }],
+  "BRQ183A025": [{ origem: "ESP", pct: 4.5 }],
+  // Corte Pasto Linha Boi Verde - Proteico
+  "BRQ319A030": [{ origem: "ESP", pct: 4.5 }],
+  "BRQ282A030": [{ origem: "ESP", pct: 4.5 }],
+  "BRQ281A030": [{ origem: "ESP", pct: 4.5 }],
+  "BRQ283A030": [{ origem: "ESP", pct: 4.5 }],
+  "BRR084A030": [{ origem: "ESP", pct: 4.5 }],
+  // Corte Pasto Linha Boi Verde - Proteico-energético
+  "BRR031A030": [{ origem: "ESP", pct: 4.5 }],
+  "BRQ221A030": [{ origem: "ESP", pct: 4.5 }],
+  "BRQ222A030": [{ origem: "ESP", pct: 4.5 }],
+  // Corte Pasto Linha Boi Verde - Núcleo com ureia
+  "BRQ288A025": [{ origem: "ESP", pct: 4.5 }],
+  "BRQ402A025": [{ origem: "ESP", pct: 4.5 }],
+  "BRM798A025": [{ origem: "ESP", pct: 4.5 }],
+  // Corte Pasto Linha Boi Verde - Núcleo sem ureia
+  "BRQ194A025": [{ origem: "ESP", pct: 4.5 }],
+  "BRQ195A025": [{ origem: "ESP", pct: 4.5 }],
+  "BRQ285A025": [{ origem: "ESP", pct: 4.5 }],
+  "BRQ403A025": [{ origem: "ESP", pct: 4.5 }],
+  "BRM477A025": [{ origem: "ESP", pct: 4.5 }],
+  "BRQ284A025": [{ origem: "ESP", pct: 4.5 }],
 };
 
 // Paleta de cores para diferenciar os produtos do pedido (rotativa)
@@ -1016,11 +1016,11 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
         </button>
       )}
 
-      {/* Chips de campanhas Agosto/2026 disponíveis para este produto */}
+      {/* Campanha de Outubro/2026 disponível para este produto */}
       {item.precoManual == null && CAMPANHAS_OUTUBRO_2026[prod.cod] && (
         <div className="space-y-1.5">
           <div className="text-[10px] uppercase tracking-wider text-[#6f6f68] font-semibold">
-            Campanhas Outubro/26 · toque para somar
+            Campanha Outubro/26 · até 31/10/2026 · toque para somar
           </div>
           <div className="flex flex-wrap gap-1.5">
             {CAMPANHAS_OUTUBRO_2026[prod.cod].map((c, i) => (
