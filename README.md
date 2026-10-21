@@ -13,7 +13,9 @@ Calculadora de preços e orçamentos para clientes. O app abre diretamente na ca
 
 Os produtos, preços por kg de MT1, MT2, MT3 e GO, pesos das embalagens e campanhas ficam em `src/PriceCalculator.jsx`. Identifique produtos pelo código ao atualizar as tabelas.
 
-As linhas e divisões das tabelas ficam em `src/linhas-produtos.json`, associadas aos códigos dos produtos. Ao incluir um produto no catálogo, inclua seu código em exatamente um desses grupos. Essa organização é usada nos filtros de seleção e não altera os cálculos nem as imagens enviadas aos clientes.
+As linhas e divisões das tabelas ficam em `src/linhas-produtos.json`, associadas aos códigos dos produtos. Ao incluir um produto no catálogo, inclua seu código em exatamente um desses grupos. A busca mostra os produtos agrupados por esses títulos, sem seletores de linha ou divisão.
+
+O app abre com produto, quantidade e peso em branco e total zerado. Escolher um produto preenche apenas o peso da embalagem. Novos itens também começam vazios; as imagens só podem ser geradas após preencher produto (ou preço manual), quantidade e peso em todos os itens. Os cálculos e o modelo das imagens enviadas aos clientes são preservados.
 
 A campanha atual oferece desconto ESP de 4,5% nos códigos informados, com validade até 31/10/2026. O usuário aplica o desconto no card do produto.
 

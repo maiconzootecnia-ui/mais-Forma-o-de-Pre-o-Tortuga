@@ -224,6 +224,14 @@ const fmtMoney = (n) => `R$ ${fmt(n, 2)}`;
 
 // Calcula o preço final por kg de um item aplicando a cascata de descontos.
 function calcItem(item, mtTier, encargo, faixaPedido) {
+  if (item.precoManual == null && !PRODUTOS[item.produtoIdx]) {
+    return {
+      precoTabela: 0, volume: 0, faixa: faixaPedido,
+      qtdeEfetivo: item.qtdePct != null ? item.qtdePct : faixaPedido.qtde,
+      logEfetivo: item.logisticaPct != null ? item.logisticaPct : faixaPedido.logistica,
+      precoKg: 0, precoSaco: 0, total: 0,
+    };
+  }
   const preco = item.precoManual != null ? item.precoManual : PRODUTOS[item.produtoIdx][mtTier];
   const volume = item.qtdeSacos * item.pesoSaco;
   // Faixa vem do volume TOTAL do pedido (somado); mas se o usuário digitou %, respeita o manual.
@@ -246,13 +254,13 @@ function calcItem(item, mtTier, encargo, faixaPedido) {
   };
 }
 
-function novoItem(produtoIdx = 0) {
+function novoItem(produtoIdx = null) {
   return {
     id: Math.random().toString(36).slice(2),
     produtoIdx,
     precoManual: null,
-    pesoSaco: PRODUTOS[produtoIdx].peso,
-    qtdeSacos: 100,
+    pesoSaco: PRODUTOS[produtoIdx]?.peso ?? "",
+    qtdeSacos: "",
     qtdePct: null,
     logisticaPct: null,
     campanhaPct: 0,
@@ -897,37 +905,37 @@ const normalizarBusca = (texto) => texto.normalize("NFD").replace(/[\u0300-\u036
 // Organização comercial das tabelas, independente dos preços e dos cálculos.
 const PRODUTOS_POR_CODIGO = new Map(PRODUTOS.map((p, idx) => [p.cod, { ...p, idx }]));
 const GRUPO_POR_CODIGO = new Map(GRUPOS_PRODUTOS.flatMap((grupo) => grupo.codigos.map((cod) => [cod, grupo])));
-const LINHAS_PRODUTOS = [...new Set(GRUPOS_PRODUTOS.map((grupo) => grupo.linha))].map((nome) => ({
-  nome,
-  quantidade: GRUPOS_PRODUTOS.filter((grupo) => grupo.linha === nome).reduce((total, grupo) => total + grupo.codigos.length, 0),
-}));
+const numeroDigitado = (valor) => valor === "" ? "" : parseFloat(valor) || 0;
+const temProduto = (item) => item.precoManual != null || Boolean(PRODUTOS[item.produtoIdx]);
+const itemCompleto = (item, mtTier) => {
+  const preco = item.precoManual != null ? item.precoManual : PRODUTOS[item.produtoIdx]?.[mtTier];
+  return temProduto(item) && preco !== "" && Number.isFinite(preco) && preco >= 0
+    && Number.isFinite(item.qtdeSacos) && item.qtdeSacos > 0
+    && Number.isFinite(item.pesoSaco) && item.pesoSaco > 0;
+};
 
 function ProductSearch({ produtoIdx, itemNumber, onSelect }) {
   const prod = PRODUTOS[produtoIdx];
-  const grupoSelecionado = GRUPO_POR_CODIGO.get(prod.cod);
-  const [linha, setLinha] = useState("");
-  const [divisao, setDivisao] = useState("");
-  const [query, setQuery] = useState(prod.nome);
+  const nome = prod?.nome || "";
+  const grupoSelecionado = prod ? GRUPO_POR_CODIGO.get(prod.cod) : null;
+  const [query, setQuery] = useState(nome);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
   const listId = useId();
   const inputRef = useRef(null);
   const resultsRef = useRef(null);
-  useEffect(() => { setQuery(prod.nome); }, [prod.nome]);
+  useEffect(() => { setQuery(nome); }, [nome]);
   useEffect(() => {
     if (open && active >= 0) resultsRef.current?.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: "nearest" });
-  }, [active, open, query, linha, divisao]);
-  const termo = normalizarBusca(query === prod.nome ? "" : query.trim());
-  const divisoes = GRUPOS_PRODUTOS.filter((grupo) => grupo.linha === linha && grupo.divisao);
+  }, [active, open, query]);
+  const termo = normalizarBusca(query === nome ? "" : query.trim());
   const grupos = GRUPOS_PRODUTOS
-    .filter((grupo) => (!linha || grupo.linha === linha) && (!divisao || grupo.id === divisao))
     .map((grupo) => ({
       ...grupo,
       produtos: grupo.codigos.map((cod) => PRODUTOS_POR_CODIGO.get(cod)).filter((p) => p && normalizarBusca(`${p.nome} ${p.cod}`).includes(termo)),
     }))
     .filter((grupo) => grupo.produtos.length > 0);
   const matches = grupos.flatMap((grupo) => grupo.produtos);
-  const foraDoFiltro = (linha && grupoSelecionado?.linha !== linha) || (divisao && grupoSelecionado?.id !== divisao);
   const select = (p) => {
     inputRef.current?.focus();
     onSelect(p.idx);
@@ -936,26 +944,8 @@ function ProductSearch({ produtoIdx, itemNumber, onSelect }) {
     setActive(-1);
   };
   return <div className="mp-product-search" onBlur={(e) => {
-    if (!e.currentTarget.contains(e.relatedTarget)) { setOpen(false); setQuery(prod.nome); setActive(-1); }
+    if (!e.currentTarget.contains(e.relatedTarget)) { setOpen(false); setQuery(nome); setActive(-1); }
   }}>
-    <div className={`mp-product-filters${divisoes.length > 1 ? " mp-product-filters-split" : ""}`}>
-      <Field label="Linha de produtos">
-        <select aria-label={`Linha de produtos do produto ${itemNumber}`} value={linha} onChange={(e) => {
-          setLinha(e.target.value); setDivisao(""); setQuery(""); setActive(-1); setOpen(true);
-        }}>
-          <option value="">Todas as linhas ({PRODUTOS.length})</option>
-          {LINHAS_PRODUTOS.map((l) => <option key={l.nome} value={l.nome}>{l.nome} ({l.quantidade})</option>)}
-        </select>
-      </Field>
-      {divisoes.length > 1 && <Field label="Divisão da linha">
-        <select aria-label={`Divisão da linha do produto ${itemNumber}`} value={divisao} onChange={(e) => {
-          setDivisao(e.target.value); setQuery(""); setActive(-1); setOpen(true);
-        }}>
-          <option value="">Todas as divisões</option>
-          {divisoes.map((d) => <option key={d.id} value={d.id}>{d.divisao} ({d.codigos.length})</option>)}
-        </select>
-      </Field>}
-    </div>
     <label className="mp-field">
       <span className="mp-label">Produto · busca por nome ou código</span>
       <div className="mp-search">
@@ -970,7 +960,7 @@ function ProductSearch({ produtoIdx, itemNumber, onSelect }) {
               setActive((a) => matches.length ? (e.key === "ArrowDown" ? (a + 1) % matches.length : (a <= 0 ? matches.length - 1 : a - 1)) : -1);
             } else if (e.key === "Enter" && open) {
               e.preventDefault(); if (matches[active >= 0 ? active : 0]) select(matches[active >= 0 ? active : 0]);
-            } else if (e.key === "Escape") { setOpen(false); setQuery(prod.nome); setActive(-1); }
+            } else if (e.key === "Escape") { setOpen(false); setQuery(nome); setActive(-1); }
           }} />
       </div>
     </label>
@@ -983,29 +973,29 @@ function ProductSearch({ produtoIdx, itemNumber, onSelect }) {
           onMouseDown={(e) => e.preventDefault()} onClick={() => select(p)}>
           <span>{p.nome}<small>{p.cod}</small></span>
         </button>)}
-      </div>) : <div className="mp-empty">Nenhum produto encontrado{linha ? " nesta linha" : ""}. {linha && "Escolha outra linha ou use Todas as linhas."}</div>}
+      </div>) : <div className="mp-empty">Nenhum produto encontrado.</div>}
     </div>}
-    {foraDoFiltro && <div className="mp-selected-product">No pedido: <strong>{prod.nome}</strong>. Escolha um produto da lista para substituir.</div>}
-    <div className="mp-product-meta"><span>{grupoSelecionado ? `${grupoSelecionado.linha}${grupoSelecionado.divisao ? ` · ${grupoSelecionado.divisao}` : ""}` : prod.cat}</span><code>{prod.cod}</code></div>
+    {prod && <div className="mp-product-meta"><span>{grupoSelecionado ? `${grupoSelecionado.linha}${grupoSelecionado.divisao ? ` · ${grupoSelecionado.divisao}` : ""}` : prod.cat}</span><code>{prod.cod}</code></div>}
   </div>;
 }
 
 function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido, onChange, onRemove, canRemove }) {
   const c = calcItem(item, mtTier, encargo, faixaPedido);
   const prod = PRODUTOS[item.produtoIdx];
+  const preenchido = temProduto(item);
   const set = (patch) => onChange({ ...item, ...patch });
-  const campanha = item.precoManual == null && CAMPANHAS_OUTUBRO_2026[prod.cod];
+  const campanha = item.precoManual == null && prod && CAMPANHAS_OUTUBRO_2026[prod.cod];
   return <section className="mp-panel" aria-label={`Produto ${index + 1}`}>
     <div className="mp-item-head"><div className="mp-item-number"><b>{index + 1}</b> Produto</div>{canRemove && <button type="button" className="mp-text-button" aria-label={`Remover produto ${index + 1}`} onClick={onRemove}>Remover</button>}</div>
     {item.precoManual == null ? <ProductSearch produtoIdx={item.produtoIdx} itemNumber={index + 1} onSelect={(idx) => set({ produtoIdx: idx, pesoSaco: PRODUTOS[idx].peso })} /> : <Field label="Preço de tabela manual (R$/kg)">
-      <input type="number" step="0.0001" value={item.precoManual} onChange={(e) => set({ precoManual: parseFloat(e.target.value) || 0 })} />
+      <input type="number" min="0" step="0.0001" value={item.precoManual} onChange={(e) => set({ precoManual: numeroDigitado(e.target.value) })} />
     </Field>}
     <div className="mp-inputs">
-      <Field label="Quantidade de sacos"><input type="number" step="1" aria-label={`Quantidade de sacos do produto ${index + 1}`} value={item.qtdeSacos} onChange={(e) => set({ qtdeSacos: parseFloat(e.target.value) || 0 })} /></Field>
-      <Field label="Peso por saco (kg)"><input type="number" step="0.5" aria-label={`Peso por saco do produto ${index + 1}`} value={item.pesoSaco} onChange={(e) => set({ pesoSaco: parseFloat(e.target.value) || 0 })} /></Field>
-      <div><div className="mp-label">Preço de tabela</div><div className="mp-price-table">R$ {fmt(c.precoTabela, 4)}<small>/kg</small></div></div>
+      <Field label="Quantidade de sacos"><input type="number" min="0" step="1" aria-label={`Quantidade de sacos do produto ${index + 1}`} value={item.qtdeSacos} onChange={(e) => set({ qtdeSacos: numeroDigitado(e.target.value) })} /></Field>
+      <Field label="Peso por saco (kg)"><input type="number" min="0" step="0.5" aria-label={`Peso por saco do produto ${index + 1}`} value={item.pesoSaco} onChange={(e) => set({ pesoSaco: numeroDigitado(e.target.value) })} /></Field>
+      <div><div className="mp-label">Preço de tabela</div><div className="mp-price-table">{preenchido && item.precoManual !== "" ? `R$ ${fmt(c.precoTabela, 4)}` : "—"}<small>/kg</small></div></div>
     </div>
-    <div className="mp-manual-row"><span>{fmt(c.volume, 0)} kg neste produto</span><button className="mp-text-button" type="button" onClick={() => set({ precoManual: item.precoManual == null ? c.precoTabela : null })}>{item.precoManual == null ? "Usar preço manual" : "Voltar à tabela"}</button></div>
+    <div className="mp-manual-row"><span>{fmt(c.volume, 0)} kg neste produto</span><button className="mp-text-button" type="button" onClick={() => set({ precoManual: item.precoManual == null ? (prod ? c.precoTabela : "") : null })}>{item.precoManual == null ? "Usar preço manual" : "Voltar à tabela"}</button></div>
     {campanha && <div className="mp-campaign"><div><span>Campanha de outubro</span><small>4,5% · válida até 31/10/2026</small></div>
       <button type="button" aria-pressed={item.campanhaPct === campanha[0].pct} onClick={() => set({ campanhaPct: item.campanhaPct === campanha[0].pct ? 0 : campanha[0].pct })}>{item.campanhaPct === campanha[0].pct ? "Remover 4,5%" : "Aplicar 4,5%"}</button>
     </div>}
@@ -1018,12 +1008,12 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
       </div>
       {(item.qtdePct != null || item.logisticaPct != null) && <button className="mp-text-button" type="button" onClick={() => set({ qtdePct: null, logisticaPct: null })}>Voltar aos descontos automáticos</button>}
     </details>
-    <div className="mp-item-values"><div><span>Preço final / kg</span><strong>{fmtMoney(c.precoKg)}</strong></div><div><span>Preço por saco</span><strong>{fmtMoney(c.precoSaco)}</strong></div><div><span>Subtotal</span><strong>{fmtMoney(c.total)}</strong></div></div>
+    <div className="mp-item-values"><div><span>Preço final / kg</span><strong>{preenchido && item.precoManual !== "" ? fmtMoney(c.precoKg) : "—"}</strong></div><div><span>Preço por saco</span><strong>{preenchido && item.precoManual !== "" && item.pesoSaco !== "" ? fmtMoney(c.precoSaco) : "—"}</strong></div><div><span>Subtotal</span><strong>{fmtMoney(c.total)}</strong></div></div>
   </section>;
 }
 
 export default function PriceCalculator() {
-  const [items, setItems] = useState([novoItem(0)]);
+  const [items, setItems] = useState(() => [novoItem()]);
   const [mtTier, setMtTier] = useState("mt1");
   const [prazoIdx, setPrazoIdx] = useState(0);
   const [encargoManual, setEncargoManual] = useState(null);
@@ -1032,16 +1022,22 @@ export default function PriceCalculator() {
   const [exportError, setExportError] = useState("");
 
   const encargo = encargoManual == null ? PRAZOS[prazoIdx].encargo : encargoManual;
-  const volumeTotalPedido = items.reduce((s, it) => s + (it.qtdeSacos || 0) * (it.pesoSaco || 0), 0);
+  const itensNoPedido = items.filter(temProduto);
+  const volumeTotalPedido = itensNoPedido.reduce((s, it) => s + (it.qtdeSacos || 0) * (it.pesoSaco || 0), 0);
   const faixaPedido = faixaPorVolume(volumeTotalPedido);
   const calcs = useMemo(() => items.map((it) => calcItem(it, mtTier, encargo, faixaPedido)), [items, mtTier, encargo, faixaPedido]);
-  const totalSacos = items.reduce((s, it) => s + (it.qtdeSacos || 0), 0);
+  const totalSacos = itensNoPedido.reduce((s, it) => s + (it.qtdeSacos || 0), 0);
   const totalKg = calcs.reduce((s, c) => s + c.volume, 0);
   const totalReais = calcs.reduce((s, c) => s + c.total, 0);
   const updateItem = (id, next) => setItems((prev) => prev.map((it) => (it.id === id ? next : it)));
-  const removeItem = (id) => setItems((prev) => prev.filter((it) => it.id !== id));
-  const addItem = () => setItems((prev) => [...prev, novoItem(0)]);
+  const removeItem = (id) => setItems((prev) => {
+    const restantes = prev.filter((it) => it.id !== id);
+    return restantes.length ? restantes : [novoItem()];
+  });
+  const addItem = () => setItems((prev) => [...prev, novoItem()]);
+  const podeExportar = items.length > 0 && items.every((it) => itemCompleto(it, mtTier));
   const exportar = async (tipo) => {
+    if (!podeExportar) return;
     setExporting(tipo); setExportError("");
     try {
       const dados = { items, calcs, totalSacos, totalKg, totalReais, prazo: PRAZOS[prazoIdx].nome };
@@ -1062,16 +1058,16 @@ export default function PriceCalculator() {
           </div>
           <div className="mp-condition-meta"><span>ICMS <strong>18% fixo</strong></span><span>Encargo <strong>{fmt(encargo * 100, 2)}%</strong></span><details><summary>Ajustar encargo</summary><div className="mp-charge"><Field label="Encargo aplicado"><PctInput value={(encargo * 100).toFixed(2)} auto={encargoManual == null} onChange={(v) => setEncargoManual(v / 100)} /></Field><button className="mp-button" type="button" onClick={() => setEncargoManual(null)}>Usar o prazo selecionado</button></div></details></div>
         </section>
-        <div className="mp-row-title"><h2>Produtos do pedido <span className="mp-count">{items.length}</span></h2><button className="mp-button" type="button" onClick={addItem}><Icon name="plus" />Adicionar produto</button></div>
-        <div className="mp-cards">{items.map((it, idx) => <ItemCard key={it.id} item={it} index={idx} mtTier={mtTier} encargo={encargo} faixaPedido={faixaPedido} volumeTotalPedido={volumeTotalPedido} onChange={(next) => updateItem(it.id, next)} onRemove={() => removeItem(it.id)} canRemove={items.length > 1} />)}</div>
+        <div className="mp-row-title"><h2>Produtos do pedido <span className="mp-count">{itensNoPedido.length}</span></h2><button className="mp-button" type="button" onClick={addItem}><Icon name="plus" />Adicionar produto</button></div>
+        <div className="mp-cards">{items.map((it, idx) => <ItemCard key={it.id} item={it} index={idx} mtTier={mtTier} encargo={encargo} faixaPedido={faixaPedido} volumeTotalPedido={volumeTotalPedido} onChange={(next) => updateItem(it.id, next)} onRemove={() => removeItem(it.id)} canRemove={items.length > 1 || temProduto(it) || it.qtdeSacos !== "" || it.pesoSaco !== ""} />)}</div>
         <details className="mp-panel mp-notes"><summary>Observações internas{observacoes.trim() ? " · preenchidas" : ""}</summary><Field label="Aparecem apenas na imagem de parâmetros da cotação"><textarea value={observacoes} onChange={(e) => setObservacoes(e.target.value)} rows={3} aria-label="Observações internas" placeholder="Entrega, carga, embalagem ou outras condições…" /></Field>{observacoes.trim() && <button className="mp-text-button" type="button" onClick={() => setObservacoes("")}>Limpar observações</button>}</details>
       </main>
       <aside className="mp-panel mp-summary" aria-label="Resumo do pedido">
         <div className="mp-summary-head"><h2>Resumo do pedido</h2><span className="mp-status"><Icon name="check" />Atualizado</span></div>
-        <div className="mp-order-list">{items.map((it, idx) => <div className="mp-order-line" key={it.id}><div><strong>{it.precoManual == null ? PRODUTOS[it.produtoIdx].nome : "Produto avulso"}</strong><small>{fmt(it.qtdeSacos, 0)} sacos × {fmt(it.pesoSaco, 1)} kg</small></div><strong>{fmtMoney(calcs[idx].total)}</strong></div>)}</div>
+        <div className="mp-order-list">{itensNoPedido.length === 0 && <p className="mp-order-empty">Escolha um produto para começar.</p>}{items.map((it, idx) => temProduto(it) && <div className="mp-order-line" key={it.id}><div><strong>{it.precoManual == null ? PRODUTOS[it.produtoIdx].nome : "Produto avulso"}</strong><small>{it.qtdeSacos === "" ? "Informe a quantidade" : `${fmt(it.qtdeSacos, 0)} sacos`}{it.pesoSaco !== "" && ` × ${fmt(it.pesoSaco, 1)} kg`}</small></div><strong>{fmtMoney(calcs[idx].total)}</strong></div>)}</div>
         <div className="mp-summary-stats"><span><strong>{fmt(totalSacos, 0)}</strong> sacos</span><span><strong>{fmt(totalKg, 0)}</strong> kg</span><span>{mtTier.toUpperCase()}</span></div>
         <div className="mp-total" aria-live="polite" aria-atomic="true"><small>Total do pedido</small><strong>{fmtMoney(totalReais)}</strong><span>{PRAZOS[prazoIdx].nome}</span></div>
-        <div className="mp-summary-actions"><button type="button" className="mp-button mp-gold-button" disabled={exporting != null} onClick={() => exportar("cliente")}><Icon name="image" />{exporting === "cliente" ? "Gerando imagem…" : "Gerar orçamento do cliente"}</button><button type="button" className="mp-button" disabled={exporting != null} onClick={() => exportar("interno")}><Icon name="settings" />{exporting === "interno" ? "Gerando imagem…" : "Parâmetros da cotação"}</button>{exportError && <p className="mp-error" role="alert">{exportError}</p>}</div>
+        <div className="mp-summary-actions"><button type="button" className="mp-button mp-gold-button" disabled={exporting != null || !podeExportar} onClick={() => exportar("cliente")}><Icon name="image" />{exporting === "cliente" ? "Gerando imagem…" : "Gerar orçamento do cliente"}</button><button type="button" className="mp-button" disabled={exporting != null || !podeExportar} onClick={() => exportar("interno")}><Icon name="settings" />{exporting === "interno" ? "Gerando imagem…" : "Parâmetros da cotação"}</button>{!podeExportar && <p className="mp-export-hint">Preencha produto, quantidade e peso em cada item para gerar o orçamento.</p>}{exportError && <p className="mp-error" role="alert">{exportError}</p>}</div>
         <div className="mp-summary-foot">Tabela de 16/10/2026 · valores em reais</div>
       </aside>
     </div>

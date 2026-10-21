@@ -50,12 +50,8 @@ body { margin:0; background:#f4f4f0; }
 .maisa-app .mp-item-number b { background:var(--mp-soft); border:1px solid var(--mp-line); border-radius:6px; padding:2px 7px; font-weight:500; color:var(--mp-ink); }
 .maisa-app .mp-search { position:relative; }
 .maisa-app .mp-product-search { position:relative; }
-.maisa-app .mp-product-filters { display:grid; grid-template-columns:minmax(0,1fr); gap:12px; margin-bottom:15px; }
-.maisa-app .mp-product-filters-split { grid-template-columns:minmax(0,1fr) minmax(0,1.3fr); }
 .maisa-app .mp-result-group-title { display:flex; align-items:start; justify-content:space-between; gap:10px; padding:10px; background:var(--mp-soft); color:var(--mp-muted); font-size:11px; font-weight:600; line-height:1.5; border-bottom:1px solid var(--mp-line); overflow-wrap:anywhere; }
 .maisa-app .mp-result-group-title span { flex-shrink:0; font-variant-numeric:tabular-nums; }
-.maisa-app .mp-selected-product { font-size:12px; color:var(--mp-muted); margin-top:10px; }
-.maisa-app .mp-selected-product strong { font-weight:500; color:var(--mp-ink); }
 .maisa-app .mp-search input { padding-left:38px; font-weight:500; text-overflow:ellipsis; }
 .maisa-app .mp-search > i, .maisa-app .mp-search > svg { position:absolute; left:12px; top:12px; color:var(--mp-muted); width:17px; height:17px; }
 .maisa-app .mp-results { max-height:320px; overflow:auto; overscroll-behavior:contain; position:absolute; z-index:5; top:calc(100% + 6px); left:0; right:0; background:var(--mp-panel); border:1px solid var(--mp-line); border-radius:8px; box-shadow:0 12px 28px #0002; padding:5px; }
@@ -90,6 +86,8 @@ body { margin:0; background:#f4f4f0; }
 .maisa-app .mp-status { font-size:11px; color:var(--mp-muted); display:flex; align-items:center; gap:5px; }
 .maisa-app .mp-status i, .maisa-app .mp-status svg { width:13px; height:13px; }
 .maisa-app .mp-order-list { padding:0 22px; }
+.maisa-app .mp-order-empty { padding:14px 0; color:var(--mp-muted); font-size:13px; }
+.maisa-app .mp-export-hint { color:var(--mp-muted); font-size:12px; line-height:1.5; }
 .maisa-app .mp-order-line { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; padding:14px 0; border-bottom:1px solid var(--mp-line); }
 .maisa-app .mp-order-line strong { font-weight:500; font-size:13px; }
 .maisa-app .mp-order-line small { display:block; color:var(--mp-muted); font-size:12px; margin-top:3px; }
@@ -133,7 +131,6 @@ body { margin:0; background:#f4f4f0; }
 .maisa-app .mp-label { display:block; }
 
 @media (max-width:780px) {
-  .maisa-app .mp-product-filters-split { grid-template-columns:minmax(0,1fr); }
   .maisa-app .mp-layout { grid-template-columns:minmax(0,1fr); gap:20px; }
   .maisa-app .mp-summary { position:static; }
   .maisa-app .mp-date { display:none; }
