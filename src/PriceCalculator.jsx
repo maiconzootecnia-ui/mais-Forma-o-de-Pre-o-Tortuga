@@ -125,9 +125,11 @@ const PRODUTOS = [
 
 const CATEGORIAS = [...new Set(PRODUTOS.map((p) => p.cat))];
 
-// Campanha comercial de Outubro/2026, válida até 31/10/2026.
+// Campanha comercial de Outubro/2026, prorrogada também para PA02.
 // Desconto ESP de 4,5% somente para os códigos da campanha recebida.
 // O usuário decide aplicar a campanha no card do produto.
+const CAMPANHA_VALIDA_ATE = "2026-11-15";
+const CAMPANHA_DATA_BR = CAMPANHA_VALIDA_ATE.split("-").reverse().join("/");
 const CAMPANHAS_OUTUBRO_2026 = {
   // Corte Pasto Linha Tradicional (TQ) - Mineral Pronto Uso
   "BRR103A030": [{ origem: "ESP", pct: 4.5 }],
@@ -226,10 +228,16 @@ const fmt = (n, d = 2) =>
 const fmtMoney = (n) => `R$ ${fmt(n, 2)}`;
 const TABELAS = ["mt1", "mt2", "mt3", "go", "pa02"];
 const precoBase = (item, tabela) => item.precoManual ?? PRODUTOS[item.produtoIdx]?.[tabela];
-const campanhaAplicada = (item, tabela) => tabela === "pa02" && item.campanhaDaTabela ? 0 : (item.campanhaPct || 0);
+const dataCuiaba = new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Cuiaba", year: "numeric", month: "2-digit", day: "2-digit" });
+const campanhaVigente = (agora = new Date()) => {
+  const data = Object.fromEntries(dataCuiaba.formatToParts(agora).map(({ type, value }) => [type, value]));
+  return `${data.year}-${data.month}-${data.day}` <= CAMPANHA_VALIDA_ATE;
+};
+const campanhaDoProduto = (item, vigente) => vigente && item.precoManual == null && CAMPANHAS_OUTUBRO_2026[PRODUTOS[item.produtoIdx]?.cod];
+const campanhaAplicada = (item, vigente) => item.campanhaDaTabela && !campanhaDoProduto(item, vigente) ? 0 : (item.campanhaPct || 0);
 
 // Calcula o preço final por kg de um item aplicando a cascata de descontos.
-function calcItem(item, mtTier, encargo, faixaPedido) {
+function calcItem(item, mtTier, encargo, faixaPedido, campanhaAtiva = campanhaVigente()) {
   const preco = precoBase(item, mtTier);
   if (preco == null) {
     return {
@@ -243,7 +251,7 @@ function calcItem(item, mtTier, encargo, faixaPedido) {
   // Faixa vem do volume TOTAL do pedido (somado); mas se o usuário digitou %, respeita o manual.
   const qtde = item.qtdePct != null ? item.qtdePct : faixaPedido.qtde;
   const log = item.logisticaPct != null ? item.logisticaPct : faixaPedido.logistica;
-  const camp = campanhaAplicada(item, mtTier) / 100;
+  const camp = campanhaAplicada(item, campanhaAtiva) / 100;
   const ad2 = (item.ad2Pct || 0) / 100;
   let p = preco * (1 - ICMS);
   p = p * (1 - qtde) * (1 - log) * (1 - camp) * (1 - ad2);
@@ -985,16 +993,21 @@ function ProductSearch({ produtoIdx, itemNumber, tabela, onSelect }) {
   </div>;
 }
 
-function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido, onChange, onRemove, canRemove }) {
-  const c = calcItem(item, mtTier, encargo, faixaPedido);
+function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido, campanhaAtiva, onChange, onRemove, canRemove }) {
+  const c = calcItem(item, mtTier, encargo, faixaPedido, campanhaAtiva);
   const prod = PRODUTOS[item.produtoIdx];
   const temPreco = Number.isFinite(c.precoTabela);
   const semPrecoNaTabela = item.precoManual == null && prod && !temPreco;
   const set = (patch) => onChange({ ...item, ...patch });
-  const campanha = mtTier !== "pa02" && temPreco && item.precoManual == null && prod && CAMPANHAS_OUTUBRO_2026[prod.cod];
+  const campanha = temPreco && campanhaDoProduto(item, campanhaAtiva);
+  const escolherProduto = (idx) => set({
+    produtoIdx: idx,
+    pesoSaco: PRODUTOS[idx].peso,
+    ...(idx !== item.produtoIdx && item.campanhaDaTabela ? { campanhaPct: 0, campanhaDaTabela: false } : {}),
+  });
   return <section className="mp-panel" aria-label={`Produto ${index + 1}`}>
     <div className="mp-item-head"><div className="mp-item-number"><b>{index + 1}</b> Produto</div>{canRemove && <button type="button" className="mp-text-button" aria-label={`Remover produto ${index + 1}`} onClick={onRemove}>Remover</button>}</div>
-    {item.precoManual == null ? <ProductSearch key={mtTier} produtoIdx={item.produtoIdx} itemNumber={index + 1} tabela={mtTier} onSelect={(idx) => set({ produtoIdx: idx, pesoSaco: PRODUTOS[idx].peso })} /> : <Field label="Preço de tabela manual (R$/kg)">
+    {item.precoManual == null ? <ProductSearch key={mtTier} produtoIdx={item.produtoIdx} itemNumber={index + 1} tabela={mtTier} onSelect={escolherProduto} /> : <Field label="Preço de tabela manual (R$/kg)">
       <input type="number" min="0" step="0.0001" value={item.precoManual} onChange={(e) => set({ precoManual: numeroDigitado(e.target.value) })} />
     </Field>}
     <div className="mp-inputs">
@@ -1003,7 +1016,7 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
       <div><div className="mp-label">Preço de tabela</div><div className="mp-price-table">{temPreco ? `R$ ${fmt(c.precoTabela, 4)}` : "—"}<small>/kg</small></div></div>
     </div>
     <div className="mp-manual-row"><span>{semPrecoNaTabela ? `Sem preço na tabela ${mtTier.toUpperCase()}` : `${fmt(c.volume, 0)} kg neste produto`}</span><button className="mp-text-button" type="button" onClick={() => set({ precoManual: item.precoManual == null ? (c.precoTabela ?? "") : null })}>{item.precoManual == null ? "Usar preço manual" : "Voltar à tabela"}</button></div>
-    {campanha && <div className="mp-campaign"><div><span>Campanha de outubro</span><small>4,5% · válida até 31/10/2026</small></div>
+    {campanha && <div className="mp-campaign"><div><span>Campanha prorrogada</span><small>4,5% · válida até {CAMPANHA_DATA_BR}</small></div>
       <button type="button" aria-pressed={item.campanhaPct === campanha[0].pct} onClick={() => {
         const aplicar = item.campanhaPct !== campanha[0].pct;
         set({ campanhaPct: aplicar ? campanha[0].pct : 0, campanhaDaTabela: aplicar });
@@ -1013,7 +1026,7 @@ function ItemCard({ item, index, mtTier, encargo, faixaPedido, volumeTotalPedido
       <div className="mp-discount-grid">
         <Field label="Desconto por volume" hint={`Faixa do pedido: ${fmt(volumeTotalPedido, 0)} kg`}><PctInput value={(c.qtdeEfetivo * 100).toFixed(2)} auto={item.qtdePct == null} onChange={(v) => set({ qtdePct: v / 100 })} /></Field>
         <Field label="Desconto de logística"><PctInput value={(c.logEfetivo * 100).toFixed(2)} auto={item.logisticaPct == null} onChange={(v) => set({ logisticaPct: v / 100 })} /></Field>
-        <Field label="Campanha por item"><PctInput value={campanhaAplicada(item, mtTier)} onChange={(v) => set({ campanhaPct: v, campanhaDaTabela: false })} /></Field>
+        <Field label="Campanha por item"><PctInput value={campanhaAplicada(item, campanhaAtiva)} onChange={(v) => set({ campanhaPct: v, campanhaDaTabela: false })} /></Field>
         <Field label="AD2 por item"><PctInput value={item.ad2Pct} onChange={(v) => set({ ad2Pct: v })} /></Field>
       </div>
       {(item.qtdePct != null || item.logisticaPct != null) && <button className="mp-text-button" type="button" onClick={() => set({ qtdePct: null, logisticaPct: null })}>Voltar aos descontos automáticos</button>}
@@ -1030,6 +1043,17 @@ export default function PriceCalculator() {
   const [observacoes, setObservacoes] = useState("");
   const [exporting, setExporting] = useState(null);
   const [exportError, setExportError] = useState("");
+  const [campanhaAtiva, setCampanhaAtiva] = useState(campanhaVigente);
+
+  useEffect(() => {
+    const atualizar = () => setCampanhaAtiva(campanhaVigente());
+    const timer = window.setInterval(atualizar, 60_000);
+    window.addEventListener("focus", atualizar);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("focus", atualizar);
+    };
+  }, []);
 
   const encargo = encargoManual == null ? PRAZOS[prazoIdx].encargo : encargoManual;
   const itensNoPedido = items.filter(temProduto);
@@ -1037,7 +1061,7 @@ export default function PriceCalculator() {
   const temItemSemPreco = itensComPreco.length !== itensNoPedido.length;
   const volumeTotalPedido = itensComPreco.reduce((s, it) => s + (it.qtdeSacos || 0) * (it.pesoSaco || 0), 0);
   const faixaPedido = faixaPorVolume(volumeTotalPedido);
-  const calcs = useMemo(() => items.map((it) => calcItem(it, mtTier, encargo, faixaPedido)), [items, mtTier, encargo, faixaPedido]);
+  const calcs = useMemo(() => items.map((it) => calcItem(it, mtTier, encargo, faixaPedido, campanhaAtiva)), [items, mtTier, encargo, faixaPedido, campanhaAtiva]);
   const totalSacos = itensComPreco.reduce((s, it) => s + (it.qtdeSacos || 0), 0);
   const totalKg = calcs.reduce((s, c) => s + c.volume, 0);
   const totalReais = calcs.reduce((s, c) => s + c.total, 0);
@@ -1050,9 +1074,17 @@ export default function PriceCalculator() {
   const podeExportar = items.length > 0 && items.every((it) => itemCompleto(it, mtTier));
   const exportar = async (tipo) => {
     if (!podeExportar) return;
+    const vigenteNaExportacao = campanhaVigente();
+    if (vigenteNaExportacao !== campanhaAtiva) {
+      setCampanhaAtiva(vigenteNaExportacao);
+      if (items.some((it) => it.campanhaDaTabela)) {
+        setExportError("A validade da campanha mudou. Confira o total atualizado antes de gerar a imagem.");
+        return;
+      }
+    }
     setExporting(tipo); setExportError("");
     try {
-      const itensExportados = mtTier === "pa02" ? items.map((it) => ({ ...it, campanhaPct: campanhaAplicada(it, mtTier) })) : items;
+      const itensExportados = items.map((it) => ({ ...it, campanhaPct: campanhaAplicada(it, vigenteNaExportacao) }));
       const dados = { items: itensExportados, calcs, totalSacos, totalKg, totalReais, prazo: PRAZOS[prazoIdx].nome };
       if (tipo === "cliente") await gerarImagemOrcamento(dados);
       else await gerarImagemParametrosCotacao({ ...dados, mtTier, encargo, observacoes });
@@ -1072,7 +1104,7 @@ export default function PriceCalculator() {
           <div className="mp-condition-meta"><span>ICMS <strong>18% fixo</strong></span><span>Encargo <strong>{fmt(encargo * 100, 2)}%</strong></span><details><summary>Ajustar encargo</summary><div className="mp-charge"><Field label="Encargo aplicado"><PctInput value={(encargo * 100).toFixed(2)} auto={encargoManual == null} onChange={(v) => setEncargoManual(v / 100)} /></Field><button className="mp-button" type="button" onClick={() => setEncargoManual(null)}>Usar o prazo selecionado</button></div></details></div>
         </section>
         <div className="mp-row-title"><h2>Produtos do pedido <span className="mp-count">{itensNoPedido.length}</span></h2><button className="mp-button" type="button" onClick={addItem}><Icon name="plus" />Adicionar produto</button></div>
-        <div className="mp-cards">{items.map((it, idx) => <ItemCard key={it.id} item={it} index={idx} mtTier={mtTier} encargo={encargo} faixaPedido={faixaPedido} volumeTotalPedido={volumeTotalPedido} onChange={(next) => updateItem(it.id, next)} onRemove={() => removeItem(it.id)} canRemove={items.length > 1 || temProduto(it) || it.qtdeSacos !== "" || it.pesoSaco !== ""} />)}</div>
+        <div className="mp-cards">{items.map((it, idx) => <ItemCard key={it.id} item={it} index={idx} mtTier={mtTier} encargo={encargo} faixaPedido={faixaPedido} volumeTotalPedido={volumeTotalPedido} campanhaAtiva={campanhaAtiva} onChange={(next) => updateItem(it.id, next)} onRemove={() => removeItem(it.id)} canRemove={items.length > 1 || temProduto(it) || it.qtdeSacos !== "" || it.pesoSaco !== ""} />)}</div>
         <details className="mp-panel mp-notes"><summary>Observações internas{observacoes.trim() ? " · preenchidas" : ""}</summary><Field label="Aparecem apenas na imagem de parâmetros da cotação"><textarea value={observacoes} onChange={(e) => setObservacoes(e.target.value)} rows={3} aria-label="Observações internas" placeholder="Entrega, carga, embalagem ou outras condições…" /></Field>{observacoes.trim() && <button className="mp-text-button" type="button" onClick={() => setObservacoes("")}>Limpar observações</button>}</details>
       </main>
       <aside className="mp-panel mp-summary" aria-label="Resumo do pedido">

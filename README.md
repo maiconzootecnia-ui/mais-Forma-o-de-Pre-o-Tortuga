@@ -17,7 +17,7 @@ As linhas e divisões das tabelas ficam em `src/linhas-produtos.json`, associada
 
 O app abre com produto, quantidade e peso em branco e total zerado. Escolher um produto preenche apenas o peso da embalagem. Novos itens também começam vazios; as imagens só podem ser geradas após preencher produto (ou preço manual), quantidade e peso em todos os itens. Os cálculos e o modelo das imagens enviadas aos clientes são preservados.
 
-A campanha atual oferece desconto ESP de 4,5% nos códigos informados, com validade até 31/10/2026. O usuário aplica o desconto no card do produto.
+A campanha ESP de 4,5% foi prorrogada até 15/11/2026, inclusive, para os códigos participantes, também em PA02. O usuário aplica o desconto no card do produto. O app verifica a validade no horário de Cuiabá.
 
 ## Desenvolvimento
 
