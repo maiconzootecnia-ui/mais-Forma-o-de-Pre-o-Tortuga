@@ -27,7 +27,7 @@ body { margin:0; background:#f4f4f0; }
 .maisa-app .mp-label { color:var(--mp-muted); font-size:12px; font-weight:500; }
 .maisa-app .mp-field input, .maisa-app .mp-field select, .maisa-app .mp-field textarea, .maisa-app .mp-control { border:1px solid var(--mp-line); background:var(--mp-panel); color:var(--mp-ink); padding:10px 11px; width:100%; min-width:0; border-radius:7px; min-height:44px; }
 .maisa-app .mp-field textarea { resize:vertical; }
-.maisa-app .mp-regions { display:grid; grid-template-columns:repeat(4,1fr); gap:4px; background:var(--mp-soft); border:1px solid var(--mp-line); border-radius:8px; padding:4px; min-height:44px; }
+.maisa-app .mp-regions { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:4px; background:var(--mp-soft); border:1px solid var(--mp-line); border-radius:8px; padding:4px; min-height:44px; }
 .maisa-app .mp-regions button { border:0; background:transparent; font-weight:600; border-radius:5px; min-height:44px; padding:3px; font-size:12px; }
 .maisa-app .mp-regions button[aria-pressed="true"] { background:var(--mp-dark); color:var(--mp-on-dark); }
 .maisa-app .mp-condition-meta { display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-top:16px; padding-top:12px; border-top:1px solid var(--mp-line); font-size:12px; color:var(--mp-muted); }

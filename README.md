@@ -11,7 +11,7 @@ Calculadora de preços e orçamentos para clientes. O app abre diretamente na ca
 
 ## Tabelas e campanhas
 
-Os produtos, preços por kg de MT1, MT2, MT3 e GO, pesos das embalagens e campanhas ficam em `src/PriceCalculator.jsx`. Identifique produtos pelo código ao atualizar as tabelas.
+Os produtos, preços por kg de MT1, MT2, MT3, GO e PA02, pesos das embalagens e campanhas ficam em `src/PriceCalculator.jsx`. Identifique produtos pelo código ao atualizar as tabelas. A opção PA02 usa somente a coluna PA 2 do PDF Nutrição Pará, datado de 16/10/2026. A busca lista os produtos com preço na tabela escolhida; itens sem preço precisam de substituição, remoção ou preço manual para exportar o orçamento.
 
 As linhas e divisões das tabelas ficam em `src/linhas-produtos.json`, associadas aos códigos dos produtos. Ao incluir um produto no catálogo, inclua seu código em exatamente um desses grupos. A busca mostra os produtos agrupados por esses títulos, sem seletores de linha ou divisão.
 
